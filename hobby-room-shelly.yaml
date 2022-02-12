@@ -169,6 +169,7 @@ sensor:
   - platform: adc
     id: temp_analog_reading
     pin: A0
+    update_interval: ${update_time}
 
 status_led:
   pin:
