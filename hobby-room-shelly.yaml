@@ -1,0 +1,196 @@
+substitutions:
+  devicename: hobby-room-shelly
+  wifi_ssid: !secret wifi_ssid
+  wifi_pass: !secret wifi_pass
+  domain: !secret domain
+  use_address: 10.0.41.23
+  max_power: "2000.0"
+  max_temp: "80.0"
+  thres_temp: "75.0"
+  password: !secret esphome_password
+  ntp_server: 10.0.2.1
+  icon1: mdi:lightbulb
+  icon2: mdi:fan
+  room: Hobby Room
+  device: Shelly
+  channel_1: Light
+  channel_2: Fan
+  update_time: 10s
+
+esphome:
+  name: ${devicename}
+  platform: ESP8266
+  board: esp01_1m
+
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: ${ntp_server}
+
+wifi:
+  ssid: ${wifi_ssid}
+  password: ${wifi_pass}
+  domain: ${domain}
+  use_address: ${use_address}
+
+  ap:
+    ssid: ${devicename}
+    password: ${password}
+    manual_ip:
+      static_ip: 192.168.100.2
+      gateway: 192.168.100.1
+      subnet: 255.255.255.0
+
+captive_portal:
+
+logger:
+  level: DEBUG
+
+api:
+  password: ${password}
+
+ota:
+  password: ${password}
+
+web_server:
+  port: 80
+
+switch:
+  - platform: restart
+    name: ${room} ${device} Restart
+  - platform: gpio
+    name: ${room} ${channel_1}
+    pin: GPIO4
+    id: relay1
+    icon: ${icon1}
+  - platform: gpio
+    name: ${room} ${channel_2}
+    pin: GPIO15
+    id: relay2
+    icon: ${icon2}
+    restore_mode: ALWAYS_ON
+
+i2c:
+  sda: GPIO12
+  scl: GPIO14
+
+sensor:
+  - platform: ade7953
+    update_interval: ${update_time}
+    voltage:
+      name: ${room} ${device} Voltage
+    current_a:
+      name: ${room} ${channel_2} Current
+    current_b:
+      name: ${room} ${channel_1} Current
+    active_power_a:
+      name: ${room} ${channel_2} Power
+      id: power_channel_2
+      filters:
+        - multiply: 1
+        - lambda: |-
+            if (x >= 0) return x;
+            else x=0; return x;
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: relay1
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from ${devicename}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power}W
+    active_power_b:
+      name: ${room} ${channel_1} Power
+      id: power_channel_1
+      filters:
+        - multiply: -1
+        - lambda: |-
+            if (x >= 0) return x;
+            else x=0; return x;
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: relay2
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from ${devicename}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power}W
+  - platform: total_daily_energy
+    name: ${room} ${channel_1} Energy
+    power_id: power_channel_1
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: total_daily_energy
+    name: ${room} ${channel_2} Energy
+    power_id: power_channel_2
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: ${room} ${device} Temp
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_temp}
+        then:
+          - switch.turn_off: relay1
+          - switch.turn_off: relay2
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: Message from ${devicename}
+              data_template:
+                message: Switch turned off because temperature exceeded ${max_temp}°C
+      - below: ${thres_temp}
+        then:
+          - switch.turn_on: relay2
+#          - homeassistant.service:
+#              service: persistent_notification.create
+#              data:
+#                title: Message from ${devicename}
+#              data_template:
+#                message: Fan turned on because temperature is below ${thres_temp}°C
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: A0
+
+status_led:
+  pin:
+    number: GPIO0
+    inverted: yes
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO16
+    name: ade7953 IRQ pin
+    internal: true
+  - platform: gpio
+    pin:
+      number: GPIO13
+    id: ${channel_1}_input
+    on_state:
+      then:
+        - switch.toggle: relay1
+  - platform: gpio
+    pin:
+      number: GPIO5
+    id: ${channel_2}_input
+    filters:
+      - delayed_off: 3s

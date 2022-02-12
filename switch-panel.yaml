@@ -1,0 +1,425 @@
+substitutions:
+  devicename: switch-panel
+  wifi_ssid: !secret wifi_ssid
+  wifi_pass: !secret wifi_pass
+  domain: !secret domain
+  use_address: 10.0.41.37
+  password: !secret esphome_password
+  ntp_server: 10.0.2.1
+
+esphome:
+  name: ${devicename}
+  platform: ESP32
+  board: wemos_d1_mini32
+
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: ${ntp_server}
+
+wifi:
+  ssid: ${wifi_ssid}
+  password: ${wifi_pass}
+  domain: ${domain}
+  use_address: ${use_address}
+
+  ap:
+    ssid: ${devicename}
+    password: ${password}
+    manual_ip:
+      static_ip: 192.168.100.2
+      gateway: 192.168.100.1
+      subnet: 255.255.255.0
+
+captive_portal:
+
+logger:
+#  level: VERY_VERBOSE
+  level: DEBUG
+
+api:
+  password: ${password}
+ota:
+  password: ${password}
+
+web_server:
+  port: 80
+
+switch:
+  - platform: restart
+    name: Switch Panel Restart
+
+status_led:
+    pin:
+      number: 2
+      inverted: True
+
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 320ms
+    window: 240ms
+    duration: 1min
+    active: true
+
+binary_sensor:
+## Bluetooth trackers
+  - platform: ble_presence
+    mac_address: 'DD:34:02:05:60:0A'
+    name: "BLE Tracker Keys"
+
+## Switch Panel
+  - platform: gpio
+    name: Switch Panel 1
+    pin:
+      number: GPIO32
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch1
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW1 Single-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.bath_1_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW1 Double-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.bath_1_light_automation
+  - platform: gpio
+    name: Switch Panel 2
+    pin:
+      number: GPIO17
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch2
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW3 Single-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.bedroom_1_lamp
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW3 Double-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.bedroom_1_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW3 Triple-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.bedroom_1_fan
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW3 Quad-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.bedroom_1_light_automation
+  - platform: gpio
+    name: Switch Panel 3
+    pin:
+      number: GPIO23
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch3
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW2 Double-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.bath_2_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW2 Double-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.bath_2_light_automation
+  - platform: gpio
+    name: Switch Panel 4
+    pin:
+      number: GPIO26
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch4
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW4 Single-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.bedroom_2_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW4 Double-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.bedroom_2_light_automation
+  - platform: gpio
+    name: Switch Panel 5
+    pin:
+      number: GPIO25
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch5
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW5 Single-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.hobby_room_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW5 Double-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.hobby_room_light_automation
+  - platform: gpio
+    name: Switch Panel 6
+    pin:
+      number: GPIO21
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch6
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW6 Single-Click Detected
+          - homeassistant.service:
+              service: light.toggle
+              data:
+                entity_id: light.kitchen_lights
+                effect: "None"
+                kelvin: '3000'
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW6 Double-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.kitchen_lamp
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW6 Triple-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.coffee_automation
+  - platform: gpio
+    name: Switch Panel 7
+    pin:
+      number: GPIO19
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch7
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW7 Single-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.living_room_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW7 Double-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.living_room_fan
+  - platform: gpio
+    name: Switch Panel 8
+    pin:
+      number: GPIO33
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch8
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW8 Single-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.utility_room_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW8 Double-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.utility_room_light_automation
+  - platform: gpio
+    name: Switch Panel 9
+    pin:
+      number: GPIO27
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch9
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW9 Single-Click Detected
+          - homeassistant.service:
+              service: switch.toggle
+              data:
+                entity_id: switch.front_porch_light
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW9 Double-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.front_porch_light_automation
+  - platform: gpio
+    name: Switch Panel 10
+    pin:
+      number: GPIO22
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch10
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW10 Single-Click Detected
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW10 Double-Click Detected
+  - platform: gpio
+    name: Switch Panel 11
+    pin:
+      number: GPIO18
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch11
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW11 Single-Click Detected
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW11 Double-Click Detected
+  - platform: gpio
+    name: Switch Panel 12
+    pin:
+      number: GPIO16
+      mode: INPUT_PULLUP
+      inverted: true
+    id: switch12
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW12 Single-Click Detected
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: SW12 Double-Click Detected

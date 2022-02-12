@@ -1,0 +1,102 @@
+substitutions:
+  devicename: hobby-room-printer
+  wifi_ssid: !secret wifi_ssid
+  wifi_pass: !secret wifi_pass
+  domain: !secret domain
+  use_address: 10.0.41.20
+  password: !secret esphome_password
+  ntp_server: 10.0.2.1
+  icon: mdi:printer-3d
+  room: Hobby Room
+  device: Printer
+  update_time: 10s
+
+esphome:
+  name: ${devicename}
+  platform: ESP8266
+  board: esp01_1m
+
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: ${ntp_server}
+
+wifi:
+  ssid: ${wifi_ssid}
+  password: ${wifi_pass}
+  domain: ${domain}
+  use_address: ${use_address}
+
+  ap:
+    ssid: ${devicename}
+    password: ${password}
+    manual_ip:
+      static_ip: 192.168.100.2
+      gateway: 192.168.100.1
+      subnet: 255.255.255.0
+
+captive_portal:
+
+logger:
+  baud_rate: 0
+  level: DEBUG
+
+api:
+  password: ${password}
+
+ota:
+  password: ${password}
+
+web_server:
+  port: 80
+
+switch:
+  - platform: restart
+    name: ${room} ${device} Restart
+  - platform: gpio
+    pin: GPIO12
+    id: relay1
+    name: ${room} ${device}
+    icon: ${icon}
+    restore_mode: RESTORE_DEFAULT_ON
+
+status_led:
+  pin: GPIO13
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO00
+      mode: INPUT_PULLUP
+      inverted: true
+    id: button1
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - switch.toggle: relay1
+
+sensor:
+  - platform: cse7766
+    update_interval: ${update_time}
+    current:
+      name: ${room} ${device} Current
+      accuracy_decimals: 1
+    voltage:
+      name: ${room} ${device} Voltage
+      accuracy_decimals: 1
+    power:
+      name: ${room} ${device} Power
+      accuracy_decimals: 1
+      id: power
+  - platform: total_daily_energy
+    name: ${room} ${device} Energy
+    power_id: power
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
