@@ -4,3 +4,4 @@
 .archive/
 .esphome/
 secrets.yaml
+*.1
