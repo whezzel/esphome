@@ -1,0 +1,80 @@
+substitutions:
+  devicename: zbbridge-2
+  ntp_server: 10.0.2.1
+  device: ZbBridge-2
+  update_time: 10s
+
+esphome:
+  name: ${devicename}
+  platform: ESP32
+  board: esp-wrover-kit
+
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: ${ntp_server}
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO0_IN
+  phy_addr: 1
+  power_pin: GPIO16
+  domain: !secret domain
+
+#wifi:
+#  ssid: !secret wifi_ssid
+#  password: !secret wifi_pass
+#  domain: !secret domain
+#  fast_connect: true
+#
+#  ap:
+#    ssid: ${devicename}
+#    password: !secret wifi_pass
+#    manual_ip:
+#      static_ip: 192.168.100.2
+#      gateway: 192.168.100.1
+#      subnet: 255.255.255.0
+
+#captive_portal:
+
+logger:
+#  baud_rate: 0 # disable serial logging; pins are used for zb module comm
+
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: esphome
+  log_topic: esphome/debug/${devicename}
+  birth_message:
+    topic: esphome/status/${devicename}
+    payload: online
+  will_message:
+    topic: esphome/status/${devicename}
+    payload: offline
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+ota:
+    password: !secret esphome_password
+
+web_server:
+  port: 80
+
+#uart:
+#  tx_pin: GPIO1
+#  rx_pin: GPIO3
+#  baud_rate: 115200 # matched to fw: ncp-uart-sw_6.7.8_115200.ota
+#  id: uart_bus
+
+#stream_server:
+#   uart_id: uart_bus
+#   port: 8888
+
+### https://github.com/oxan/esphome-stream-server
+#external_components:
+#  - source: github://oxan/esphome-stream-server
+
+switch:
+  - platform: restart
+    name: ${device} Restart

@@ -1,10 +1,5 @@
 substitutions:
   devicename: bedroom-1-bed
-  wifi_ssid: !secret wifi_ssid
-  wifi_pass: !secret wifi_pass
-  domain: !secret domain
-  use_address: 10.0.41.9
-  password: !secret esphome_password
   ntp_server: 10.0.2.1
   room: Bedroom 1
   device: Bed
@@ -20,14 +15,14 @@ time:
     servers: ${ntp_server}
 
 wifi:
-  ssid: ${wifi_ssid}
-  password: ${wifi_pass}
-  domain: ${domain}
-  use_address: ${use_address}
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  domain: !secret domain
+  fast_connect: true
 
   ap:
     ssid: ${devicename}
-    password: ${password}
+    password: !secret wifi_pass
     manual_ip:
       static_ip: 192.168.100.2
       gateway: 192.168.100.1
@@ -39,11 +34,21 @@ logger:
 #  level: VERY_VERBOSE
   level: DEBUG
 
-api:
-  password: ${password}
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: esphome
+  log_topic: esphome/debug/${devicename}
+  birth_message:
+    topic: esphome/status/${devicename}
+    payload: online
+  will_message:
+    topic: esphome/status/${devicename}
+    payload: offline
+  username: !secret mqtt_username
+  password: !secret mqtt_password
 
 ota:
-  password: ${password}
+    password: !secret esphome_password
 
 web_server:
   port: 80
@@ -66,10 +71,13 @@ sensor:
     attenuation: 11db
     filters:
 #      - multiply: 3.8
-      - sliding_window_moving_average:
-          window_size: 10
-          send_every: 2 # 10 second updates @ 1 second scan interval.
-          send_first_at: 2
+#      - sliding_window_moving_average:
+#          window_size: 10
+#          send_every: 2 # 10 second updates @ 1 second scan interval.
+#          send_first_at: 2
+      - exponential_moving_average:
+          send_every: 2
+          alpha: 0.4
 
 #  - platform: homeassistant
 #    internal: true

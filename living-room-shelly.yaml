@@ -1,13 +1,8 @@
 substitutions:
   devicename: living-room-shelly
-  wifi_ssid: !secret wifi_ssid
-  wifi_pass: !secret wifi_pass
-  domain: !secret domain
-  use_address: 10.0.41.35
   max_power: "2000.0"
   max_temp: "80.0"
   thres_temp: "75.0"
-  password: !secret esphome_password
   ntp_server: 10.0.2.1
   icon1: mdi:lightbulb
   icon2: mdi:fan
@@ -28,14 +23,14 @@ time:
     servers: ${ntp_server}
 
 wifi:
-  ssid: ${wifi_ssid}
-  password: ${wifi_pass}
-  domain: ${domain}
-  use_address: ${use_address}
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  domain: !secret domain
+  fast_connect: true
 
   ap:
     ssid: ${devicename}
-    password: ${password}
+    password: !secret wifi_pass
     manual_ip:
       static_ip: 192.168.100.2
       gateway: 192.168.100.1
@@ -46,11 +41,21 @@ captive_portal:
 logger:
   level: DEBUG
 
-api:
-  password: ${password}
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: esphome
+  log_topic: esphome/debug/${devicename}
+  birth_message:
+    topic: esphome/status/${devicename}
+    payload: online
+  will_message:
+    topic: esphome/status/${devicename}
+    payload: offline
+  username: !secret mqtt_username
+  password: !secret mqtt_password
 
 ota:
-  password: ${password}
+    password: !secret esphome_password
 
 web_server:
   port: 80
@@ -95,12 +100,12 @@ sensor:
         - above: ${max_power}
           then:
             - switch.turn_off: relay1
-            - homeassistant.service:
-                service: persistent_notification.create
-                data:
-                  title: Message from ${devicename}
-                data_template:
-                  message: Switch turned off because power exceeded ${max_power}W
+#            - homeassistant.service:
+#                service: persistent_notification.create
+#                data:
+#                  title: Message from ${devicename}
+#                data_template:
+#                  message: Switch turned off because power exceeded ${max_power}W
     active_power_b:
       name: ${room} ${channel_1} Power
       id: power_channel_1
@@ -113,12 +118,12 @@ sensor:
         - above: ${max_power}
           then:
             - switch.turn_off: relay2
-            - homeassistant.service:
-                service: persistent_notification.create
-                data:
-                  title: Message from ${devicename}
-                data_template:
-                  message: Switch turned off because power exceeded ${max_power}W
+#            - homeassistant.service:
+#                service: persistent_notification.create
+#                data:
+#                  title: Message from ${devicename}
+#                data_template:
+#                  message: Switch turned off because power exceeded ${max_power}W
   - platform: total_daily_energy
     name: ${room} ${channel_1} Energy
     power_id: power_channel_1
@@ -146,12 +151,12 @@ sensor:
         then:
           - switch.turn_off: relay1
           - switch.turn_off: relay2
-          - homeassistant.service:
-              service: persistent_notification.create
-              data:
-                title: Message from ${devicename}
-              data_template:
-                message: Switch turned off because temperature exceeded ${max_temp}°C
+#          - homeassistant.service:
+#              service: persistent_notification.create
+#              data:
+#                title: Message from ${devicename}
+#              data_template:
+#                message: Switch turned off because temperature exceeded ${max_temp}°C
       - below: ${thres_temp}
         then:
           - switch.turn_on: relay2

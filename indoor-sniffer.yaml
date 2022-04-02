@@ -1,10 +1,5 @@
 substitutions:
   devicename: indoor-sniffer
-  wifi_ssid: !secret wifi_ssid
-  wifi_pass: !secret wifi_pass
-  domain: !secret domain
-  use_address: 10.0.41.25
-  password: !secret esphome_password
   ntp_server: 10.0.2.1
   room: Indoor
   device: Sniffer
@@ -20,14 +15,14 @@ time:
     servers: ${ntp_server}
 
 wifi:
-  ssid: ${wifi_ssid}
-  password: ${wifi_pass}
-  domain: ${domain}
-  use_address: ${use_address}
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  domain: !secret domain
+  fast_connect: true
 
   ap:
     ssid: ${devicename}
-    password: ${password}
+    password: !secret wifi_pass
     manual_ip:
       static_ip: 192.168.100.2
       gateway: 192.168.100.1
@@ -38,11 +33,21 @@ captive_portal:
 logger:
   level: DEBUG
 
-api:
-  password: ${password}
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: esphome
+  log_topic: esphome/debug/${devicename}
+  birth_message:
+    topic: esphome/status/${devicename}
+    payload: online
+  will_message:
+    topic: esphome/status/${devicename}
+    payload: offline
+  username: !secret mqtt_username
+  password: !secret mqtt_password
 
 ota:
-  password: ${password}
+    password: !secret esphome_password
 
 web_server:
   port: 80

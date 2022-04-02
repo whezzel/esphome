@@ -1,10 +1,5 @@
 substitutions:
   devicename: switch-panel
-  wifi_ssid: !secret wifi_ssid
-  wifi_pass: !secret wifi_pass
-  domain: !secret domain
-  use_address: 10.0.41.37
-  password: !secret esphome_password
   ntp_server: 10.0.2.1
 
 esphome:
@@ -18,14 +13,14 @@ time:
     servers: ${ntp_server}
 
 wifi:
-  ssid: ${wifi_ssid}
-  password: ${wifi_pass}
-  domain: ${domain}
-  use_address: ${use_address}
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pass
+  domain: !secret domain
+  fast_connect: true
 
   ap:
     ssid: ${devicename}
-    password: ${password}
+    password: !secret wifi_pass
     manual_ip:
       static_ip: 192.168.100.2
       gateway: 192.168.100.1
@@ -37,10 +32,22 @@ logger:
 #  level: VERY_VERBOSE
   level: DEBUG
 
-api:
-  password: ${password}
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: esphome
+  log_topic: esphome/debug/${devicename}
+  birth_message:
+    topic: esphome/status/${devicename}
+    payload: online
+  will_message:
+    topic: esphome/status/${devicename}
+    payload: offline
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  id: mqtt_client
+
 ota:
-  password: ${password}
+    password: !secret esphome_password
 
 web_server:
   port: 80
@@ -52,7 +59,7 @@ switch:
 status_led:
     pin:
       number: 2
-      inverted: True
+      inverted: false
 
 esp32_ble_tracker:
   scan_parameters:
@@ -60,6 +67,11 @@ esp32_ble_tracker:
     window: 240ms
     duration: 1min
     active: true
+
+text_sensor:
+  - platform: mqtt_subscribe
+    id: light_state
+    topic: ha-core/light/kitchen_lights/state
 
 binary_sensor:
 ## Bluetooth trackers
@@ -81,10 +93,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW1 Single-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.bath_1_light
+          - mqtt.publish:
+              topic: esphome/switch/bath_1_light/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -92,10 +104,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW1 Double-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.bath_1_light_automation
   - platform: gpio
     name: Switch Panel 2
     pin:
@@ -109,10 +117,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW3 Single-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.bedroom_1_lamp
+          - mqtt.publish:
+              topic: esphome/switch/bedroom_1_lamp/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -120,38 +128,30 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW3 Double-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.bedroom_1_light
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW3 Triple-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.bedroom_1_fan
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW3 Quad-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.bedroom_1_light_automation
+          - mqtt.publish:
+              topic: esphome/switch/bedroom_1_light/command
+              payload: |-
+                toggle
+#      - timing:
+#          - ON for at most 400ms
+#          - OFF for at most 250ms
+#          - ON for at most 400ms
+#          - OFF for at least 250ms
+#          - ON for at most 400ms
+#          - OFF for at least 250ms
+#        then:
+#          - logger.log: SW3 Triple-Click Detected
+#      - timing:
+#          - ON for at most 400ms
+#          - OFF for at most 250ms
+#          - ON for at most 400ms
+#          - OFF for at least 250ms
+#          - ON for at most 400ms
+#          - OFF for at least 250ms
+#          - ON for at most 400ms
+#          - OFF for at least 250ms
+#        then:
+#          - logger.log: SW3 Quad-Click Detected
   - platform: gpio
     name: Switch Panel 3
     pin:
@@ -164,11 +164,11 @@ binary_sensor:
           - ON for at most 400ms
           - OFF for at least 250ms
         then:
-          - logger.log: SW2 Double-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.bath_2_light
+          - logger.log: SW2 Single-Click Detected
+          - mqtt.publish:
+              topic: esphome/switch/bath_2_light/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -176,10 +176,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW2 Double-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.bath_2_light_automation
   - platform: gpio
     name: Switch Panel 4
     pin:
@@ -193,10 +189,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW4 Single-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.bedroom_2_light
+          - mqtt.publish:
+              topic: esphome/switch/bedroom_2_light/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -204,10 +200,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW4 Double-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.bedroom_2_light_automation
   - platform: gpio
     name: Switch Panel 5
     pin:
@@ -221,10 +213,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW5 Single-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.hobby_room_light
+          - mqtt.publish:
+              topic: esphome/switch/hobby_room_light/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -232,10 +224,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW5 Double-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.hobby_room_light_automation
   - platform: gpio
     name: Switch Panel 6
     pin:
@@ -249,12 +237,40 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW6 Single-Click Detected
-          - homeassistant.service:
-              service: light.toggle
-              data:
-                entity_id: light.kitchen_lights
-                effect: "None"
-                kelvin: '3000'
+          - if:
+              condition:
+                text_sensor.state:
+                  id: light_state
+                  state: 'off'
+              then:
+                - mqtt.publish_json:
+                    topic: esphome/light/kitchen_light_1/command
+                    payload: |-
+                      root["state"] = "ON";
+                      root["color_temp"] = "500";
+                - mqtt.publish_json:
+                    topic: esphome/light/kitchen_light_2/command
+                    payload: |-
+                      root["state"] = "ON";
+                      root["color_temp"] = "500";
+                - mqtt.publish_json:
+                    topic: esphome/light/kitchen_light_3/command
+                    payload: |-
+                      root["state"] = "ON";
+                      root["color_temp"] = "500";
+              else:
+                - mqtt.publish_json:
+                    topic: esphome/light/kitchen_light_1/command
+                    payload: |-
+                      root["state"] = "OFF";
+                - mqtt.publish_json:
+                    topic: esphome/light/kitchen_light_2/command
+                    payload: |-
+                      root["state"] = "OFF";
+                - mqtt.publish_json:
+                    topic: esphome/light/kitchen_light_3/command
+                    payload: |-
+                      root["state"] = "OFF";
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -262,10 +278,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW6 Double-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.kitchen_lamp
+          - mqtt.publish:
+              topic: esphome/switch/kitchen_lamp/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -275,10 +291,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW6 Triple-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.coffee_automation
   - platform: gpio
     name: Switch Panel 7
     pin:
@@ -292,10 +304,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW7 Single-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.living_room_light
+          - mqtt.publish:
+              topic: esphome/switch/living_room_light/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -303,10 +315,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW7 Double-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.living_room_fan
   - platform: gpio
     name: Switch Panel 8
     pin:
@@ -320,10 +328,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW8 Single-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.utility_room_light
+          - mqtt.publish:
+              topic: esphome/switch/utility_room_light/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -331,10 +339,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW8 Double-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.utility_room_light_automation
   - platform: gpio
     name: Switch Panel 9
     pin:
@@ -348,10 +352,10 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW9 Single-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.front_porch_light
+          - mqtt.publish:
+              topic: esphome/switch/front_porch_light/command
+              payload: |-
+                toggle
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -359,10 +363,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW9 Double-Click Detected
-          - homeassistant.service:
-              service: input_boolean.toggle
-              data:
-                entity_id: input_boolean.front_porch_light_automation
   - platform: gpio
     name: Switch Panel 10
     pin:
