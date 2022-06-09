@@ -7,8 +7,10 @@ substitutions:
 
 esphome:
   name: ${devicename}
-  platform: ESP8266
+
+esp8266:
   board: esp01_1m
+  restore_from_flash: true
 
 time:
   - platform: sntp
@@ -46,9 +48,10 @@ mqtt:
     payload: offline
   username: !secret mqtt_username
   password: !secret mqtt_password
+  reboot_timeout: 0s
 
 ota:
-    password: !secret esphome_password
+  password: !secret esphome_password
 
 web_server:
   port: 80
@@ -86,6 +89,7 @@ light:
     cold_white_color_temperature: 6200 K
     warm_white_color_temperature: 2800 K
     color_interlock: true
+    default_transition_length: 0ms
     restore_mode: RESTORE_DEFAULT_OFF
     effects:
       - lambda:
@@ -121,6 +125,6 @@ light:
               call.set_rgb(1.0, 0.0, 0.5); // rose
             }
             call.perform();
-            state++;
+            state += 1;
             if (state == 12)
               state = 0;
