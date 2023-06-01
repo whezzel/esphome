@@ -1,0 +1,9 @@
+substitutions:
+  api_key: !secret speaker-1_api_key
+  devicename: speaker-1
+  room: Speaker
+  device: '1'
+  update_time: 10s
+  log_level: DEBUG
+
+<<: !include configs/speaker.yaml

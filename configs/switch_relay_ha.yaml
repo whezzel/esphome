@@ -1,0 +1,76 @@
+esphome:
+  name: ${devicename}
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+
+packages:
+  api: !include /config/common/api.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+status_led:
+  pin:
+    number: GPIO16
+    inverted: true
+
+output:
+  - platform: esp8266_pwm
+    id: state_led
+    pin:
+      number: GPIO2
+      inverted: true
+
+light:
+  - platform: monochromatic
+    output: state_led
+    id: led
+
+switch:
+  - platform: gpio
+    pin: GPIO14
+    id: relay1
+    name: ${room} ${device}
+    icon: ${icon}
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - light.turn_on: led
+    on_turn_off:
+      - light.turn_off: led
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO00
+      inverted: true
+    id: button1
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: Single-Click Detected
+          - switch.toggle: relay1
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 250ms
+          - ON for at most 400ms
+          - OFF for at least 250ms
+        then:
+          - logger.log: Double-Click Detected
+          - if:
+              condition:
+                api.connected:
+              then:
+                - homeassistant.service:
+                    service: input_boolean.toggle
+                    data:
+                      entity_id: input_boolean.${automation_name}

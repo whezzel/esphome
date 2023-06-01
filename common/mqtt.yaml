@@ -1,0 +1,13 @@
+mqtt:
+  broker: !secret mqtt_host
+  topic_prefix: esphome
+  log_topic: esphome/debug/${devicename}
+  birth_message:
+    topic: esphome/status/${devicename}
+    payload: online
+  will_message:
+    topic: esphome/status/${devicename}
+    payload: offline
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  reboot_timeout: 0s

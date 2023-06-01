@@ -1,0 +1,11 @@
+substitutions:
+  api_key: !secret outside-sniffer_api_key
+  devicename: outside-sniffer
+  room: Outside
+  device: Sniffer
+  send_every: '10'
+  update_time: 10s
+  temp_offset: '6.0'
+  log_level: DEBUG
+
+<<: !include configs/sniffer_ha.yaml

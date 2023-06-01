@@ -1,0 +1,70 @@
+sensor:
+  - platform: uptime
+    #name: ${room} ${device} Uptime
+    internal: true
+    id: uptime_sensor
+    update_interval: 300s
+    on_raw_value:
+      then:
+        - text_sensor.template.publish:
+            id: uptime_human
+            state: !lambda |-
+              int seconds = round(id(uptime_sensor).raw_state);
+              int days = seconds / (24 * 3600);
+              seconds = seconds % (24 * 3600);
+              int hours = seconds / 3600;
+              seconds = seconds % 3600;
+              int minutes = seconds /  60;
+              seconds = seconds % 60;
+              return (
+                (days ? to_string(days) + "d " : "") +
+                (hours ? to_string(hours) + "h " : "") +
+                (minutes ? to_string(minutes) + "m " : "") +
+                (to_string(seconds) + "s")
+              ).c_str();
+
+  - platform: wifi_signal
+    name: ${room} ${device} WiFi RSSI
+    update_interval: ${update_time}
+
+  - platform: ble_rssi
+    name: ${room} ${device} BLE Keys RSSI
+    ibeacon_uuid: '426C7565-4368-6172-6D42-6561636F6E73'
+    ibeacon_major: '3838'
+    ibeacon_minor: '4949'
+
+  - platform: ble_rssi
+    name: ${room} ${device} BLE Trash RSSI
+    ibeacon_uuid: '426C7565-4368-6172-6D42-6561636F6E73'
+    ibeacon_major: '3636'
+    ibeacon_minor: '4747'
+
+  - platform: ble_rssi
+    name: ${room} ${device} BLE Truck RSSI
+    ibeacon_uuid: '426C7565-4368-6172-6D42-6561636F6E73'
+    ibeacon_major: '3737'
+    ibeacon_minor: '4848'
+
+  - platform: ble_rssi
+    name: ${room} ${device} BLE Pixel 2 XL RSSI
+    ibeacon_uuid: '0dd6b1bb-456f-437e-8b3d-41334b2496b5'
+    ibeacon_major: '100'
+    ibeacon_minor: '1'
+
+  - platform: ble_rssi
+    name: ${room} ${device} BLE Pixel 6 Pro RSSI
+    ibeacon_uuid: '71d68f8f-3f0f-47ad-b369-c9eeb0ace08c'
+    ibeacon_major: '100'
+    ibeacon_minor: '1'
+
+  - platform: ble_rssi
+    name: ${room} ${device} BLE Pixel 7 Pro RSSI
+    ibeacon_uuid: '0caa8ab8-20cb-44d8-ad6e-083a9a352a88'
+    ibeacon_major: '100'
+    ibeacon_minor: '1'
+
+  - platform: ble_rssi
+    name: ${room} ${device} BLE Pixel Watch RSSI
+    ibeacon_uuid: '839C67B3-DB58-421E-BBBD-788332AB77C9'
+    ibeacon_major: '100'
+    ibeacon_minor: '1'

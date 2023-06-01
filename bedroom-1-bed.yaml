@@ -1,61 +1,31 @@
 substitutions:
+  api_key: !secret bedroom-1-bed_api_key
   devicename: bedroom-1-bed
-  ntp_server: 10.0.2.1
   room: Bedroom 1
   device: Bed
+  update_time: 10s
+  log_level: DEBUG
 
 esphome:
   name: ${devicename}
-  platform: ESP32
+
+esp32:
   board: wemos_d1_mini32
 
-time:
-  - platform: sntp
-    id: sntp_time
-    servers: ${ntp_server}
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_pass
-  domain: !secret domain
-  fast_connect: true
-
-  ap:
-    ssid: ${devicename}
-    password: !secret wifi_pass
-    manual_ip:
-      static_ip: 192.168.100.2
-      gateway: 192.168.100.1
-      subnet: 255.255.255.0
-
-captive_portal:
-
-logger:
-#  level: VERY_VERBOSE
-  level: DEBUG
-
-mqtt:
-  broker: !secret mqtt_host
-  topic_prefix: esphome
-  log_topic: esphome/debug/${devicename}
-  birth_message:
-    topic: esphome/status/${devicename}
-    payload: online
-  will_message:
-    topic: esphome/status/${devicename}
-    payload: offline
-  username: !secret mqtt_username
-  password: !secret mqtt_password
-
-ota:
-    password: !secret esphome_password
-
-web_server:
-  port: 80
-
-switch:
-  - platform: restart
-    name: ${room} ${device} Restart
+packages:
+  api: !include /config/common/api.yaml
+#  binary_sensor: !include /config/common/binary_sensor_ble.yaml
+#  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+#  mqtt: !include /config/common/mqtt.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
 
 status_led:
     pin:
@@ -68,23 +38,16 @@ sensor:
     name: ${room} ${device}
     update_interval: .5s
     id: bed_adc
-    attenuation: 11db
+    attenuation: auto
     filters:
-#      - multiply: 3.8
+      - exponential_moving_average:
+          send_every: 1
+          alpha: 0.1
 #      - sliding_window_moving_average:
 #          window_size: 10
-#          send_every: 2 # 10 second updates @ 1 second scan interval.
-#          send_first_at: 2
-      - exponential_moving_average:
-          send_every: 2
-          alpha: 0.4
-
-#  - platform: homeassistant
-#    internal: true
-#    id: "threshold"
-#    entity_id: input_number.bedroom_1_bed_threshold
-#
-#binary_sensor:
-#  - platform: template
-#    name: "Bedroom 1 Bed Occupancy"
-#    lambda: return (id(bed_adc).state < id(threshold).state);
+#          send_every: 1
+#      - lambda: |-
+#          float MIN = 2.4;
+#          float MAX = 3.1;
+#          if ( MIN <= x && x <= MAX) return x;
+#          else return {};

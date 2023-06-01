@@ -1,0 +1,112 @@
+esphome:
+  name: ${devicename}
+  project:
+    name: raspiaudio.muse-luxe
+    version: "1.0"
+
+esp32:
+  board: esp-wrover-kit
+  framework:
+    type: arduino
+
+packages:
+  api: !include /config/common/api.yaml
+  #binary_sensor: !include /config/common/binary_sensor_ble.yaml
+  #esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+  #mqtt: !include /config/common/mqtt.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+i2c:
+  sda: GPIO18
+  scl: GPIO23
+
+dashboard_import:
+  package_import_url: github://esphome/media-players/raspiaudio-muse-luxe.yaml@main
+
+external_components:
+  - source: github://pr#3552
+    components: [es8388]
+    refresh: 0s
+
+i2s_audio:
+  - i2s_lrclk_pin: GPIO25
+    i2s_bclk_pin: GPIO5
+
+media_player:
+  - platform: i2s_audio
+    name: ${room} ${device}
+    dac_type: external
+    i2s_dout_pin: GPIO26
+    mode: stereo
+    mute_pin:
+      number: GPIO21
+      inverted: true
+
+es8388:
+
+sensor:
+ - platform: adc
+   pin: GPIO33
+   name: ${room} ${device} Battery
+   icon: "mdi:battery-outline"
+   device_class: voltage
+   state_class: measurement
+   unit_of_measurement: V
+   update_interval: 15s
+   accuracy_decimals: 3
+   attenuation: 11db
+   raw: true
+   filters:
+    - multiply: 0.00173913 # 2300 -> 4, for attenuation 11db, based on Olivier's code
+    - exponential_moving_average:
+        alpha: 0.2
+        send_every: 2
+    - delta: 0.002
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO19
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: ${room} ${device} Volume Up
+    on_click:
+      - media_player.volume_up:
+  - platform: gpio
+    pin:
+      number: GPIO32
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: ${room} ${device} Volume Down
+    on_click:
+      - media_player.volume_down:
+  - platform: gpio
+    pin:
+      number: GPIO12
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: ${room} ${device} Play Button
+    on_click:
+      - media_player.toggle:
+
+light:
+  - platform: fastled_clockless
+    name: ${room} ${device} LED
+    pin: GPIO22
+    chipset: SK6812
+    num_leds: 1
+    rgb_order: grb

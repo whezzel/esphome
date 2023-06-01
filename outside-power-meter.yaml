@@ -1,6 +1,6 @@
 substitutions:
+  api_key: !secret outside-power-meter_api_key
   devicename: outside-power-meter
-  ntp_server: 10.0.2.1
   icon: mdi:gauge
   room: Outside
   device: Power Meter
@@ -16,58 +16,28 @@ substitutions:
   # AC Transformer voltage calibration 9VAC Jameco 157041: 37106
   # For Meters >= v1.4 rev3: 3920
   voltage_cal: "3920"
+  log_level: DEBUG
 
 esphome:
   name: ${devicename}
-  platform: ESP32
+
+esp32:
   board: nodemcu-32s
 
-time:
-  - platform: sntp
-    id: sntp_time
-    servers: ${ntp_server}
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_pass
-  domain: !secret domain
-  fast_connect: true
-
-  ap:
-    ssid: ${devicename}
-    password: !secret wifi_pass
-    manual_ip:
-      static_ip: 192.168.100.2
-      gateway: 192.168.100.1
-      subnet: 255.255.255.0
-
-captive_portal:
-
-logger:
-  level: DEBUG
-
-mqtt:
-  broker: !secret mqtt_host
-  topic_prefix: esphome
-  log_topic: esphome/debug/${devicename}
-  birth_message:
-    topic: esphome/status/${devicename}
-    payload: online
-  will_message:
-    topic: esphome/status/${devicename}
-    payload: offline
-  username: !secret mqtt_username
-  password: !secret mqtt_password
-
-ota:
-    password: !secret esphome_password
-
-web_server:
-  port: 80
-
-switch:
-  - platform: restart
-    name: ${room} ${device} Restart
+packages:
+  api: !include /config/common/api.yaml
+  #binary_sensor: !include /config/common/binary_sensor_ble.yaml
+  #esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+#  mqtt: !include /config/common/mqtt.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
 
 spi:
   clk_pin: 18
@@ -75,19 +45,20 @@ spi:
   mosi_pin: 23
 
 sensor:
-  - platform: wifi_signal
-    name: ${room} ${device} WiFi Signal
-    update_interval: 60s
   - platform: atm90e32
     cs_pin: 5
     phase_a:
       voltage:
         name: ${room} ${device} Voltage
         accuracy_decimals: 1
+        unit_of_measurement: V
+        device_class: voltage
       current:
         name: ${room} ${device} CT1 Current
         accuracy_decimals: 1
         id: "ct1Amps"
+        unit_of_measurement: A
+        device_class: current
       # The max value for current that the meter can output is 65.535. If you expect to measure current over 65A,
       # divide the gain_ct by 2 (120A CT) or 4 (200A CT) and multiply the current and power values by 2 or 4 by uncommenting the filter below
       #        filters:
@@ -96,14 +67,21 @@ sensor:
         name: ${room} ${device} CT1 Power
         accuracy_decimals: 1
         id: "ct1Watts"
+        unit_of_measurement: W
+        device_class: power
       #        filters:
       #          - multiply: 2
       reactive_power:
         name: ${room} ${device} CT1 Reactive Power
         accuracy_decimals: 1
         id: "ct1Reactive"
+        unit_of_measurement: VAR
+      #  device_class: reactive_power
       #        filters:
       #          - multiply: 2
+      power_factor:
+        name: ${room} ${device} CT1 Power Factor
+        device_class: power_factor
       gain_voltage: ${voltage_cal}
       gain_ct: ${current_cal}
     phase_c:
@@ -111,6 +89,8 @@ sensor:
         name: ${room} ${device} CT2 Current
         accuracy_decimals: 1
         id: "ct2Amps"
+        unit_of_measurement: A
+        device_class: current
       # The max value for current that the meter can output is 65.535. If you expect to measure current over 65A,
       # divide the gain_ct by 2 (120A CT) or 4 (200A CT) and multiply the current and power values by 2 or 4 by uncommenting the filter below
       #        filters:
@@ -119,20 +99,31 @@ sensor:
         name: ${room} ${device} CT2 Power
         accuracy_decimals: 1
         id: "ct2Watts"
+        unit_of_measurement: W
+        device_class: power
       #        filters:
       #          - multiply: 2
       reactive_power:
         name: ${room} ${device} CT2 Reactive Power
         accuracy_decimals: 1
         id: "ct2Reactive"
+        unit_of_measurement: VAR
+      #  device_class: reactive_power
       #        filters:
       #          - multiply: 2
+      power_factor:
+        name: ${room} ${device} CT2 Power Factor
+        device_class: power_factor
       gain_voltage: ${voltage_cal}
       gain_ct: ${current_cal}
     frequency:
       name: ${room} ${device} Freq
+      unit_of_measurement: Hz
+    #  device_class: frequency
     chip_temperature:
       name: ${room} ${device} Chip Temp
+      unit_of_measurement: °C
+      device_class: temperature
     line_frequency: 60Hz
     gain_pga: 2X
     update_interval: ${update_time}
@@ -142,6 +133,7 @@ sensor:
     lambda: return id(ct1Amps).state + id(ct2Amps).state;
     accuracy_decimals: 1
     unit_of_measurement: A
+    device_class: current
     update_interval: ${update_time}
     icon: "mdi:current-ac"
   - platform: template
@@ -150,6 +142,7 @@ sensor:
     lambda: return id(ct1Watts).state + id(ct2Watts).state;
     accuracy_decimals: 1
     unit_of_measurement: W
+    device_class: power
     icon: "mdi:power"
     update_interval: ${update_time}
   - platform: template
@@ -168,3 +161,5 @@ sensor:
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
+    device_class: energy
+    state_class: total_increasing

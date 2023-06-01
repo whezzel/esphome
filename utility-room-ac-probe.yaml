@@ -1,0 +1,55 @@
+substitutions:
+  api_key: !secret utility-room-ac-probe_api_key
+  devicename: utility-room-ac-probe
+  room: Utility Room
+  device: AC Probe
+  update_time: 10s
+
+esphome:
+  name: ${devicename}
+
+esp32:
+  board: wemos_d1_mini32
+
+packages:
+  api: !include /config/common/api.yaml
+  #binary_sensor: !include /config/common/binary_sensor_ble.yaml
+  #esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+  #mqtt: !include /config/common/mqtt.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+logger:
+  level: DEBUG
+
+status_led:
+  pin: GPIO2
+
+sensor:
+  #- platform: ntc
+  #  sensor: resistance_sensor
+  #  calibration:
+  #    b_constant: 3950
+  #    reference_temperature: 22.6°C
+  #    reference_resistance: 10kOhm
+  #  name: NTC Temperature
+
+  # Example source sensors:
+  #- platform: resistance
+  #  id: resistance_sensor
+  #  sensor: source_sensor
+  #  configuration: DOWNSTREAM
+  #  resistor: 5.6kOhm
+  #  name: Resistance Sensor
+  - platform: adc
+    id: source_sensor
+    pin: GPIO34
+    update_interval: 1s
+    name: adc sensor

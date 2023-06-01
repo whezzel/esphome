@@ -1,0 +1,13 @@
+substitutions:
+  api_key: !secret utility-room-switch-1_api_key
+  devicename: utility-room-switch-1
+  icon: mdi:lightbulb
+  room: Utility Room
+  device: Switch 1
+  update_time: 10s
+  automation_name: utility_room_lights
+  light_group: utility_room_lights
+  restore: RESTORE_DEFAULT_ON
+  log_level: DEBUG
+
+<<: !include configs/switch_ha.yaml

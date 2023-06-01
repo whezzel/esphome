@@ -1,0 +1,102 @@
+esphome:
+  name: ${devicename}
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+
+packages:
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+  mqtt: !include /config/common/mqtt.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+text_sensor:
+  - platform: mqtt_subscribe
+    id: remote_command
+    topic: remote/${light_group}/command
+    on_value:
+      - if:
+          condition:
+            text_sensor.state:
+              id: remote_command
+              state: 'on'
+          then:
+            - light.turn_on: light1
+          else:
+            - light.turn_off: light1
+
+output:
+  - platform: esp8266_pwm
+    id: red
+    pin: GPIO4
+  - platform: esp8266_pwm
+    id: green
+    pin: GPIO12
+  - platform: esp8266_pwm
+    id: blue
+    pin: GPIO14
+  - platform: esp8266_pwm
+    id: cold_white
+    pin: GPIO5
+  - platform: esp8266_pwm
+    id: warm_white
+    pin: GPIO13
+
+light:
+  - platform: rgbww
+    name: ${room} ${device}
+    id: light1
+    red: red
+    green: green
+    blue: blue
+    cold_white: cold_white
+    warm_white: warm_white
+    cold_white_color_temperature: 6200 K
+    warm_white_color_temperature: 2800 K
+    color_interlock: true
+    default_transition_length: 0ms
+    restore_mode: ${restore}
+    effects:
+      - lambda:
+          name: Color Cycle
+          update_interval: 8s
+          lambda: |-
+            static int state = 0;
+            auto call = id(light1).turn_on();
+            call.set_transition_length(9500);
+            if (state == 0) {
+              call.set_rgb(1.0, 0.0, 0.0); // red
+            } else if (state == 1) {
+              call.set_rgb(1.0, 0.5, 0.0); // orange
+            } else if (state == 2) {
+              call.set_rgb(1.0, 0.86, 0.0); // yellow
+            } else if (state == 3) {
+              call.set_rgb(0.75, 1.0, 0.0); // chartreuse
+            } else if (state == 4) {
+              call.set_rgb(0.0, 1.0, 0.0); // green
+            } else if (state == 5) {
+              call.set_rgb(0.0, 1.0, 0.5); // spring green
+            } else if (state == 6) {
+              call.set_rgb(0.0, 1.0, 1.0); // cyan
+            } else if (state == 7) {
+              call.set_rgb(0.0, 0.5, 1.0); // azure
+            } else if (state == 8) {
+              call.set_rgb(0.0, 0.0, 1.0); // blue
+            } else if (state == 9) {
+              call.set_rgb(0.5, 0.0, 1.0); // violet
+            } else if (state == 10) {
+              call.set_rgb(1.0, 0.0, 1.0); // magenta
+            } else if (state == 11) {
+              call.set_rgb(1.0, 0.0, 0.5); // rose
+            }
+            call.perform();
+            state += 1;
+            if (state == 12)
+              state = 0;

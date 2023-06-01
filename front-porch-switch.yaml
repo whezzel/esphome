@@ -1,0 +1,13 @@
+substitutions:
+  api_key: !secret front-porch-switch_api_key
+  devicename: front-porch-switch
+  icon: mdi:lightbulb
+  room: Front Porch
+  device: Light
+  automation_name: front_porch_light
+  update_time: 10s
+  light_group: front_porch_lights
+  restore: RESTORE_DEFAULT_OFF
+  log_level: DEBUG
+
+<<: !include configs/switch_ha.yaml

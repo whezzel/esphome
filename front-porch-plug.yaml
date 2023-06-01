@@ -1,6 +1,6 @@
 substitutions:
+  api_key: !secret front-porch-plug_api_key
   devicename: front-porch-plug
-  ntp_server: 10.0.2.1
   icon: mdi:outlet
   room: Front Porch
   device: Plug
@@ -9,54 +9,28 @@ substitutions:
   current_res: "0.0009"
   # Lower value gives lower voltage readout
   voltage_div: "779"
+  log_level: DEBUG
 
 esphome:
   name: ${devicename}
-  platform: ESP32
+
+esp32:
   board: esp-wrover-kit
 
-time:
-  - platform: sntp
-    id: sntp_time
-    servers: ${ntp_server}
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_pass
-  domain: !secret domain
-  fast_connect: true
-
-  ap:
-    ssid: ${devicename}
-    password: !secret wifi_pass
-    manual_ip:
-      static_ip: 192.168.100.2
-      gateway: 192.168.100.1
-      subnet: 255.255.255.0
-
-captive_portal:
-
-logger:
-  level: DEBUG
-
-mqtt:
-  broker: !secret mqtt_host
-  topic_prefix: esphome
-  log_topic: esphome/debug/${devicename}
-  birth_message:
-    topic: esphome/status/${devicename}
-    payload: online
-  will_message:
-    topic: esphome/status/${devicename}
-    payload: offline
-  username: !secret mqtt_username
-  password: !secret mqtt_password
-
-ota:
-    password: !secret esphome_password
-
-web_server:
-  port: 80
+packages:
+  api: !include /config/common/api.yaml
+#  binary_sensor: !include /config/common/binary_sensor_ble.yaml
+#  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+#  mqtt: !include /config/common/mqtt.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
 
 status_led:
   pin:
@@ -84,8 +58,6 @@ light:
     output: relay2_led_gpio
 
 switch:
-  - platform: restart
-    name: ${room} ${device} Restart
   - platform: gpio
     name: ${room} ${device} Relay 1
     pin:

@@ -1,0 +1,5 @@
+text_sensor:
+  - platform: template
+    name: ${room} ${device} Uptime
+    id: uptime_human
+    icon: mdi:clock-start

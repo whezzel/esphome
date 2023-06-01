@@ -1,0 +1,11 @@
+substitutions:
+  api_key: !secret inside-sniffer_api_key
+  devicename: inside-sniffer
+  room: Inside
+  device: Sniffer
+  send_every: '10'
+  update_time: 10s
+  temp_offset: '8.7'
+  log_level: DEBUG
+
+<<: !include configs/sniffer_ha.yaml
