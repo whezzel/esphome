@@ -3,3 +3,8 @@ text_sensor:
     name: ${room} ${device} Uptime
     id: uptime_human
     icon: mdi:clock-start
+
+  - platform: version
+    name: ${room} ${device} ESPHome Version
+    id: esphome_version
+    hide_timestamp: true
