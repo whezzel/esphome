@@ -1,4 +1,6 @@
 time:
   - platform: sntp
     id: sntp_time
-    servers: !secret sntp_ip
+    servers:
+      - !secret sntp_ip1
+      - !secret sntp_ip2
