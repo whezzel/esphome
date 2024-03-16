@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:lightbulb
   room: Front Porch
   device: Light
-  automation_name: front_porch_light
+  automation_name: front_porch_light_automation
   update_time: 10s
   light_group: front_porch_lights
   restore: RESTORE_DEFAULT_OFF

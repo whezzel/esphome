@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:lamp
   room: Bedroom 1
   device: Lamp
-  automation_name: bedroom_1_lamp
+  automation_name: bedroom_1_lamp_automation
   update_time: 10s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG

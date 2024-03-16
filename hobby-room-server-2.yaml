@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:server
   room: Hobby Room
   device: Server 2
-  automation_name: hobby_room_server
+  automation_name: hobby_room_server_automation
   update_time: 10s
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG

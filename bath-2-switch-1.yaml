@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:lightbulb
   room: Bath 2
   device: Switch 1
-  automation_name: bath_2_lights
+  automation_name: bath_2_lights_automation
   update_time: 10s
   light_group: bath_2_lights
   restore: RESTORE_DEFAULT_ON

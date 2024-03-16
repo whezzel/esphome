@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:snowflake
   room: Bedroom 1
   device: AC
-  automation_name: bedroom_1_ac
+  automation_name: bedroom_1_ac_automation
   update_time: 10s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG

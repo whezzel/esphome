@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:printer-3d
   room: Hobby Room
   device: Printer
-  automation_name: hobby_room_printer
+  automation_name: hobby_room_printer_automation
   update_time: 10s
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG

@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:washing-machine
   room: Utility Room
   device: Washer
-  automation_name: utility_room_washer
+  automation_name: utility_room_washer_automation
   update_time: 10s
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG

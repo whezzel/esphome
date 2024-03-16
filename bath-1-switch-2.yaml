@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:fan
   room: Bath 1
   device: Switch 2
-  automation_name: bath_1_fan
+  automation_name: bath_1_fan_automation
   update_time: 10s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
