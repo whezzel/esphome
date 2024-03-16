@@ -34,9 +34,3 @@ binary_sensor:
     ibeacon_uuid: '37579069-e3eb-46fc-822c-c20d097856b6'
     ibeacon_major: '100'
     ibeacon_minor: '1'
-
-  - platform: ble_presence
-    name: ${room} ${device} BLE Pixel Watch
-    ibeacon_uuid: '839C67B3-DB58-421E-BBBD-788332AB77C9'
-    ibeacon_major: '100'
-    ibeacon_minor: '1'
