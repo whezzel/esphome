@@ -37,7 +37,7 @@ switch:
 
 sensor:
   - platform: cse7766
-    update_interval: ${update_time}
+#    update_interval: ${update_time}
     current:
       name: ${room} ${device} Current
       accuracy_decimals: 1
