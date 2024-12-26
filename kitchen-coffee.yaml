@@ -5,7 +5,7 @@ substitutions:
   room: Kitchen
   device: Coffee
   automation_name: coffee_automation
-  update_time: 10s
+  update_interval: 1s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 

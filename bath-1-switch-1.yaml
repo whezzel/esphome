@@ -5,7 +5,6 @@ substitutions:
   room: Bath 1
   device: Switch 1
   automation_name: bath_1_lights_automation
-  update_time: 10s
   light_group: bath_1_lights
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG

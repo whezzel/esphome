@@ -10,7 +10,7 @@ substitutions:
   device: Shelly
   channel_1: Light
   channel_2: Fan
-  update_time: 10s
+  update_interval: 1s
   light_group: bedroom_2_lights
   log_level: DEBUG
 

@@ -5,7 +5,7 @@ substitutions:
   room: General
   device: Use
   automation_name: general_use_automation
-  update_time: 10s
+  update_interval: 1s
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG
 

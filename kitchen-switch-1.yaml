@@ -5,7 +5,6 @@ substitutions:
   room: Kitchen
   device: Switch 1
   automation_name: kitchen_lights_automation
-  update_time: 10s
   light_group: kitchen_lights
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG

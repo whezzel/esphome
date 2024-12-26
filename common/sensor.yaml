@@ -3,7 +3,7 @@ sensor:
     #name: ${room} ${device} Uptime
     internal: true
     id: uptime_sensor
-    update_interval: 300s
+    update_interval: 10s
     on_raw_value:
       then:
         - text_sensor.template.publish:
@@ -22,6 +22,7 @@ sensor:
                 (minutes ? to_string(minutes) + "m " : "") +
                 (to_string(seconds) + "s")
               ).c_str();
+
   - platform: wifi_signal
     name: ${room} ${device} WiFi RSSI
-    update_interval: ${update_time}
+    update_interval: 10s

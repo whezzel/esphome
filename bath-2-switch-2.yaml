@@ -5,7 +5,6 @@ substitutions:
   room: Bath 2
   device: Switch 2
   automation_name: bath_2_fan_automation
-  update_time: 10s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 

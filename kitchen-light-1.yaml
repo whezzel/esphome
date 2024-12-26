@@ -4,7 +4,6 @@ substitutions:
   icon: mdi:lightbulb
   room: Kitchen
   device: Light 1
-  update_time: 10s
   restore: RESTORE_DEFAULT_ON
   light_group: kitchen_lights
   log_level: DEBUG

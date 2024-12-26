@@ -6,7 +6,7 @@ substitutions:
   device: Power Meter
   #automation:
   # Interval of how often the power is updated
-  update_time: 10s
+  update_interval: 1s
   # Current transformer calibrations:
   # 80A/26.6mA SCT-010: 39571
   # 100A/50mA SCT-013: 26315
@@ -26,11 +26,9 @@ esp32:
 
 packages:
   api: !include /config/common/api.yaml
-  #binary_sensor: !include /config/common/binary_sensor_ble.yaml
-  #esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+#  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
-#  mqtt: !include /config/common/mqtt.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
   switch: !include /config/common/switch.yaml
@@ -126,7 +124,7 @@ sensor:
       device_class: temperature
     line_frequency: 60Hz
     gain_pga: 2X
-    update_interval: ${update_time}
+    update_interval: ${update_interval}
   - platform: template
     name: ${room} ${device} Total Current
     id: "totalAmps"
@@ -134,7 +132,7 @@ sensor:
     accuracy_decimals: 1
     unit_of_measurement: A
     device_class: current
-    update_interval: ${update_time}
+    update_interval: ${update_interval}
     icon: "mdi:current-ac"
   - platform: template
     name: ${room} ${device} Total Power
@@ -144,7 +142,7 @@ sensor:
     unit_of_measurement: W
     device_class: power
     icon: "mdi:power"
-    update_interval: ${update_time}
+    update_interval: ${update_interval}
   - platform: template
     name: ${room} ${device} Total Reactive Power
     id: "totalReactivePower"
@@ -152,7 +150,7 @@ sensor:
     accuracy_decimals: 1
     unit_of_measurement: VAR
     icon: "mdi:flash-circle"
-    update_interval: ${update_time}
+    update_interval: ${update_interval}
 
   - platform: total_daily_energy
     name: ${room} ${device} Total Energy

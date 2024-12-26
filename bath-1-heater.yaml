@@ -5,7 +5,7 @@ substitutions:
   room: Bath 1
   device: Heater
   automation_name: bath_1_heater_automation
-  update_time: 10s
+  update_interval: 1s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 

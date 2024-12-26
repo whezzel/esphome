@@ -5,7 +5,7 @@ substitutions:
   room: Hobby Room
   device: Server 2
   automation_name: hobby_room_server_automation
-  update_time: 10s
+  update_interval: 1s
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG
 

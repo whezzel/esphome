@@ -5,7 +5,7 @@ substitutions:
   room: Kitchen
   device: Fridge
   automation_name: kitchen_fridge_automation
-  update_time: 10s
+  update_interval: 1s
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG
 

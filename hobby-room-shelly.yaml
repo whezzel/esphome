@@ -10,8 +10,8 @@ substitutions:
   device: Shelly
   channel_1: Light
   channel_2: Fan
-  update_time: 10s
+  update_interval: 1s
   light_group: hobby_room_lights
   log_level: DEBUG
 
-<<: !include /config/configs/hobby_room_shelly_2pm_ha.yaml
+<<: !include /config/configs/shelly_2pm_ha.yaml

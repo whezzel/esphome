@@ -1,16 +1,15 @@
 esphome:
   name: ${devicename}
+  area: ${room}
 
 esp32:
   board: featheresp32
 
 packages:
   api: !include /config/common/api.yaml
-#  binary_sensor: !include /config/common/binary_sensor_ble.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
-#  mqtt: !include /config/common/mqtt.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
   switch: !include /config/common/switch.yaml
@@ -147,7 +146,7 @@ sensor:
 
     pm_1_0:
       id: pm_1_0
-      name: ${room} ${device} PM <1.0 µm
+      name: ${room} ${device} PM <1.0 um
       filters:
       - sliding_window_moving_average:
           window_size: 30
@@ -155,7 +154,7 @@ sensor:
 
     pm_2_5:
       id: pm_2_5
-      name: ${room} ${device} PM <2.5 µm
+      name: ${room} ${device} PM <2.5 um
       filters:
       - sliding_window_moving_average:
           window_size: 30
@@ -187,7 +186,7 @@ sensor:
           }
     pm_10_0:
       id: pm_10
-      name: ${room} ${device} PM <10.0 µm
+      name: ${room} ${device} PM <10.0 um
       filters:
       - sliding_window_moving_average:
           window_size: 30
@@ -264,3 +263,55 @@ text_sensor:
   - platform: bme680_bsec
     iaq_accuracy:
       name: ${room} ${device} IAQ Accuracy
+
+#  - platform: bme680
+#    temperature:
+#      name: ${room} ${device} Temperature
+#      oversampling: 16x
+#    pressure:
+#      name: ${room} ${device} Pressure
+#    humidity:
+#      id: "humidity"
+#      name: ${room} ${device} Humidity
+#    gas_resistance:
+#      id: "gas_resistance"
+#      name: ${room} ${device} Gas Resistance
+#    address: 0x77
+#    update_interval: 1s
+#  - platform: template
+#    name: ${room} ${device} IAQ
+#    id: iaq
+#    icon: "mdi:gauge"
+#    # calculation: comp_gas = log(R_gas[ohm]) + 0.04 log(Ohm)/%rh * hum[%rh]
+#    lambda: |-
+#      return log(id(gas_resistance).state) + 0.04 *  id(humidity).state;
+#    state_class: "measurement"
+#text_sensor:
+#  - platform: template
+#    name: ${room} ${device} IAQ Classification
+#    icon: "mdi:checkbox-marked-circle-outline"
+#    lambda: |-
+#      if (int(id(iaq).state) <= 50) {
+#        return {"Excellent"};
+#      }
+#      else if (int(id(iaq).state) <= 100) {
+#        return {"Good"};
+#      }
+#      else if (int(id(iaq).state) <= 150) {
+#        return {"Lightly polluted"};
+#      }
+#      else if (int(id(iaq).state) <= 200) {
+#        return {"Moderately polluted"};
+#      }
+#      else if (int(id(iaq).state) <= 250) {
+#        return {"Heavily polluted"};
+#      }
+#      else if (int(id(iaq).state) <= 350) {
+#        return {"Severely polluted"};
+#      }
+#      else if (int(id(iaq).state) <= 500) {
+#        return {"Extremely polluted"};
+#      }
+#      else {
+#        return {"unknown"};
+#      }

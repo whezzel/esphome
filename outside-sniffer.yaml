@@ -4,7 +4,7 @@ substitutions:
   room: Outside
   device: Sniffer
   send_every: '10'
-  update_time: 10s
+  update_interval: 1s
   temp_offset: '6.0'
   log_level: DEBUG
 

@@ -3,7 +3,7 @@ substitutions:
   devicename: bedroom-1-bed
   room: Bedroom 1
   device: Bed
-  update_time: 10s
+  update_interval: .1s
   log_level: DEBUG
 
 esphome:
@@ -11,14 +11,15 @@ esphome:
 
 esp32:
   board: wemos_d1_mini32
+  framework:
+    type: esp-idf
+    version: recommended
 
 packages:
   api: !include /config/common/api.yaml
-#  binary_sensor: !include /config/common/binary_sensor_ble.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
-#  mqtt: !include /config/common/mqtt.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
   switch: !include /config/common/switch.yaml
@@ -36,12 +37,14 @@ sensor:
   - platform: adc
     pin: GPIO34
     name: ${room} ${device}
-    update_interval: .5s
+    update_interval: ${update_interval}
+    accuracy_decimals: 5
     id: bed_adc
     attenuation: auto
     filters:
       - exponential_moving_average:
           send_every: 1
+#          alpha: 0.08
           alpha: 0.1
 #      - sliding_window_moving_average:
 #          window_size: 10

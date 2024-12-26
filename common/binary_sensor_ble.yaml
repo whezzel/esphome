@@ -6,31 +6,14 @@ binary_sensor:
     ibeacon_minor: '4949'
 
   - platform: ble_presence
-    name: ${room} ${device} BLE Trash
-    ibeacon_uuid: '426C7565-4368-6172-6D42-6561636F6E73'
-    ibeacon_major: '3636'
-    ibeacon_minor: '4747'
-
-  - platform: ble_presence
     name: ${room} ${device} BLE Truck
     ibeacon_uuid: '426C7565-4368-6172-6D42-6561636F6E73'
     ibeacon_major: '3737'
     ibeacon_minor: '4848'
 
-  - platform: ble_presence
-    name: ${room} ${device} BLE Pixel 2 XL
-    ibeacon_uuid: '0dd6b1bb-456f-437e-8b3d-41334b2496b5'
-    ibeacon_major: '100'
-    ibeacon_minor: '1'
-
-  - platform: ble_presence
-    name: ${room} ${device} BLE Pixel 6 Pro
-    ibeacon_uuid: '71d68f8f-3f0f-47ad-b369-c9eeb0ace08c'
-    ibeacon_major: '100'
-    ibeacon_minor: '1'
 
   - platform: ble_presence
     name: ${room} ${device} BLE Pixel 7 Pro
-    ibeacon_uuid: '37579069-e3eb-46fc-822c-c20d097856b6'
+    ibeacon_uuid: '0caa8ab8-20cb-44d8-ad6e-083a9a352a88'
     ibeacon_major: '100'
-    ibeacon_minor: '1'
+    ibeacon_minor: '40004'

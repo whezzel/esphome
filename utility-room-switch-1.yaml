@@ -4,7 +4,6 @@ substitutions:
   icon: mdi:lightbulb
   room: Utility Room
   device: Switch 1
-  update_time: 10s
   automation_name: utility_room_lights_automation
   light_group: utility_room_lights
   restore: RESTORE_DEFAULT_ON

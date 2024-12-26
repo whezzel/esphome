@@ -1,9 +1,9 @@
 esphome:
   name: ${devicename}
+  area: ${room}
 
 esp8266:
   board: esp01_1m
-#  restore_from_flash: true
 
 packages:
   api: !include /config/common/api.yaml
@@ -38,7 +38,7 @@ i2c:
 sensor:
   - platform: ade7953
     irq_pin: GPIO16
-    update_interval: ${update_time}
+    update_interval: ${update_interval}
     voltage:
       name: ${room} ${device} Voltage
     current_a:
@@ -57,12 +57,6 @@ sensor:
         - above: ${max_power}
           then:
             - switch.turn_off: light
-#            - homeassistant.service:
-#                service: persistent_notification.create
-#                data:
-#                  title: Message from ${devicename}
-#                data_template:
-#                  message: Switch turned off because power exceeded ${max_power}W
     active_power_b:
       name: ${room} ${channel_1} Power
       id: power_channel_1
@@ -75,12 +69,6 @@ sensor:
         - above: ${max_power}
           then:
             - switch.turn_off: fan
-#            - homeassistant.service:
-#                service: persistent_notification.create
-#                data:
-#                  title: Message from ${devicename}
-#                data_template:
-#                  message: Switch turned off because power exceeded ${max_power}W
   - platform: total_daily_energy
     name: ${room} ${channel_1} Energy
     power_id: power_channel_1
@@ -106,23 +94,7 @@ sensor:
     on_value_range:
       - above: ${max_temp}
         then:
-#          - switch.turn_off: light
           - switch.turn_off: fan
-#          - homeassistant.service:
-#              service: persistent_notification.create
-#              data:
-#                title: Message from ${devicename}
-#              data_template:
-#                message: Switch turned off because temperature exceeded ${max_temp}°C
-#      - below: ${thres_temp}
-#        then:
-#          - switch.turn_on: fan
-#          - homeassistant.service:
-#              service: persistent_notification.create
-#              data:
-#                title: Message from ${devicename}
-#              data_template:
-#                message: Fan turned on because temperature is below ${thres_temp}°C
   - platform: resistance
     id: temp_resistance_reading
     sensor: temp_analog_reading
@@ -131,7 +103,7 @@ sensor:
   - platform: adc
     id: temp_analog_reading
     pin: A0
-    update_interval: ${update_time}
+    update_interval: ${update_interval}
 
 status_led:
   pin:

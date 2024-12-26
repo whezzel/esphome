@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:outlet
   room: Front Porch
   device: Plug
-  update_time: 10s
+  update_interval: 1s
   # Higher value gives lower watt readout
   current_res: "0.0009"
   # Lower value gives lower voltage readout
@@ -19,11 +19,9 @@ esp32:
 
 packages:
   api: !include /config/common/api.yaml
-#  binary_sensor: !include /config/common/binary_sensor_ble.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
-#  mqtt: !include /config/common/mqtt.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
   switch: !include /config/common/switch.yaml
@@ -85,7 +83,7 @@ sensor:
 #  - platform: adc
 #    pin: GPIO34
 #    name: ${room} ${device} Illuminance
-#    update_interval: ${update_time}
+#    update_interval: ${update_interval}
 #    attenuation: 11db
   - platform: hlw8012
     sel_pin:
@@ -96,7 +94,7 @@ sensor:
     current_resistor: ${current_res}
     voltage_divider: ${voltage_div}
     change_mode_every: 5
-    update_interval: ${update_time}
+    update_interval: ${update_interval}
     current:
       name: ${room} ${device} Current
       unit_of_measurement: A

@@ -5,7 +5,7 @@ substitutions:
   room: Bedroom 1
   device: AC
   automation_name: bedroom_1_ac_automation
-  update_time: 10s
+  update_interval: 1s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 

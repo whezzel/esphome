@@ -5,7 +5,7 @@ substitutions:
   room: Living Room
   device: Desktop
   automation_name: living_room_desktop_automation
-  update_time: 10s
+  update_interval: 1s
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG
 

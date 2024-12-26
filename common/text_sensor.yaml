@@ -7,4 +7,4 @@ text_sensor:
   - platform: version
     name: ${room} ${device} ESPHome Version
     id: esphome_version
-    hide_timestamp: true
+    hide_timestamp: false

@@ -1,6 +1,4 @@
 api:
   encryption:
     key: ${api_key}
-    #key: !secret esphome_encryption_key
-  #password: !secret esphome_password
   reboot_timeout: 0s

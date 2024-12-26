@@ -1,21 +1,18 @@
 esphome:
   name: ${devicename}
+#  area: ${room}
   project:
     name: raspiaudio.muse-luxe
     version: "1.0"
 
 esp32:
   board: esp-wrover-kit
-  framework:
-    type: arduino
 
 packages:
   api: !include /config/common/api.yaml
-  #binary_sensor: !include /config/common/binary_sensor_ble.yaml
-  #esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+#  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
-  #mqtt: !include /config/common/mqtt.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
   switch: !include /config/common/switch.yaml
@@ -31,10 +28,14 @@ i2c:
 dashboard_import:
   package_import_url: github://esphome/media-players/raspiaudio-muse-luxe.yaml@main
 
+improv_serial:
+
 external_components:
   - source: github://pr#3552
     components: [es8388]
     refresh: 0s
+
+es8388:
 
 i2s_audio:
   - i2s_lrclk_pin: GPIO25
@@ -43,14 +44,13 @@ i2s_audio:
 media_player:
   - platform: i2s_audio
     name: ${room} ${device}
+    id: luxe_out
     dac_type: external
     i2s_dout_pin: GPIO26
     mode: stereo
     mute_pin:
       number: GPIO21
       inverted: true
-
-es8388:
 
 sensor:
  - platform: adc
@@ -59,6 +59,7 @@ sensor:
    icon: "mdi:battery-outline"
    device_class: voltage
    state_class: measurement
+   entity_category: diagnostic
    unit_of_measurement: V
    update_interval: 15s
    accuracy_decimals: 3
@@ -81,7 +82,7 @@ binary_sensor:
         pullup: true
     name: ${room} ${device} Volume Up
     on_click:
-      - media_player.volume_up:
+      - media_player.volume_up: luxe_out
   - platform: gpio
     pin:
       number: GPIO32
@@ -91,7 +92,7 @@ binary_sensor:
         pullup: true
     name: ${room} ${device} Volume Down
     on_click:
-      - media_player.volume_down:
+      - media_player.volume_down: luxe_out
   - platform: gpio
     pin:
       number: GPIO12
@@ -101,12 +102,18 @@ binary_sensor:
         pullup: true
     name: ${room} ${device} Play Button
     on_click:
-      - media_player.toggle:
+      - media_player.toggle: luxe_out
 
 light:
   - platform: fastled_clockless
-    name: ${room} ${device} LED
+    name: None
+    id: top_led
     pin: GPIO22
     chipset: SK6812
     num_leds: 1
     rgb_order: grb
+    gamma_correct: 2.8
+    effects:
+      - pulse:
+          transition_length: 250ms
+          update_interval: 250ms

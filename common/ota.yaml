@@ -1,2 +1,3 @@
 ota:
-  password: !secret esphome_password
+  - platform: esphome
+    password: !secret esphome_password
