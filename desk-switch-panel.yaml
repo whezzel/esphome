@@ -1,11 +1,9 @@
 substitutions:
-  api_key: !secret switch-panel_api_key
-  devicename: switch-panel
+  api_key: !secret desk-switch-panel_api_key
+  devicename: desk-switch-panel
   ntp_server: 10.69.2.1
-  room: Switch
-  device: Panel
-  update_time: 10s
-#  log_level: VERY_VERBOSE
+  room: Desk
+  device: Switch Panel
   log_level: DEBUG
 
 esphome:
@@ -16,14 +14,11 @@ esp32:
 
 packages:
   api: !include /config/common/api.yaml
-  binary_sensor: !include /config/common/binary_sensor_ble.yaml
   esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
-  #mqtt: !include /config/common/mqtt.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
-#  sensor: !include /config/common/sensor_ble.yaml
   switch: !include /config/common/switch.yaml
   text_sensor: !include /config/common/text_sensor.yaml
   time: !include /config/common/time.yaml
@@ -54,29 +49,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: bath_1_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.bath_1_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.bath_1_lights
-#                - mqtt.publish:
-#                    topic: remote/bath_1_lights/command
-#                    payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.bath_1_lights
-#                - mqtt.publish:
-#                    topic: remote/bath_1_lights/command
-#                    payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -102,29 +79,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: bedroom_1_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.bedroom_1_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.bedroom_1_lights
-#                - mqtt.publish:
-#                    topic: remote/bedroom_1_lights/command
-#                    payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.bedroom_1_lights
-#                - mqtt.publish:
-#                    topic: remote/bedroom_1_lights/command
-#                    payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -136,9 +95,6 @@ binary_sensor:
               service: switch.toggle
               data:
                 entity_id: switch.bedroom_1_lamp
-#          - mqtt.publish:
-#              topic: esphome/switch/bedroom_1_lamp/command
-#              payload: 'toggle'
 
 # Switch 3
   - platform: gpio
@@ -157,29 +113,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: bath_2_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.bath_2_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.bath_2_lights
-#                - mqtt.publish:
-#                    topic: remote/bath_2_lights/command
-#                    payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.bath_2_lights
-#                - mqtt.publish:
-#                    topic: remote/bath_2_lights/command
-#                    payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -205,29 +143,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: bedroom_2_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.bedroom_2_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.bedroom_2_lights
-#                - mqtt.publish:
-#                    topic: remote/bedroom_2_lights/command
-#                    payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.bedroom_2_lights
-#                - mqtt.publish:
-#                    topic: remote/bedroom_2_lights/command
-#                    payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -253,29 +173,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: hobby_room_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.hobby_room_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.hobby_room_lights
-#                - mqtt.publish:
-#                    topic: remote/hobby_room_lights/command
-#                    payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.hobby_room_lights
-#                - mqtt.publish:
-#                    topic: remote/hobby_room_lights/command
-#                    payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -301,29 +203,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: kitchen_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.kitchen_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.kitchen_lights
-#                - mqtt.publish:
-#                   topic: remote/kitchen_lights/command
-#                   payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.kitchen_lights
-#                - mqtt.publish:
-#                   topic: remote/kitchen_lights/command
-#                   payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -335,9 +219,6 @@ binary_sensor:
               service: switch.toggle
               data:
                 entity_id: switch.kitchen_lamp
-#          - mqtt.publish:
-#              topic: esphome/switch/kitchen_lamp/command
-#              payload: 'toggle'
 
 # Switch 7
   - platform: gpio
@@ -356,29 +237,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: living_room_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.living_room_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.living_room_lights
-#                - mqtt.publish:
-#                   topic: remote/living_room_lights/command
-#                   payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.living_room_lights
-#                - mqtt.publish:
-#                   topic: remote/living_room_lights/command
-#                   payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -404,29 +267,11 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: utility_room_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
                     data:
                       entity_id: light.utility_room_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.utility_room_lights
-#                - mqtt.publish:
-#                   topic: remote/utility_room_lights/command
-#                   payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.utility_room_lights
-#                - mqtt.publish:
-#                   topic: remote/utility_room_lights/command
-#                   payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -453,9 +298,6 @@ binary_sensor:
               service: light.toggle
               data:
                 entity_id: light.front_porch_lights
-#          - mqtt.publish:
-#              topic: esphome/switch/front_porch_light/command
-#              payload: 'toggle'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -541,21 +383,6 @@ binary_sensor:
                     service: light.toggle
                     data:
                       entity_id: light.all_lights
-#                - homeassistant.service:
-#                    service: light.turn_on
-#                    data:
-#                      entity_id: light.all_lights
-#                - mqtt.publish:
-#                   topic: remote/all_lights/command
-#                   payload: 'on'
-#              else:
-#                - homeassistant.service:
-#                    service: light.turn_off
-#                    data:
-#                      entity_id: light.all_lights
-#                - mqtt.publish:
-#                   topic: remote/all_lights/command
-#                   payload: 'off'
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -563,94 +390,3 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW12 Double-Click Detected
-
-#text_sensor:
-#  - platform: homeassistant
-#    id: all_lights_state
-#    entity_id: light.all_lights
-#    name: Switch Panel All Lights State
-#
-#  - platform: homeassistant
-#    id: bath_1_lights_state
-#    entity_id: light.bath_1_lights
-#    name: Switch Panel Bath 1 Light State
-#
-#  - platform: homeassistant
-#    id: bath_2_lights_state
-#    entity_id: light.bath_2_lights
-#    name: Switch Panel Bath 2 Light State
-#
-#  - platform: homeassistant
-#    entity_id: light.bedroom_1_lights
-#    id: bedroom_1_lights_state
-#    name: Switch Panel Bedroom 1 Light State
-#
-#  - platform: homeassistant
-#    entity_id: light.bedroom_2_lights
-#    id: bedroom_2_lights_state
-#    name: Switch Panel Bedroom 2 Light State
-#
-#  - platform: homeassistant
-#    entity_id: light.hobby_room_lights
-#    id: hobby_room_lights_state
-#    name: Switch Panel Hobby Room Light State
-#
-#  - platform: homeassistant
-#    entity_id: light.kitchen_lights
-#    id: kitchen_lights_state
-#    name: Switch Panel Kitchen Light State
-#
-#  - platform: homeassistant
-#    entity_id: light.living_room_lights
-#    id: living_room_lights_state
-#    name: Switch Panel Living Room Light State
-#
-#  - platform: homeassistant
-#    entity_id: light.utility_room_lights
-#    id: utility_room_lights_state
-#    name: Switch Panel Utility Room Light State
-#
-#  - platform: mqtt_subscribe
-#    id: all_lights_state
-#    #name: Switch Panel All Lights State
-#    topic: ha-core/light/all_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: bath_1_lights_state
-#    #name: Switch Panel Bath 1 Light State
-#    topic: ha-core/light/bath_1_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: bath_2_lights_state
-#    #name: Switch Panel Bath 2 Light State
-#    topic: ha-core/light/bath_2_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: bedroom_1_lights_state
-#    #name: Switch Panel Bedroom 1 Light State
-#    topic: ha-core/light/bedroom_1_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: bedroom_2_lights_state
-#    #name: Switch Panel Bedroom 2 Light State
-#    topic: ha-core/light/bedroom_2_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: hobby_room_lights_state
-#    #name: Switch Panel Hobby Room Light State
-#    topic: ha-core/light/hobby_room_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: kitchen_lights_state
-#    #name: Switch Panel Kitchen Light State
-#    topic: ha-core/light/kitchen_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: living_room_lights_state
-#    #name: Switch Panel Living Room Light State
-#    topic: ha-core/light/living_room_lights/state
-#
-#  - platform: mqtt_subscribe
-#    id: utility_room_lights_state
-#    #name: Switch Panel Utility Room Light State
-#    topic: ha-core/light/utility_room_lights/state

@@ -1,9 +1,8 @@
 substitutions:
-  api_key: !secret test-1_api_key
-  devicename: test-1
-  room: Test
-  device: '1'
-  update_time: 10s
+  api_key: !secret bedroom-1-mmwave_api_key
+  devicename: bedroom-1-mmwave
+  room: Bedroom 1
+  device: mmWave
   log_level: DEBUG
   uart_tx_pin: GPIO01
   uart_rx_pin: GPIO03
@@ -20,11 +19,9 @@ esp32:
 
 packages:
   api: !include /config/common/api.yaml
-#  binary_sensor: !include /config/common/binary_sensor_ble.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
-#  mqtt: !include /config/common/mqtt.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
   switch: !include /config/common/switch.yaml
@@ -60,7 +57,7 @@ uart:
 
 binary_sensor:
   - platform: gpio
-    name: ${room} ${device} mmWave Presence Detection
+    name: ${room} ${device} Presence Detection
     id: mmwave_presence_detection
     device_class: motion
     pin:
@@ -111,7 +108,7 @@ sensor:
     internal: true
 
   - platform: template
-    name: ${room} ${device} mmWave Targets
+    name: ${room} ${device} Targets
     id: num_targets # do not change
     accuracy_decimals: 0
     disabled_by_default: true
@@ -132,7 +129,7 @@ switch:
       - lambda: 'return clearTargets();'
 
   - platform: template
-    name: ${room} ${device} mmWave Sensor
+    name: ${room} ${device} Sensor
     id: mmwave_sensor # do not change
     entity_category: config
     optimistic: true
@@ -145,7 +142,7 @@ switch:
         - script.execute: turn_off_mmwave_sensor
 
   - platform: template
-    name: ${room} ${device} mmWave LED
+    name: ${room} ${device} LED
     id: led  # do not change
     entity_category: config
     optimistic: true
