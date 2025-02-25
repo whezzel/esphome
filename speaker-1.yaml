@@ -5,4 +5,4 @@ substitutions:
   device: '1'
   log_level: DEBUG
 
-<<: !include configs/speaker.yaml
+<<: !include /config/configs/speaker.yaml
