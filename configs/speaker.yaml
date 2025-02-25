@@ -106,7 +106,7 @@ binary_sensor:
 
 light:
   - platform: fastled_clockless
-    name: None
+    name:  ${room} ${device} Status LED
     id: top_led
     pin: GPIO22
     chipset: SK6812
