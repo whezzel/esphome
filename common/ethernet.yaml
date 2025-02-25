@@ -1,0 +1,2 @@
+ethernet:
+  domain: !secret domain

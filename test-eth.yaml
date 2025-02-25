@@ -1,0 +1,63 @@
+substitutions:
+  api_key: !secret test-eth_api_key
+  devicename: test-eth
+  room: ""
+  device: Test Ethernet
+  update_interval: 1s
+  log_level: DEBUG
+  
+esphome:
+  name: ${devicename}
+
+esp32:
+  board: esp-wrover-kit
+  framework:
+    type: esp-idf
+    version: recommended
+
+packages:
+  api: !include /config/common/api.yaml
+#  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  ethernet: !include /config/common/ethernet.yaml
+#  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+#  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  #wifi: !include /config/common/wifi.yaml
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO0_IN
+  phy_addr: 1
+  power_pin: GPIO16
+
+sensor:
+  - platform: uptime
+    #name: ${room} ${device} Uptime
+    internal: true
+    id: uptime_sensor
+    update_interval: 10s
+    on_raw_value:
+      then:
+        - text_sensor.template.publish:
+            id: uptime_human
+            state: !lambda |-
+              int seconds = round(id(uptime_sensor).raw_state);
+              int days = seconds / (24 * 3600);
+              seconds = seconds % (24 * 3600);
+              int hours = seconds / 3600;
+              seconds = seconds % 3600;
+              int minutes = seconds /  60;
+              seconds = seconds % 60;
+              return (
+                (days ? to_string(days) + "d " : "") +
+                (hours ? to_string(hours) + "h " : "") +
+                (minutes ? to_string(minutes) + "m " : "") +
+                (to_string(seconds) + "s")
+              ).c_str();

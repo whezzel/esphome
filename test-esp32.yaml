@@ -1,0 +1,34 @@
+substitutions:
+  api_key: !secret test-esp32_api_key
+  devicename: test-esp32
+  room: ""
+  device: Test ESP32
+  update_interval: 1s
+  log_level: DEBUG
+
+esphome:
+  name: ${devicename}
+
+esp32:
+  board: wemos_d1_mini32
+  framework:
+    type: esp-idf
+    version: recommended
+
+packages:
+  api: !include /config/common/api.yaml
+#  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+status_led:
+    pin:
+      number: 2
+      inverted: true
