@@ -36,18 +36,18 @@ i2c:
   scl: GPIO14
 
 sensor:
-  - platform: ade7953
+  - platform: ade7953_i2c
     irq_pin: GPIO16
     update_interval: ${update_interval}
     voltage:
       name: ${room} ${device} Voltage
     current_a:
-      name: ${room} ${channel_2} Current
-    current_b:
       name: ${room} ${channel_1} Current
+    current_b:
+      name: ${room} ${channel_2} Current
     active_power_a:
-      name: ${room} ${channel_2} Power
-      id: power_channel_2
+      name: ${room} ${channel_1} Power
+      id: power_channel_1
       filters:
         - multiply: -1
         - lambda: |-
@@ -58,8 +58,8 @@ sensor:
           then:
             - switch.turn_off: light
     active_power_b:
-      name: ${room} ${channel_1} Power
-      id: power_channel_1
+      name: ${room} ${channel_2} Power
+      id: power_channel_2
       filters:
         - multiply: -1
         - lambda: |-
@@ -95,9 +95,6 @@ sensor:
       - above: ${max_temp}
         then:
           - switch.turn_off: fan
-      - below: ${thres_temp}
-        then:
-          - switch.turn_on: fan
   - platform: resistance
     id: temp_resistance_reading
     sensor: temp_analog_reading
