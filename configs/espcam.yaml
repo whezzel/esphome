@@ -38,6 +38,10 @@ esp32_camera:
   pixel_clock_pin: GPIO13
   #resolution: 800x600
   
+psram:
+  mode: octal
+  speed: 80MHz
+  
 esp32_camera_web_server:
   - port: 8080
     mode: stream
