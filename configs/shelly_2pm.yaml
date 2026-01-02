@@ -15,7 +15,7 @@ packages:
   switch: !include /config/common/switch.yaml
   text_sensor: !include /config/common/text_sensor.yaml
   time: !include /config/common/time.yaml
-  #web_server: !include /config/common/web_server.yaml
+  web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
 
 globals:
