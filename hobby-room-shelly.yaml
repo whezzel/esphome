@@ -8,6 +8,7 @@ substitutions:
   icon2: mdi:fan
   room: Hobby Room
   device: Shelly
+  automation_name: hobby_room_light_automation
   channel_1: Light
   channel_2: Fan
   update_interval: 1s

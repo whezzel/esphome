@@ -4,9 +4,7 @@ substitutions:
   icon: mdi:lightbulb
   room: Bath 1
   device: Switch 1
-  automation_name: bath_1_lights_automation
-  light_group: bath_1_lights
-  restore: RESTORE_DEFAULT_ON
+  automation_name: bath_1_light_automation
   log_level: DEBUG
 
 <<: !include configs/switch_gosund.yaml

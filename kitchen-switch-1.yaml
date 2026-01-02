@@ -4,9 +4,7 @@ substitutions:
   icon: mdi:lightbulb
   room: Kitchen
   device: Switch 1
-  automation_name: kitchen_lights_automation
-  light_group: kitchen_lights
-  restore: RESTORE_DEFAULT_ON
+  automation_name: kitchen_light_automation
   log_level: DEBUG
 
 <<: !include configs/switch_gosund.yaml

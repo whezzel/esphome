@@ -4,9 +4,7 @@ substitutions:
   icon: mdi:lightbulb
   room: Utility Room
   device: Switch 1
-  automation_name: utility_room_lights_automation
-  light_group: utility_room_lights
-  restore: RESTORE_DEFAULT_ON
+  automation_name: utility_room_light_automation
   log_level: DEBUG
 
 <<: !include configs/switch_gosund.yaml

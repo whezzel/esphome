@@ -4,9 +4,7 @@ substitutions:
   icon: mdi:lightbulb
   room: Front Porch
   device: Switch
-  automation_name: front_porch_switch_automation
-  light_group: front_porch_lights
-  restore: RESTORE_DEFAULT_OFF
+  automation_name: front_porch_light_automation
   log_level: DEBUG
 
 <<: !include configs/switch_gosund.yaml
