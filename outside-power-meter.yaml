@@ -23,6 +23,9 @@ esphome:
 
 esp32:
   board: nodemcu-32s
+  framework:
+    type: arduino
+    version: recommended
 
 packages:
   api: !include /config/common/api.yaml
@@ -149,7 +152,7 @@ sensor:
     lambda: return id(ct1Reactive).state + id(ct2Reactive).state;
     accuracy_decimals: 1
     unit_of_measurement: VAR
-    icon: "mdi:flash-circle"
+    icon: "mdi:lightning-bolt-circle"
     update_interval: ${update_interval}
 
   - platform: total_daily_energy
