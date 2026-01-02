@@ -1,11 +1,14 @@
 #include "esphome.h"
 #include <string>
+#include <sstream>
 
 void publishTarget(std::string idx, float dist, float snr) {
   auto get_sensors = App.get_sensors();
   for(int i = 0; i < get_sensors.size(); i++) {
     std::string name = get_sensors[i]->get_name();
-    auto target = "target_" + to_string(idx);
+    std::stringstream ptss;
+    ptss << idx;
+    auto target = "target_" + ptss.str();
     if(name.size() > 10 && name.substr(0, 8) == target) {
       if(name.substr(9, 3) == "dis") {
         get_sensors[i]->publish_state(dist);
@@ -16,14 +19,18 @@ void publishTarget(std::string idx, float dist, float snr) {
   }
 };
 static void clearTargets () {
-  for(int i = 1 ; i < 9; i++) publishTarget(to_string(i), 0, 0);
+  for(int i = 1 ; i < 9; i++) {
+    std::stringstream ctss;
+    ctss << i;
+    publishTarget(ctss.str(), 0, 0);
+  }
 }
 
 
 class leapmmw : public Component, public UARTDevice {
  public:
   leapmmw(UARTComponent *parent) : UARTDevice(parent) {}
-
+  
   void setup() override {
     //
   }
@@ -100,7 +107,7 @@ class leapmmw : public Component, public UARTDevice {
         }
         if (line.substr(0, 6) == "$JYRPO") {
           std::string vline = line.substr(6);
-          std::vector<std::string> v;
+          std::vector<std::string> v;    
           for(int i = 0; i < vline.length(); i++) {
               if(vline[i] == ',') {
                   v.push_back("");
@@ -123,7 +130,7 @@ class leapmmw : public Component, public UARTDevice {
         if (line.substr(0, 8) == "Response") {
           // ESP_LOGD("custom", "Found Response - line is: %s", line.c_str());
           // ESP_LOGD("custom", "Found Response - lastline is: %s", getline.c_str());
-
+          
           // leapMMW:/>getSensitivity
           if (getline.substr(0, 24) == "leapMMW:/>getSensitivity" || getline.substr(0, 14) == "getSensitivity") {
             std::string getSensitivity = line.substr(9, 1);
@@ -190,7 +197,7 @@ class leapmmw : public Component, public UARTDevice {
             publishSwitch("mmwave_sensor", 1);
           }
         }
-        getline = buffer;
+        getline = buffer; 
       }
     }
   }
