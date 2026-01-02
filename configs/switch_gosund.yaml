@@ -71,7 +71,7 @@ binary_sensor:
               condition:
                 api.connected:
               then:
-                - homeassistant.service:
-                    service: input_boolean.toggle
-                    data:
-                      entity_id: input_boolean.${automation_name}
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.${automation_name}

@@ -123,9 +123,9 @@ binary_sensor:
             condition:
               api.connected:
             then:
-              - homeassistant.service:
+                          - homeassistant.service:
                   service: light.toggle
-                  data:
+                              data:
                     entity_id: light.${light_group}
   - platform: gpio
     pin:
