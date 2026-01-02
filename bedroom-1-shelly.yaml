@@ -12,7 +12,6 @@ substitutions:
   channel_1: Light
   channel_2: Fan
   update_interval: 1s
-  light_group: bedroom_1_lights
   log_level: DEBUG
 
 <<: !include /config/configs/shelly_2pm.yaml
