@@ -11,6 +11,9 @@ esphome:
 
 esp32:
   board: wemos_d1_mini32
+  framework:
+    type: arduino
+    version: recommended
 
 packages:
   api: !include /config/common/api.yaml
@@ -51,9 +54,9 @@ binary_sensor:
                 api.connected:
               then:
                 - homeassistant.service:
-                    service: light.toggle
+                    service: switch.toggle
                     data:
-                      entity_id: light.bath_1_lights
+                      entity_id: switch.bath_1_switch_1_relay
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -81,9 +84,9 @@ binary_sensor:
                 api.connected:
               then:
                 - homeassistant.service:
-                    service: light.toggle
+                    service: switch.toggle
                     data:
-                      entity_id: light.bedroom_1_lights
+                      entity_id: switch.bedroom_1_shelly_light
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -94,7 +97,7 @@ binary_sensor:
           - homeassistant.service:
               service: switch.toggle
               data:
-                entity_id: switch.bedroom_1_lamp
+                entity_id: switch.bedroom_1_lamp_switch
 
 # Switch 3
   - platform: gpio
@@ -115,9 +118,9 @@ binary_sensor:
                 api.connected:
               then:
                 - homeassistant.service:
-                    service: light.toggle
+                    service: switch.toggle
                     data:
-                      entity_id: light.bath_2_lights
+                      entity_id: switch.bath_2_switch_1_relay
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -145,9 +148,9 @@ binary_sensor:
                 api.connected:
               then:
                 - homeassistant.service:
-                    service: light.toggle
+                    service: switch.toggle
                     data:
-                      entity_id: light.bedroom_2_lights
+                      entity_id: switch.bedroom_2_shelly_light
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -175,9 +178,9 @@ binary_sensor:
                 api.connected:
               then:
                 - homeassistant.service:
-                    service: light.toggle
+                    service: switch.toggle
                     data:
-                      entity_id: light.hobby_room_lights
+                      entity_id: switch.hobby_room_shelly_light
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -218,7 +221,7 @@ binary_sensor:
           - homeassistant.service:
               service: switch.toggle
               data:
-                entity_id: switch.kitchen_lamp
+                entity_id: switch.kitchen_lamp_switch
 
 # Switch 7
   - platform: gpio
@@ -239,9 +242,9 @@ binary_sensor:
                 api.connected:
               then:
                 - homeassistant.service:
-                    service: light.toggle
+                    service: switch.toggle
                     data:
-                      entity_id: light.living_room_lights
+                      entity_id: switch.living_room_shelly_light
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -269,9 +272,9 @@ binary_sensor:
                 api.connected:
               then:
                 - homeassistant.service:
-                    service: light.toggle
+                    service: switch.toggle
                     data:
-                      entity_id: light.utility_room_lights
+                      entity_id: switch.utility_room_switch_1_relay
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -342,14 +345,6 @@ binary_sensor:
           - OFF for at least 250ms
         then:
           - logger.log: SW11 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: light.toggle
-                    data:
-                      entity_id: light.desk_light_1
       - timing:
           - ON for at most 400ms
           - OFF for at most 250ms
@@ -375,9 +370,6 @@ binary_sensor:
           - if:
               condition:
                 api.connected:
-#                text_sensor.state:
-#                  id: all_lights_state
-#                  state: 'off'
               then:
                 - homeassistant.service:
                     service: light.toggle
