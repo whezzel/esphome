@@ -18,55 +18,39 @@ packages:
   web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
 
-logger:
-  baud_rate: 0
-
 status_led:
-  pin: GPIO13
+  pin:
+    number: GPIO0
+    inverted: true
 
-uart:
-  rx_pin: RX
-  baud_rate: 4800
-  parity: EVEN
+output:
+  - platform: esp8266_pwm
+    id: state_led
+    pin:
+      number: GPIO14
+      inverted: true
+
+light:
+  - platform: monochromatic
+    output: state_led
+    id: led
 
 switch:
   - platform: gpio
-    pin: GPIO12
+    pin: GPIO13
     id: relay1
     name: Relay
     icon: ${icon}
     restore_mode: ${restore}
-
-sensor:
-  - platform: cse7766
-    current:
-      name: ${room} ${device} Current
-      accuracy_decimals: 1
-#      filters:
-#        - throttle_average: ${update_interval}
-    voltage:
-      name: ${room} ${device} Voltage
-      accuracy_decimals: 1
-#      filters:
-#        - throttle_average: ${update_interval}
-    power:
-      name: ${room} ${device} Power
-      accuracy_decimals: 1
-      id: power
-#      filters:
-#        - throttle_average: ${update_interval}
-  - platform: total_daily_energy
-    name: ${room} ${device} Energy
-    power_id: power
-    filters:
-      - multiply: 0.001
-    unit_of_measurement: kWh
+    on_turn_on:
+      - light.turn_on: led
+    on_turn_off:
+      - light.turn_off: led
 
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO00
-      mode: INPUT_PULLUP
+      number: GPIO03
       inverted: true
     id: button1
     on_multi_click:
