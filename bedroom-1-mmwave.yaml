@@ -29,12 +29,12 @@ packages:
   time: !include /config/common/time.yaml
   web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
-  #remote_package:
-  #  url: https://github.com/hjmcnew/esphome-hs2xx3a-custom-component
-  #  ref: release
-  #  files: [packages/uart.yml, packages/leapmmw_sensor.yml]
-  #  # For additional debugging replace the above line with:
-  #  # files: [packages/uart_debug.yml, packages/leapmmw_sensor.yml]
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/robertklep/esphome-custom-component
+    components: [ custom, custom_component ]
 
 logger:
   hardware_uart: UART2
