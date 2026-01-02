@@ -18,20 +18,20 @@ packages:
   wifi: !include /config/common/wifi.yaml
 
 globals:
-  - id: channel1_last_state
+  - id: relay1_last_state
     type: int
     restore_value: no
     initial_value: '2'
 
 switch:
   - platform: gpio
-    name: ${channel_1}
+    name: ${relay1}
     pin: GPIO4
     id: relay1
     icon: ${icon1}
     restore_mode: ALWAYS_OFF
   - platform: gpio
-    name: ${channel_2}
+    name: ${relay2}
     pin: GPIO15
     id: relay2
     icon: ${icon2}
@@ -48,12 +48,12 @@ sensor:
     voltage:
       name: Voltage
     current_a:
-      name: ${channel_1} Current
+      name: ${relay1} Current
     current_b:
-      name: ${channel_2} Current
+      name: ${relay2} Current
     active_power_a:
-      name: ${channel_1} Power
-      id: power_channel_1
+      name: ${relay1} Power
+      id: power_relay1
       filters:
         - multiply: -1
         - lambda: |-
@@ -64,8 +64,8 @@ sensor:
           then:
             - switch.turn_off: relay1
     active_power_b:
-      name: ${channel_2} Power
-      id: power_channel_2
+      name: ${relay2} Power
+      id: power_relay2
       filters:
         - multiply: -1
         - lambda: |-
@@ -76,14 +76,14 @@ sensor:
           then:
             - switch.turn_off: relay2
   - platform: total_daily_energy
-    name: ${channel_1} Energy
-    power_id: power_channel_1
+    name: ${relay1} Energy
+    power_id: power_relay1
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
   - platform: total_daily_energy
-    name: ${channel_2} Energy
-    power_id: power_channel_2
+    name: ${relay2} Energy
+    power_id: power_relay2
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
@@ -118,36 +118,36 @@ status_led:
 
 text_sensor:
   - platform: homeassistant
-    id: ha_input_text_channel1
+    id: ha_input_text_relay1
     entity_id: input_boolean.${automation_name}
 
 binary_sensor:
   - platform: gpio
     pin:
       number: GPIO13
-    id: ${channel_1}_input
+    id: ${relay1}_input
     filters:
       - delayed_on_off: 50ms
     on_state:
       then:
         - if:
             condition:
-              lambda: 'return id(channel1_last_state) == 2;'
+              lambda: 'return id(relay1_last_state) == 2;'
             then:
-              - lambda: 'id(channel1_last_state) = id(${channel_1}_input).state ? 1 : 0;'
+              - lambda: 'id(relay1_last_state) = id(${relay1}_input).state ? 1 : 0;'
               - delay: 400ms
               - if:
                   condition:
-                    lambda: 'return (id(${channel_1}_input).state ? 1 : 0) == id(channel1_last_state);'
+                    lambda: 'return (id(${relay1}_input).state ? 1 : 0) == id(relay1_last_state);'
                   then:
-                    - logger.log: ${channel_1} Single-Click Detected
+                    - logger.log: ${relay1} Single-Click Detected
                     - switch.toggle: relay1
                   else:
                     - if:
                         condition:
-                          lambda: 'return id(ha_input_text_channel1).state == "on";'
+                          lambda: 'return id(ha_input_text_relay1).state == "on";'
                         then:
-                          - logger.log: ${channel_1} Double-Click Detected
+                          - logger.log: ${relay1} Double-Click Detected
                           - homeassistant.service:
                               service: input_boolean.turn_off
                               data:
@@ -157,20 +157,20 @@ binary_sensor:
                               service: input_boolean.turn_on
                               data:
                                 entity_id: input_boolean.${automation_name}
-              - lambda: 'id(channel1_last_state) = 2;'
+              - lambda: 'id(relay1_last_state) = 2;'
 
   - platform: gpio
     pin:
       number: GPIO5
-    id: ${channel_2}_input
+    id: ${relay2}_input
     filters:
       - delayed_off: 3s
     on_state:
       then:
-        - logger.log: ${channel_2} Switch State Changed.
+        - logger.log: ${relay2} Switch State Changed.
         - if:
             condition:
-              binary_sensor.is_on: ${channel_2}_input
+              binary_sensor.is_on: ${relay2}_input
             then:
               - switch.turn_on: relay2
             else:

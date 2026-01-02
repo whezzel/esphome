@@ -9,8 +9,8 @@ substitutions:
   room: Living Room
   device: Shelly
   automation_name: living_room_light_automation
-  channel_1: Light
-  channel_2: Fan
+  relay1: Light
+  relay2: Fan
   update_interval: 1s
   log_level: DEBUG
 
