@@ -21,13 +21,13 @@ switch:
   - platform: gpio
     name: ${channel_1}
     pin: GPIO4
-    id: light
+    id: relay1
     icon: ${icon1}
     restore_mode: ALWAYS_ON
   - platform: gpio
     name: ${channel_2}
     pin: GPIO15
-    id: fan
+    id: relay2
     icon: ${icon2}
     restore_mode: ALWAYS_ON
 
@@ -56,7 +56,7 @@ sensor:
       on_value_range:
         - above: ${max_power}
           then:
-            - switch.turn_off: light
+            - switch.turn_off: relay1
     active_power_b:
       name: ${channel_2} Power
       id: power_channel_2
@@ -68,7 +68,7 @@ sensor:
       on_value_range:
         - above: ${max_power}
           then:
-            - switch.turn_off: fan
+            - switch.turn_off: relay2
   - platform: total_daily_energy
     name: ${channel_1} Energy
     power_id: power_channel_1
@@ -94,7 +94,7 @@ sensor:
     on_value_range:
       - above: ${max_temp}
         then:
-          - switch.turn_off: fan
+          - switch.turn_off: relay2
   - platform: resistance
     id: temp_resistance_reading
     sensor: temp_analog_reading
@@ -123,9 +123,9 @@ binary_sensor:
               api.connected:
             then:
               - homeassistant.service:
-                  service: light.toggle
+                  service: relay1.toggle
                   data:
-                    entity_id: light.${light_group}
+                    entity_id: relay1.${light_group}
   - platform: gpio
     pin:
       number: GPIO5
