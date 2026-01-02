@@ -18,13 +18,19 @@ packages:
   #web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
 
+globals:
+  - id: channel1_last_state
+    type: int
+    restore_value: no
+    initial_value: '2'
+
 switch:
   - platform: gpio
     name: ${channel_1}
     pin: GPIO13
     id: relay1
     icon: ${icon1}
-    restore_mode: ALWAYS_ON
+    restore_mode: ALWAYS_OFF
   - platform: gpio
     name: ${channel_2}
     pin: GPIO12
@@ -111,22 +117,49 @@ status_led:
     number: GPIO0
     inverted: yes
 
+text_sensor:
+  - platform: homeassistant
+    id: ha_input_text_channel1
+    entity_id: input_boolean.${automation_name}
+
 binary_sensor:
   - platform: gpio
     pin:
       number: GPIO5
     id: ${channel_1}_input
+    filters:
+      - delayed_on_off: 50ms
     on_state:
       then:
-        - logger.log: Single-Click Detected
         - if:
             condition:
-              api.connected:
+              lambda: 'return id(channel1_last_state) == 2;'
             then:
+              - lambda: 'id(channel1_last_state) = id(${channel_1}_input).state ? 1 : 0;'
+              - delay: 400ms
+              - if:
+                  condition:
+                    lambda: 'return (id(${channel_1}_input).state ? 1 : 0) == id(channel1_last_state);'
+                  then:
+                    - logger.log: ${channel_1} Single-Click Detected
+                    - switch.toggle: relay1
+                  else:
+                    - if:
+                        condition:
+                          lambda: 'return id(ha_input_text_channel1).state == "on";'
+                        then:
+                          - logger.log: ${channel_1} Double-Click Detected
                           - homeassistant.service:
-                  service: light.toggle
+                              service: input_boolean.turn_off
                               data:
-                    entity_id: light.${light_group}
+                                entity_id: input_boolean.${automation_name}
+                        else:
+                          - homeassistant.service:
+                              service: input_boolean.turn_on
+                              data:
+                                entity_id: input_boolean.${automation_name}
+              - lambda: 'id(channel1_last_state) = 2;'
+
   - platform: gpio
     pin:
       number: GPIO18
