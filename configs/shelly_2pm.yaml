@@ -166,3 +166,13 @@ binary_sensor:
     id: ${channel_2}_input
     filters:
       - delayed_off: 3s
+    on_state:
+      then:
+        - logger.log: ${channel_2} Switch State Changed.
+        - if:
+            condition:
+              binary_sensor.is_on: ${channel_2}_input
+            then:
+              - switch.turn_on: relay2
+            else:
+              - switch.turn_off: relay2
