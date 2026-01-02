@@ -5,6 +5,7 @@ substitutions:
   room: Bath 2
   device: Switch 1
   automation_name: bath_2_light_automation
+  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 
 <<: !include configs/switch_athom.yaml

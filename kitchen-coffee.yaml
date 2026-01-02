@@ -6,7 +6,7 @@ substitutions:
   device: Coffee
   automation_name: coffee_automation
   update_interval: 1s
-  restore: RESTORE_DEFAULT_OFF
+  restore: ALWAYS_OFF
   log_level: DEBUG
 
 <<: !include /config/configs/sonoff_s31.yaml

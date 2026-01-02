@@ -5,6 +5,7 @@ substitutions:
   room: Front Porch
   device: Switch
   automation_name: front_porch_light_automation
+  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 
 <<: !include configs/switch_gosund.yaml

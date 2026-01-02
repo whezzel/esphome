@@ -4,8 +4,6 @@ substitutions:
   icon: mdi:camera
   room: ""
   device: ESPCam01
-  update_interval: 10s
-  restore: RESTORE_DEFAULT_ON
   log_level: DEBUG
 
 <<: !include /config/configs/espcam.yaml

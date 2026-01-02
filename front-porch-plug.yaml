@@ -9,6 +9,8 @@ substitutions:
   current_res: "0.0009"
   # Lower value gives lower voltage readout
   voltage_div: "779"
+  relay1_restore: RESTORE_DEFAULT_ON
+  relay2_restore: ALWAYS_OFF
   log_level: DEBUG
 
 esphome:
@@ -66,7 +68,7 @@ switch:
       - light.turn_on: relay1_led
     on_turn_off:
       - light.turn_off: relay1_led
-    restore_mode: RESTORE_DEFAULT_ON
+    restore_mode: ${relay1_restore}
   - platform: gpio
     name: Relay 2
     pin:
@@ -77,7 +79,7 @@ switch:
       - light.turn_on: relay2_led
     on_turn_off:
       - light.turn_off: relay2_led
-    restore_mode: RESTORE_DEFAULT_OFF
+    restore_mode: ${relay2_restore}
 
 sensor:
 #  - platform: adc

@@ -6,7 +6,7 @@ substitutions:
   device: Desktop
   automation_name: living_room_desktop_automation
   update_interval: 1s
-  restore: RESTORE_DEFAULT_ON
+  restore: ALWAYS_ON
   log_level: DEBUG
 
 <<: !include /config/configs/sonoff_s31.yaml

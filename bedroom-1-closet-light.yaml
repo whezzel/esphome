@@ -4,7 +4,7 @@ substitutions:
   icon: mdi:lightbulb
   room: Bedroom 1 Closet
   device: Light
-  restore: RESTORE_DEFAULT_ON
+  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 
 <<: !include /config/configs/kauf_blf10.yaml

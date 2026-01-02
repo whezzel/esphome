@@ -11,6 +11,8 @@ substitutions:
   automation_name: hobby_room_light_automation
   relay1: Light
   relay2: Fan
+  relay1_restore: RESTORE_DEFAULT_OFF
+  relay2_restore: ALWAYS_ON
   update_interval: 1s
   log_level: DEBUG
 
