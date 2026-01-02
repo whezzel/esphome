@@ -8,4 +8,4 @@ substitutions:
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 
-<<: !include configs/switch_relay_ha.yaml
+<<: !include configs/switch_gosund.yaml

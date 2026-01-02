@@ -8,4 +8,4 @@ substitutions:
   light_group: bedroom_1_closet_light
   log_level: DEBUG
 
-<<: !include /config/configs/kauf_blf10_ha.yaml
+<<: !include /config/configs/kauf_blf10.yaml

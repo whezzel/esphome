@@ -8,4 +8,4 @@ substitutions:
   temp_offset: '6.0'
   log_level: DEBUG
 
-<<: !include configs/sniffer_ha.yaml
+<<: !include configs/sniffer.yaml

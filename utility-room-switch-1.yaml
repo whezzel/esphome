@@ -9,4 +9,4 @@ substitutions:
   restore: RESTORE_DEFAULT_ON
   log_level: DEBUG
 
-<<: !include configs/switch_ha.yaml
+<<: !include configs/switch_gosund.yaml

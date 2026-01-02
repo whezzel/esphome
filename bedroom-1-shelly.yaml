@@ -14,4 +14,4 @@ substitutions:
   light_group: bedroom_1_lights
   log_level: DEBUG
 
-<<: !include /config/configs/shelly_2pm_ha.yaml
+<<: !include /config/configs/shelly_2pm.yaml
