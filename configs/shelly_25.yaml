@@ -153,9 +153,9 @@ binary_sensor:
                               data:
                                 entity_id: input_boolean.${automation_name}
                         else:
-              - homeassistant.service:
+                          - homeassistant.service:
                               service: input_boolean.turn_on
-                  data:
+                              data:
                                 entity_id: input_boolean.${automation_name}
               - lambda: 'id(channel1_last_state) = 2;'
 
