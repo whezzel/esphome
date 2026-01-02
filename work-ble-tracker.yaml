@@ -1,0 +1,63 @@
+substitutions:
+  api_key: !secret work-ble-tracker_api_key
+  devicename: work-ble-tracker
+  room: Work
+  device: BLE Tracker
+  update_interval: 15s
+  log_level: DEBUG
+  wg_client_ip_address: !secret work-ble-tracker_wg_ip_address
+  wg_client_netmask: !secret wg_peer_netmask
+  wg_client_priv_key: !secret work-ble-tracker_wg_priv_key
+  wg_peer_endpoint: !secret wg_peer_endpoint
+  wg_peer_port: !secret wg_peer_port
+  wg_peer_pub_key: !secret wg_peer_pub_key
+  wifi_ssid: !secret work-ble-tracker_wifi_ssid
+  wifi_username: !secret work-ble-tracker_wifi_username
+  wifi_password: !secret work-ble-tracker_wifi_password
+
+esphome:
+  name: ${devicename}
+  area: ${room}
+
+esp32:
+  board: wemos_d1_mini32
+  framework:
+    type: arduino
+    version: recommended
+
+packages:
+  api: !include /config/common/api.yaml
+  #esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  #time: !include /config/common/time.yaml
+  #web_server: !include /config/common/web_server.yaml
+  #wifi: !include /config/common/wifi.yaml
+  wireguard: !include /config/common/wireguard.yaml
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: America/Chicago
+    servers:
+     - 0.pool.ntp.org
+     - 1.pool.ntp.org
+     - 2.pool.ntp.org
+
+status_led:
+    pin:
+      number: 2
+      inverted: true
+
+wifi:
+  use_address: ${wg_ip_address}
+  networks:
+  - ssid: ${wifi_ssid}
+    eap:
+      username: ${wifi_username}
+      password: ${wifi_password}
+      ttls_phase_2: mschapv2

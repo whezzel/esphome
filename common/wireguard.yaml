@@ -1,0 +1,12 @@
+wireguard:
+  address: ${wg_client_ip_address}
+  private_key: ${wg_client_priv_key}
+  peer_endpoint: ${wg_peer_endpoint}
+  peer_public_key: ${wg_peer_pub_key}
+  netmask: ${wg_client_netmask}
+  peer_port: ${wg_peer_port}
+  #peer_preshared_key: ""
+  peer_allowed_ips:
+    - 0.0.0.0/0
+  #  - ::/0
+  peer_persistent_keepalive: "25s"
