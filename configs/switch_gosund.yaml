@@ -41,7 +41,7 @@ switch:
     id: relay1
     name: Relay
     icon: ${icon}
-    restore_mode: ALWAYS_OFF
+    restore_mode: ${restore}
     on_turn_on:
       - light.turn_on: led
     on_turn_off:
