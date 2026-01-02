@@ -57,7 +57,7 @@ uart:
 
 binary_sensor:
   - platform: gpio
-    name: ${room} ${device} Presence Detection
+    name: Presence Detection
     id: mmwave_presence_detection
     device_class: motion
     pin:
@@ -108,7 +108,7 @@ sensor:
     internal: true
 
   - platform: template
-    name: ${room} ${device} Targets
+    name: Targets
     id: num_targets # do not change
     accuracy_decimals: 0
     disabled_by_default: true
@@ -129,7 +129,7 @@ switch:
       - lambda: 'return clearTargets();'
 
   - platform: template
-    name: ${room} ${device} Sensor
+    name: Sensor
     id: mmwave_sensor # do not change
     entity_category: config
     optimistic: true
@@ -142,7 +142,7 @@ switch:
         - script.execute: turn_off_mmwave_sensor
 
   - platform: template
-    name: ${room} ${device} LED
+    name: LED
     id: led  # do not change
     entity_category: config
     optimistic: true
@@ -305,7 +305,7 @@ number:
 
 button:
   #- platform: restart
-  #  name: ${room} ${device} Restart
+  #  name: Restart
   #  entity_category: diagnostic
   #  on_press:
   #    - uart.write:
@@ -313,7 +313,7 @@ button:
   #        data: "resetSystem 0"
 
   #- platform: template
-  #  name: ${room} ${device} Factory Reset mmWave MCU
+  #  name: Factory Reset mmWave MCU
   #  id: factory_reset_mmwMCU
   #  entity_category: diagnostic
   #  on_press:

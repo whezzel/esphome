@@ -33,7 +33,7 @@ switch:
   - platform: gpio
     pin: GPIO12
     id: relay1
-    name: ${room} ${device}
+    name: Relay
     icon: ${icon}
     restore_mode: ${restore}
 

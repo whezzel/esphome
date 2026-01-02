@@ -19,13 +19,13 @@ packages:
 
 switch:
   - platform: gpio
-    name: ${room} ${channel_1}
+    name: ${channel_1}
     pin: GPIO4
     id: light
     icon: ${icon1}
     restore_mode: ALWAYS_ON
   - platform: gpio
-    name: ${room} ${channel_2}
+    name: ${channel_2}
     pin: GPIO15
     id: fan
     icon: ${icon2}
@@ -40,13 +40,13 @@ sensor:
     irq_pin: GPIO16
     update_interval: ${update_interval}
     voltage:
-      name: ${room} ${device} Voltage
+      name: Voltage
     current_a:
-      name: ${room} ${channel_1} Current
+      name: ${channel_1} Current
     current_b:
-      name: ${room} ${channel_2} Current
+      name: ${channel_2} Current
     active_power_a:
-      name: ${room} ${channel_1} Power
+      name: ${channel_1} Power
       id: power_channel_1
       filters:
         - multiply: -1
@@ -58,7 +58,7 @@ sensor:
           then:
             - switch.turn_off: light
     active_power_b:
-      name: ${room} ${channel_2} Power
+      name: ${channel_2} Power
       id: power_channel_2
       filters:
         - multiply: -1
@@ -70,20 +70,20 @@ sensor:
           then:
             - switch.turn_off: fan
   - platform: total_daily_energy
-    name: ${room} ${channel_1} Energy
+    name: ${channel_1} Energy
     power_id: power_channel_1
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
   - platform: total_daily_energy
-    name: ${room} ${channel_2} Energy
+    name: ${channel_2} Energy
     power_id: power_channel_2
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
   - platform: ntc
     sensor: temp_resistance_reading
-    name: ${room} ${device} Temp
+    name: Temp
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     icon: "mdi:thermometer"

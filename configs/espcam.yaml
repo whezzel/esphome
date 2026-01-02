@@ -25,7 +25,7 @@ packages:
 
 esp32_camera:
   id: espcam
-  name: ${devicename}
+  name: Camera
   external_clock:
     pin: GPIO10
     frequency: 20MHz

@@ -57,7 +57,7 @@ light:
 
 switch:
   - platform: gpio
-    name: ${room} ${device} Relay 1
+    name: Relay 1
     pin:
       number: GPIO15
       inverted: false
@@ -68,7 +68,7 @@ switch:
       - light.turn_off: relay1_led
     restore_mode: RESTORE_DEFAULT_ON
   - platform: gpio
-    name: ${room} ${device} Relay 2
+    name: Relay 2
     pin:
       number: GPIO32
       inverted: false
@@ -82,7 +82,7 @@ switch:
 sensor:
 #  - platform: adc
 #    pin: GPIO34
-#    name: ${room} ${device} Illuminance
+#    name: Illuminance
 #    update_interval: ${update_interval}
 #    attenuation: 11db
   - platform: hlw8012
@@ -96,15 +96,15 @@ sensor:
     change_mode_every: 5
     update_interval: ${update_interval}
     current:
-      name: ${room} ${device} Current
+      name: Current
       unit_of_measurement: A
       accuracy_decimals: 1
     voltage:
-      name: ${room} ${device} Voltage
+      name: Voltage
       unit_of_measurement: V
       accuracy_decimals: 1
     power:
-      name: ${room} ${device} Power
+      name: Power
       unit_of_measurement: W
       accuracy_decimals: 1
       id: power
@@ -113,7 +113,7 @@ sensor:
             - 0.0 -> 0.0
             - 134 -> 58
   - platform: total_daily_energy
-    name: ${room} ${device} Energy
+    name: Energy
     power_id: power
     filters:
       multiply: 0.001
@@ -126,7 +126,7 @@ binary_sensor:
       number: GPIO18
       mode: INPUT_PULLDOWN
       inverted: true
-    name: ${room} ${device} Button 1
+    name: Button 1
     on_press:
       - switch.toggle: relay1
   - platform: gpio
@@ -135,6 +135,6 @@ binary_sensor:
       number: GPIO17
       mode: INPUT_PULLDOWN
       inverted: true
-    name: ${room} ${device} Button 2
+    name: Button 2
     on_press:
       - switch.toggle: relay2

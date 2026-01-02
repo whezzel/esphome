@@ -55,7 +55,7 @@ packages:
 
 binary_sensor:
   - platform: status
-    name: ${room} ${device} Node Status
+    name: Node Status
     id: system_status
 
 #  - platform: gpio
@@ -63,7 +63,7 @@ binary_sensor:
 #      number: GPIO0
 #      inverted: true
 #      mode: INPUT_PULLUP
-#    name: ${room} ${device} Button S1
+#    name: Button S1
 #    id: button0
 #    internal: true
 #    on_press:
@@ -74,7 +74,7 @@ binary_sensor:
 #    pin:
 #      number: GPIO35
 #      inverted: true
-#    name: ${room} ${device} Button S2
+#    name: Button S2
 #    id: button1
 #    internal: true
 #    on_press:
@@ -84,7 +84,7 @@ binary_sensor:
 #switch:
 #  - platform: gpio
 #    pin: GPIO4
-#    name: ${room} ${device} Backlight
+#    name: Backlight
 #    id: backlight
 #    restore_mode: ALWAYS_ON
 #
@@ -146,7 +146,7 @@ sensor:
 
     pm_1_0:
       id: pm_1_0
-      name: ${room} ${device} PM <1.0 um
+      name: PM <1.0 um
       filters:
       - sliding_window_moving_average:
           window_size: 30
@@ -154,7 +154,7 @@ sensor:
 
     pm_2_5:
       id: pm_2_5
-      name: ${room} ${device} PM <2.5 um
+      name: PM <2.5 um
       filters:
       - sliding_window_moving_average:
           window_size: 30
@@ -186,14 +186,14 @@ sensor:
           }
     pm_10_0:
       id: pm_10
-      name: ${room} ${device} PM <10.0 um
+      name: PM <10.0 um
       filters:
       - sliding_window_moving_average:
           window_size: 30
           send_every: ${send_every}
 
   - platform: template
-    name: ${room} ${device} PM <2.5 AQI
+    name: PM <2.5 AQI
     unit_of_measurement: "AQI"
     icon: "mdi:air-filter"
     accuracy_decimals: 0
@@ -201,7 +201,7 @@ sensor:
 
   - platform: bme680_bsec
     temperature:
-      name: ${room} ${device} Temperature
+      name: Temperature
       sample_rate: lp
       id: temp
       filters:
@@ -209,7 +209,7 @@ sensor:
             window_size: 30
             send_every: 10
     pressure:
-      name: ${room} ${device} Pressure
+      name: Pressure
       sample_rate: lp
       id: pressure
       filters:
@@ -217,7 +217,7 @@ sensor:
             window_size: 30
             send_every: 10
     humidity:
-      name: ${room} ${device} Humidity
+      name: Humidity
       sample_rate: lp
       id: humidity
       filters:
@@ -225,28 +225,28 @@ sensor:
             window_size: 30
             send_every: 10
     gas_resistance:
-      name: ${room} ${device} Gas Resistance
+      name: Gas Resistance
       id: gas_resistance
       filters:
         - sliding_window_moving_average:
             window_size: 30
             send_every: 10
     iaq:
-      name: ${room} ${device} IAQ
+      name: IAQ
       filters:
         - sliding_window_moving_average:
             window_size: 30
             send_every: 10
     iaq_accuracy:
-      name: ${room} ${device} Numeric IAQ Accuracy
+      name: Numeric IAQ Accuracy
     co2_equivalent:
-      name: ${room} ${device} CO2 Equivalent
+      name: CO2 Equivalent
       filters:
         - sliding_window_moving_average:
             window_size: 30
             send_every: 10
     breath_voc_equivalent:
-      name: ${room} ${device} Breath VOC Equivalent
+      name: Breath VOC Equivalent
       filters:
         - sliding_window_moving_average:
             window_size: 30
@@ -262,24 +262,24 @@ bme680_bsec:
 text_sensor:
   - platform: bme680_bsec
     iaq_accuracy:
-      name: ${room} ${device} IAQ Accuracy
+      name: IAQ Accuracy
 
 #  - platform: bme680
 #    temperature:
-#      name: ${room} ${device} Temperature
+#      name: Temperature
 #      oversampling: 16x
 #    pressure:
-#      name: ${room} ${device} Pressure
+#      name: Pressure
 #    humidity:
 #      id: "humidity"
-#      name: ${room} ${device} Humidity
+#      name: Humidity
 #    gas_resistance:
 #      id: "gas_resistance"
-#      name: ${room} ${device} Gas Resistance
+#      name: Gas Resistance
 #    address: 0x77
 #    update_interval: 1s
 #  - platform: template
-#    name: ${room} ${device} IAQ
+#    name: IAQ
 #    id: iaq
 #    icon: "mdi:gauge"
 #    # calculation: comp_gas = log(R_gas[ohm]) + 0.04 log(Ohm)/%rh * hum[%rh]
@@ -288,7 +288,7 @@ text_sensor:
 #    state_class: "measurement"
 #text_sensor:
 #  - platform: template
-#    name: ${room} ${device} IAQ Classification
+#    name: IAQ Classification
 #    icon: "mdi:checkbox-marked-circle-outline"
 #    lambda: |-
 #      if (int(id(iaq).state) <= 50) {

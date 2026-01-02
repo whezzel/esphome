@@ -42,7 +42,7 @@ output:
 
 light:
   - platform: rgbww
-    name: ${room} ${device}
+    name: ""
     id: light1
     red: red
     green: green

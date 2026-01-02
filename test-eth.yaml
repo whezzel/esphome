@@ -39,7 +39,7 @@ ethernet:
 
 sensor:
   - platform: uptime
-    #name: ${room} ${device} Uptime
+    name: Uptime
     internal: true
     id: uptime_sensor
     update_interval: 10s

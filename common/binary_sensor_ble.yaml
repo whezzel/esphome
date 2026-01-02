@@ -1,19 +1,19 @@
 binary_sensor:
   - platform: ble_presence
-    name: ${room} ${device} BLE Keys
+    name: BLE Keys
     ibeacon_uuid: '426C7565-4368-6172-6D42-6561636F6E73'
     ibeacon_major: '3838'
     ibeacon_minor: '4949'
 
   - platform: ble_presence
-    name: ${room} ${device} BLE Truck
+    name: BLE Truck
     ibeacon_uuid: '426C7565-4368-6172-6D42-6561636F6E73'
     ibeacon_major: '3737'
     ibeacon_minor: '4848'
 
 
   - platform: ble_presence
-    name: ${room} ${device} BLE Pixel 7 Pro
+    name: BLE Pixel 7 Pro
     ibeacon_uuid: '0caa8ab8-20cb-44d8-ad6e-083a9a352a88'
     ibeacon_major: '100'
     ibeacon_minor: '40004'

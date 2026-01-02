@@ -33,30 +33,30 @@ switch:
   - platform: gpio
     pin: GPIO12
     id: relay1
-    name: ${room} ${device}
+    name: Relay
     icon: ${icon}
     restore_mode: ${restore}
 
 sensor:
   - platform: cse7766
     current:
-      name: ${room} ${device} Current
+      name: Current
       accuracy_decimals: 1
 #      filters:
 #        - throttle_average: ${update_interval}
     voltage:
-      name: ${room} ${device} Voltage
+      name: Voltage
       accuracy_decimals: 1
 #      filters:
 #        - throttle_average: ${update_interval}
     power:
-      name: ${room} ${device} Power
+      name: Power
       accuracy_decimals: 1
       id: power
 #      filters:
 #        - throttle_average: ${update_interval}
   - platform: total_daily_energy
-    name: ${room} ${device} Energy
+    name: Energy
     power_id: power
     filters:
       - multiply: 0.001

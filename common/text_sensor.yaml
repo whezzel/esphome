@@ -1,10 +1,10 @@
 text_sensor:
   - platform: template
-    name: ${room} ${device} Uptime
+    name: Uptime
     id: uptime_human
     icon: mdi:clock-start
 
   - platform: version
-    name: ${room} ${device} ESPHome Version
+    name: ESPHome Version
     id: esphome_version
     hide_timestamp: false

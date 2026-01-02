@@ -36,7 +36,7 @@ status_led:
 sensor:
   - platform: adc
     pin: GPIO34
-    name: ${room} ${device}
+    name: ADC
     update_interval: ${update_interval}
     accuracy_decimals: 5
     id: bed_adc

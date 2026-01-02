@@ -43,7 +43,7 @@ i2s_audio:
 
 media_player:
   - platform: i2s_audio
-    name: ${room} ${device}
+    name: Speaker
     id: luxe_out
     dac_type: external
     i2s_dout_pin: GPIO26
@@ -55,7 +55,7 @@ media_player:
 sensor:
  - platform: adc
    pin: GPIO33
-   name: ${room} ${device} Battery
+   name: Battery
    icon: "mdi:battery-outline"
    device_class: voltage
    state_class: measurement
@@ -80,7 +80,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
-    name: ${room} ${device} Volume Up
+    name: Volume Up
     on_click:
       - media_player.volume_up: luxe_out
   - platform: gpio
@@ -90,7 +90,7 @@ binary_sensor:
       mode:
         input: true
         pullup: true
-    name: ${room} ${device} Volume Down
+    name: Volume Down
     on_click:
       - media_player.volume_down: luxe_out
   - platform: gpio
@@ -100,13 +100,13 @@ binary_sensor:
       mode:
         input: true
         pullup: true
-    name: ${room} ${device} Play Button
+    name: Play Button
     on_click:
       - media_player.toggle: luxe_out
 
 light:
   - platform: fastled_clockless
-    name:  ${room} ${device} Status LED
+    name:  Status LED
     id: top_led
     pin: GPIO22
     chipset: SK6812

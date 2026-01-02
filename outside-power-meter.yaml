@@ -47,12 +47,12 @@ sensor:
     cs_pin: 5
     phase_a:
       voltage:
-        name: ${room} ${device} Voltage
+        name: Voltage
         accuracy_decimals: 1
         unit_of_measurement: V
         device_class: voltage
       current:
-        name: ${room} ${device} CT1 Current
+        name: CT1 Current
         accuracy_decimals: 1
         id: "ct1Amps"
         unit_of_measurement: A
@@ -62,7 +62,7 @@ sensor:
       #        filters:
       #          - multiply: 2
       power:
-        name: ${room} ${device} CT1 Power
+        name: CT1 Power
         accuracy_decimals: 1
         id: "ct1Watts"
         unit_of_measurement: W
@@ -70,7 +70,7 @@ sensor:
       #        filters:
       #          - multiply: 2
       reactive_power:
-        name: ${room} ${device} CT1 Reactive Power
+        name: CT1 Reactive Power
         accuracy_decimals: 1
         id: "ct1Reactive"
         unit_of_measurement: VAR
@@ -78,13 +78,13 @@ sensor:
       #        filters:
       #          - multiply: 2
       power_factor:
-        name: ${room} ${device} CT1 Power Factor
+        name: CT1 Power Factor
         device_class: power_factor
       gain_voltage: ${voltage_cal}
       gain_ct: ${current_cal}
     phase_c:
       current:
-        name: ${room} ${device} CT2 Current
+        name: CT2 Current
         accuracy_decimals: 1
         id: "ct2Amps"
         unit_of_measurement: A
@@ -94,7 +94,7 @@ sensor:
       #        filters:
       #          - multiply: 2
       power:
-        name: ${room} ${device} CT2 Power
+        name: CT2 Power
         accuracy_decimals: 1
         id: "ct2Watts"
         unit_of_measurement: W
@@ -102,7 +102,7 @@ sensor:
       #        filters:
       #          - multiply: 2
       reactive_power:
-        name: ${room} ${device} CT2 Reactive Power
+        name: CT2 Reactive Power
         accuracy_decimals: 1
         id: "ct2Reactive"
         unit_of_measurement: VAR
@@ -110,23 +110,23 @@ sensor:
       #        filters:
       #          - multiply: 2
       power_factor:
-        name: ${room} ${device} CT2 Power Factor
+        name: CT2 Power Factor
         device_class: power_factor
       gain_voltage: ${voltage_cal}
       gain_ct: ${current_cal}
     frequency:
-      name: ${room} ${device} Freq
+      name: Freq
       unit_of_measurement: Hz
     #  device_class: frequency
     chip_temperature:
-      name: ${room} ${device} Chip Temp
+      name: Chip Temp
       unit_of_measurement: °C
       device_class: temperature
     line_frequency: 60Hz
     gain_pga: 2X
     update_interval: ${update_interval}
   - platform: template
-    name: ${room} ${device} Total Current
+    name: Total Current
     id: "totalAmps"
     lambda: return id(ct1Amps).state + id(ct2Amps).state;
     accuracy_decimals: 1
@@ -135,7 +135,7 @@ sensor:
     update_interval: ${update_interval}
     icon: "mdi:current-ac"
   - platform: template
-    name: ${room} ${device} Total Power
+    name: Total Power
     id: "totalWatts"
     lambda: return id(ct1Watts).state + id(ct2Watts).state;
     accuracy_decimals: 1
@@ -144,7 +144,7 @@ sensor:
     icon: "mdi:power"
     update_interval: ${update_interval}
   - platform: template
-    name: ${room} ${device} Total Reactive Power
+    name: Total Reactive Power
     id: "totalReactivePower"
     lambda: return id(ct1Reactive).state + id(ct2Reactive).state;
     accuracy_decimals: 1
@@ -153,7 +153,7 @@ sensor:
     update_interval: ${update_interval}
 
   - platform: total_daily_energy
-    name: ${room} ${device} Total Energy
+    name: Total Energy
     power_id: totalWatts
     accuracy_decimals: 3
     filters:

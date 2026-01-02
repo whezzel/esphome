@@ -39,7 +39,7 @@ switch:
   - platform: gpio
     pin: GPIO14
     id: relay1
-    name: ${room} ${device}
+    name: Relay
     icon: ${icon}
     restore_mode: ALWAYS_OFF
     on_turn_on:
