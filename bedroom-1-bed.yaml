@@ -1,21 +1,17 @@
 substitutions:
   api_key: !secret bedroom-1-bed_api_key
+  board: wemos_d1_mini32
   devicename: bedroom-1-bed
   room: Bedroom 1
   device: Bed
   update_interval: .1s
   log_level: DEBUG
 
-esp32:
-  board: wemos_d1_mini32
-  framework:
-    type: esp-idf
-    version: recommended
-
 packages:
   api: !include /config/common/api.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   esphome: !include /config/common/esphome.yaml
+  esp32: !include /config/common/esp32.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml

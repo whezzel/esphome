@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret living-room-shelly_api_key
+  board: esp32doit-devkit-v1
   devicename: living-room-shelly
   max_power: "3600.0"
   max_temp: "90.0"

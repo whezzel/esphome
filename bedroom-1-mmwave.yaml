@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret bedroom-1-mmwave_api_key
+  board: wemos_d1_mini32
   devicename: bedroom-1-mmwave
   room: Bedroom 1
   device: mmWave
@@ -9,14 +10,12 @@ substitutions:
   gpio_pin: GPIO17
   header_file: custom_components/leapmmw_sensor.h
 
-esp32:
-  board: wemos_d1_mini32
-
 packages:
   api: !include /config/common/api.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   esphome: !include /config/common/esphome.yaml
   captive_portal: !include /config/common/captive_portal.yaml
+  esp32: !include /config/common/esp32.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml

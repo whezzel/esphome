@@ -1,21 +1,17 @@
 substitutions:
   api_key: !secret desk-switch-panel_api_key
+  board: wemos_d1_mini32
   devicename: desk-switch-panel
   ntp_server: 10.69.2.1
   room: Desk
   device: Switch Panel
   log_level: DEBUG
 
-esp32:
-  board: wemos_d1_mini32
-  framework:
-    type: arduino
-    version: recommended
-
 packages:
   api: !include /config/common/api.yaml
   esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   esphome: !include /config/common/esphome.yaml
+  esp32: !include /config/common/esp32.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml

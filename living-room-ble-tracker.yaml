@@ -1,18 +1,17 @@
 substitutions:
   api_key: !secret living-room-ble-tracker_api_key
+  board: wemos_d1_mini32
   devicename: living-room-ble-tracker
   room: Living Room
   device: BLE Tracker
   update_interval: 15s
   log_level: DEBUG
 
-esp32:
-  board: wemos_d1_mini32
-
 packages:
   api: !include /config/common/api.yaml
   esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   esphome: !include /config/common/esphome.yaml
+  esp32: !include /config/common/esp32.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml

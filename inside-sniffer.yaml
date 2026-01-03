@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret inside-sniffer_api_key
+  board: featheresp32
   devicename: inside-sniffer
   room: Inside
   device: Sniffer
