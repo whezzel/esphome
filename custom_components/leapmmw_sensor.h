@@ -1,3 +1,5 @@
+// https://github.com/hjmcnew/esphome-hs2xx3a-custom-component
+
 #include "esphome.h"
 #include <string>
 #include <sstream>
