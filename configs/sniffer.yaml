@@ -145,7 +145,6 @@ uart:
   rx_pin: GPIO27
   baud_rate: 9600
 
-# For temp + humidity sensor
 i2c:
   sda: 21
   scl: 22
