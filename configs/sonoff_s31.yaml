@@ -39,19 +39,13 @@ sensor:
     current:
       name: Current
       accuracy_decimals: 1
-#      filters:
-#        - throttle_average: ${update_interval}
     voltage:
       name: Voltage
       accuracy_decimals: 1
-#      filters:
-#        - throttle_average: ${update_interval}
     power:
       name: Power
       accuracy_decimals: 1
       id: power
-#      filters:
-#        - throttle_average: ${update_interval}
   - platform: total_daily_energy
     name: Energy
     power_id: power

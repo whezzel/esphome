@@ -5,7 +5,6 @@ substitutions:
   room: Kitchen
   device: Lamp
   automation_name: kitchen_lamp_automation
-  update_interval: 1s
   restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
 

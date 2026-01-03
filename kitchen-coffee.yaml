@@ -5,7 +5,6 @@ substitutions:
   room: Kitchen
   device: Coffee
   automation_name: coffee_automation
-  update_interval: 1s
   restore: ALWAYS_OFF
   log_level: DEBUG
 

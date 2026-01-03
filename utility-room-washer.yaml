@@ -5,7 +5,6 @@ substitutions:
   room: Utility Room
   device: Washer
   automation_name: utility_room_washer_automation
-  update_interval: 1s
   restore: ALWAYS_ON
   log_level: DEBUG
 
