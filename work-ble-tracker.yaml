@@ -51,7 +51,7 @@ status_led:
       inverted: true
 
 wifi:
-  use_address: ${wg_ip_address}
+  use_address: ${wg_client_ip_address}
   networks:
   - ssid: ${wifi_ssid}
     eap:
