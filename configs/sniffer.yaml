@@ -212,10 +212,9 @@ sensor:
     accuracy_decimals: 0
     id: pm_2_5_aqi
 
-  - platform: bme680_bsec
+  - platform: bme68x_bsec2
     temperature:
       name: Temperature
-      sample_rate: lp
       id: temp
       filters:
         - sliding_window_moving_average:
@@ -223,7 +222,6 @@ sensor:
             send_every: 10
     pressure:
       name: Pressure
-      sample_rate: lp
       id: pressure
       filters:
         - sliding_window_moving_average:
@@ -231,7 +229,6 @@ sensor:
             send_every: 10
     humidity:
       name: Humidity
-      sample_rate: lp
       id: humidity
       filters:
         - sliding_window_moving_average:
@@ -265,14 +262,14 @@ sensor:
             window_size: 30
             send_every: 10
 
-bme680_bsec:
+bme68x_bsec2_i2c:
     address: 0x77
+    model: bme680
     temperature_offset: ${temp_offset}
-    iaq_mode: static
-    sample_rate: ulp
+    sample_rate: lp
     state_save_interval: 6h
 
 text_sensor:
-  - platform: bme680_bsec
+  - platform: bme68x_bsec2
     iaq_accuracy:
       name: IAQ Accuracy
