@@ -1,17 +1,8 @@
-esphome:
-  name: ${devicename}
-#  area: ${room}
-  project:
-    name: raspiaudio.muse-luxe
-    version: "1.0"
-
-esp32:
-  board: esp-wrover-kit
-
 packages:
   api: !include /config/common/api.yaml
-#  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   captive_portal: !include /config/common/captive_portal.yaml
+  esp32: !include /config/common/esp32.yaml
+  esphome: !include /config/common/esphome.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
@@ -21,58 +12,191 @@ packages:
   web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
 
+esphome:
+  project:
+    name: raspiaudio.voice-assistant
+    version: "2025.3.1"
+  platformio_options:
+    board_build.flash_mode: dio
+    board_build.arduino.memory_type: qio_opi
+  on_boot:
+    priority: -100.0
+    then:
+      - output.turn_on: dac_mute
+
+esp32:
+  flash_size: 4MB
+  partitions: custom_components/luxe_partitions.csv
+  framework:
+    sdkconfig_options:
+      CONFIG_ESP_CONSOLE_USB_CDC: "n"
+      CONFIG_ESP_CONSOLE_UART_DEFAULT: "y"
+      CONFIG_ESP_CONSOLE_UART_NUM: "0"
+      CONFIG_ESP_CONSOLE_UART_BAUDRATE: "115200"
+
+external_components:
+    - source: github://RASPIAUDIO/esphomeLuxe@main
+      components: [es8388]
+      refresh: 0s
+
+improv_serial:
+
+es8388:
+   id: my_es8388
+
+psram:
+  mode: quad
+  speed: 80MHz
+
 i2c:
   sda: GPIO18
   scl: GPIO23
 
-dashboard_import:
-  package_import_url: github://esphome/media-players/raspiaudio-muse-luxe.yaml@main
-
-improv_serial:
-
-external_components:
-  - source: github://pr#3552
-    components: [es8388]
-    refresh: 0s
-
-es8388:
-
-i2s_audio:
-  - i2s_lrclk_pin: GPIO25
-    i2s_bclk_pin: GPIO5
-
-media_player:
-  - platform: i2s_audio
-    name: Speaker
-    id: luxe_out
-    dac_type: external
-    i2s_dout_pin: GPIO26
-    mode: stereo
-    mute_pin:
+output:
+  - platform: gpio
+    id: dac_mute
+    pin:
       number: GPIO21
       inverted: true
+      mode:
+        output: true
+
+globals:
+  - id: Vol
+    type: float
+    initial_value: '0.6'
+  - id: mute
+    type: bool
+    initial_value: 'false'
+  - id: muteH
+    type: bool
+    initial_value: 'false'
+  - id: last_led_phase
+    type: int
+    initial_value: '-1'
+  - id: audio_active
+    type: bool
+    initial_value: 'false'
+  - id: audio_started
+    type: bool
+    initial_value: 'false'
+  - id: last_volume_cmd
+    type: float
+    initial_value: '-1.0'
+
+interval:
+  - interval: 0.1sec
+    then:
+      - if:
+          condition:
+             - speaker.is_stopped:
+          then:
+             - if:
+                condition:
+                  - not:
+                     - lambda: 'return(id(muteH));'
+                then:
+                  - output.turn_on: dac_mute
+                  - lambda: id(muteH) = true;
+                  - logger.log: "====> hardware mute"
+      - if:
+          condition:
+             - speaker.is_playing:
+          then:
+             - if:
+                condition:
+                  - lambda: 'return(id(muteH));'
+                then:
+                  - output.turn_off: dac_mute
+                  - lambda: id(muteH) = false;
+                  - logger.log: "====> hardware unmute"
+      - if:
+          condition:
+            and:
+              - lambda: 'return id(audio_active) && !id(audio_started);'
+              - speaker.is_playing:
+          then:
+            - lambda: id(audio_started) = true;
 
 sensor:
- - platform: adc
-   pin: GPIO33
-   name: Battery
-   icon: "mdi:battery-outline"
-   device_class: voltage
-   state_class: measurement
-   entity_category: diagnostic
-   unit_of_measurement: V
-   update_interval: 15s
-   accuracy_decimals: 3
-   attenuation: 11db
-   raw: true
-   filters:
-    - multiply: 0.00173913 # 2300 -> 4, for attenuation 11db, based on Olivier's code
-    - exponential_moving_average:
-        alpha: 0.2
-        send_every: 2
-    - delta: 0.002
+  - platform: adc
+    pin: GPIO33
+    name: Battery Voltage
+    icon: "mdi:battery-outline"
+    device_class: voltage
+    unit_of_measurement: "V"
+    accuracy_decimals: 2
+    state_class: measurement
+    entity_category: diagnostic
+    update_interval: 15s
+    attenuation: auto
+    filters:
+      - multiply: 2
+      - calibrate_linear:
+          - 0.0 -> 0.0
+          # Map measured full charge to real value to compensate divider/ADC bias
+          - 4.58 -> 4.20
+      - exponential_moving_average:
+             alpha: 0.2
+             send_every: 2
+      - delta: 0.002
+    on_value:
+        then:
+          - sensor.template.publish:
+              id: battery_percent
+              state: !lambda "return x ;"
+
+  - platform: template
+    name: Battery
+    id: battery_percent
+    device_class: battery
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    state_class: measurement
+    entity_category: diagnostic
+    update_interval: 15s
+    filters:
+         - calibrate_polynomial:
+              degree: 3
+              datapoints:
+                  - 4.20 -> 100.0
+                  - 4.13 -> 97.1
+                  - 4.10 -> 94.2
+                  - 4.07 -> 88.4
+                  - 4.05 -> 82.7
+                  - 4.04 -> 76.9
+                  - 4.04 -> 71.1
+                  - 4.01 -> 65.3
+                  - 3.99 -> 59.5
+                  - 3.95 -> 53.8
+                  - 3.93 -> 48.0
+                  - 3.91 -> 42.2
+                  - 3.88 -> 36.4
+                  - 3.86 -> 30.6
+                  - 3.84 -> 24.9
+                  - 3.82 -> 19.1
+                  - 3.76 -> 13.3
+                  - 3.73 -> 10.4
+                  - 3.70 -> 7.5
+                  - 3.64 -> 4.6
+                  - 3.50 -> 1.7
+                  - 3.00 -> 0.0
+         - lambda: return clamp(x, 0.0f, 100.0f);
 
 binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO27
+      mode:
+        input: true
+        pullup: true
+    id: jack_detect
+    name: Jack Detect
+    internal: true
+    on_press:
+      - script.execute: jack_detect_high
+    on_release:
+      - script.execute: jack_detect_low
   - platform: gpio
     pin:
       number: GPIO19
@@ -82,7 +206,17 @@ binary_sensor:
         pullup: true
     name: Volume Up
     on_click:
-      - media_player.volume_up: luxe_out
+        - lambda: |-
+                id(Vol) += 0.05;
+                if(id(Vol) > 1) id(Vol) = 1;
+        - if:
+            condition:
+              lambda: 'return fabsf(id(last_volume_cmd) - id(Vol)) > 0.005f;'
+            then:
+              - media_player.volume_set:
+                  id: luxe_media_player
+                  volume: !lambda return id(Vol);
+              - lambda: id(last_volume_cmd) = id(Vol);
   - platform: gpio
     pin:
       number: GPIO32
@@ -92,7 +226,17 @@ binary_sensor:
         pullup: true
     name: Volume Down
     on_click:
-      - media_player.volume_down: luxe_out
+        - lambda: |-
+                id(Vol) -= 0.05;
+                if(id(Vol) < 0) id(Vol) = 0;
+        - if:
+            condition:
+              lambda: 'return fabsf(id(last_volume_cmd) - id(Vol)) > 0.005f;'
+            then:
+              - media_player.volume_set:
+                  id: luxe_media_player
+                  volume: !lambda return id(Vol);
+              - lambda: id(last_volume_cmd) = id(Vol);
   - platform: gpio
     pin:
       number: GPIO12
@@ -100,20 +244,85 @@ binary_sensor:
       mode:
         input: true
         pullup: true
-    name: Play Button
+    name: Mute
     on_click:
-      - media_player.toggle: luxe_out
+      then:
+         - media_player.stop:
 
 light:
-  - platform: fastled_clockless
-    name:  Status LED
+  - platform: esp32_rmt_led_strip
+    name: LED
     id: top_led
     pin: GPIO22
-    chipset: SK6812
+    chipset: WS2812
     num_leds: 1
     rgb_order: grb
+#    rmt_channel: 0
+    default_transition_length: 0s
     gamma_correct: 2.8
+    restore_mode: ALWAYS_ON
     effects:
       - pulse:
+          name: pulse
           transition_length: 250ms
           update_interval: 250ms
+      - pulse:
+          name: slow_pulse
+          transition_length: 1s
+          update_interval: 2s
+
+i2s_audio:
+    id: i2s0
+    i2s_lrclk_pin: GPIO25
+    i2s_bclk_pin: GPIO5
+    i2s_mclk_pin: GPIO0
+
+microphone:
+  - platform: i2s_audio
+    id: luxe_mic
+    i2s_audio_id: i2s0
+    sample_rate: 16000
+    i2s_din_pin: GPIO35
+    bits_per_sample: 16bit
+    channel: stereo
+    adc_type: external
+
+speaker:
+  - platform: i2s_audio
+    id: luxe_speaker
+    i2s_audio_id: i2s0
+    i2s_dout_pin: GPIO26
+    dac_type: external
+    sample_rate: 48000
+    bits_per_sample: 16bit
+    num_channels: 2
+    buffer_duration: 100ms
+
+media_player:
+  - platform: speaker
+    name: Speaker
+    id: luxe_media_player
+    internal: false
+    announcement_pipeline:
+      speaker: luxe_speaker
+      format: WAV
+      sample_rate: 48000
+      num_channels: 1
+
+script:
+  - id: jack_detect_high
+    then:
+       - logger.log: "Jack detect high -> route to speaker"
+       - output.turn_off: dac_mute
+       - lambda: |-
+           id(my_es8388).write_byte(0x1D, 0x20);
+           id(my_es8388).write_byte(0x1C, 0x10);
+           id(my_es8388).write_byte(0x04, 0x30);
+  - id: jack_detect_low
+    then:
+       - logger.log: "Jack detect low -> route to line out"
+       - output.turn_on: dac_mute
+       - lambda: |-
+           id(my_es8388).write_byte(0x1D, 0x00);
+           id(my_es8388).write_byte(0x1C, 0x00);
+           id(my_es8388).write_byte(0x04, 0x0C);
