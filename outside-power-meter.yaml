@@ -18,9 +18,6 @@ substitutions:
   voltage_cal: "3920"
   log_level: DEBUG
 
-esphome:
-  name: ${devicename}
-
 esp32:
   board: nodemcu-32s
   framework:
@@ -30,6 +27,7 @@ esp32:
 packages:
   api: !include /config/common/api.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  esphome: !include /config/common/esphome.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml

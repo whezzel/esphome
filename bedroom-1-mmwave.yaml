@@ -9,17 +9,13 @@ substitutions:
   gpio_pin: GPIO17
   header_file: custom_components/leapmmw_sensor.h
 
-esphome:
-  name: ${devicename}
-  includes:
-    - ${header_file}
-
 esp32:
   board: wemos_d1_mini32
 
 packages:
   api: !include /config/common/api.yaml
 #  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  esphome: !include /config/common/esphome.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml
@@ -29,6 +25,10 @@ packages:
   time: !include /config/common/time.yaml
   web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
+
+esphome:
+  includes:
+    - ${header_file}
 
 external_components:
   - source:

@@ -15,10 +15,6 @@ substitutions:
   wifi_username: !secret work-ble-tracker_wifi_username
   wifi_password: !secret work-ble-tracker_wifi_password
 
-esphome:
-  name: ${devicename}
-  area: ${room}
-
 esp32:
   board: wemos_d1_mini32
   framework:
@@ -28,6 +24,7 @@ esp32:
 packages:
   api: !include /config/common/api.yaml
   #esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  esphome: !include /config/common/esphome.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml

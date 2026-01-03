@@ -1,0 +1,4 @@
+esphome:
+  name: ${devicename}
+  friendly_name: ${room} ${device}
+  area: ${room}
