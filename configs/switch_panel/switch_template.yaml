@@ -1,0 +1,45 @@
+platform: gpio
+pin:
+  number: ${pin_number}
+  mode: INPUT_PULLUP
+  inverted: true
+id: ${switch_id}
+filters:
+  - delayed_on_off: 50ms
+on_multi_click:
+  - timing:
+      - ON for at most 400ms
+      - OFF for at least 200ms
+    then:
+      - logger.log: "SW${switch_num} Single-Click Detected"
+      - if:
+          condition:
+            api.connected:
+          then:
+            - if:
+                condition:
+                  lambda: 'return "${single_service}" != "";'
+                then:
+                  - homeassistant.service:
+                      service: ${single_service}
+                      data:
+                        entity_id: ${single_entity}
+  - timing:
+      - ON for at most 400ms
+      - OFF for at most 200ms
+      - ON for at most 400ms
+      - OFF for at least 200ms
+    then:
+      - logger.log: "SW${switch_num} Double-Click Detected"
+      - if:
+          condition:
+            api.connected:
+          then:
+            - if:
+                condition:
+                  lambda: 'return "${double_service}" != "";'
+                then:
+                  - homeassistant.service:
+                      service: ${double_service}
+                      data:
+                        entity_id: ${double_entity}

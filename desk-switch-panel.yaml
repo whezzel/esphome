@@ -2,11 +2,106 @@ substitutions:
   api_key: !secret desk-switch-panel_api_key
   board: wemos_d1_mini32
   devicename: desk-switch-panel
-  ntp_server: 10.69.2.1
   room: Desk
   device: Switch Panel
-  log_level: DEBUG
+  log_level: INFO
 
+  switch1_pin: GPIO32
+  switch1_id: switch1
+  switch1_num: "1"
+  switch1_single_service: "switch.toggle"
+  switch1_single_entity: "switch.bath_1_switch_1_relay"
+  switch1_double_service: ""
+  switch1_double_entity: ""
+
+  switch2_pin: GPIO16
+  switch2_id: switch2
+  switch2_num: "2"
+  switch2_single_service: "switch.toggle"
+  switch2_single_entity: "switch.bedroom_1_shelly_light"
+  switch2_double_service: "switch.toggle"
+  switch2_double_entity: "switch.bedroom_1_lamp_relay"
+
+  switch3_pin: GPIO05
+  switch3_id: switch3
+  switch3_num: "3"
+  switch3_single_service: "switch.toggle"
+  switch3_single_entity: "switch.bath_2_switch_1_relay"
+  switch3_double_service: ""
+  switch3_double_entity: ""
+
+  switch4_pin: GPIO23
+  switch4_id: switch4
+  switch4_num: "4"
+  switch4_single_service: "switch.toggle"
+  switch4_single_entity: "switch.bedroom_2_shelly_light"
+  switch4_double_service: ""
+  switch4_double_entity: ""
+
+  switch5_pin: GPIO21
+  switch5_id: switch5
+  switch5_num: "5"
+  switch5_single_service: "switch.toggle"
+  switch5_single_entity: "switch.hobby_room_shelly_light"
+  switch5_double_service: ""
+  switch5_double_entity: ""
+
+  switch6_pin: GPIO17
+  switch6_id: switch6
+  switch6_num: "6"
+  switch6_single_service: "light.toggle"
+  switch6_single_entity: "light.kitchen_lights"
+  switch6_double_service: "switch.toggle"
+  switch6_double_entity: "switch.kitchen_lamp_relay"
+
+  switch7_pin: GPIO25
+  switch7_id: switch7
+  switch7_num: "7"
+  switch7_single_service: "switch.toggle"
+  switch7_single_entity: "switch.living_room_shelly_light"
+  switch7_double_service: ""
+  switch7_double_entity: ""
+
+  switch8_pin: GPIO19
+  switch8_id: switch8
+  switch8_num: "8"
+  switch8_single_service: "switch.toggle"
+  switch8_single_entity: "switch.utility_room_switch_1_relay"
+  switch8_double_service: ""
+  switch8_double_entity: ""
+
+  switch9_pin: GPIO26
+  switch9_id: switch9
+  switch9_num: "9"
+  switch9_single_service: "switch.toggle"
+  switch9_single_entity: "switch.front_porch_switch_relay"
+  switch9_double_service: ""
+  switch9_double_entity: ""
+
+  switch10_pin: GPIO18
+  switch10_id: switch10
+  switch10_num: "10"
+  switch10_single_service: ""
+  switch10_single_entity: ""
+  switch10_double_service: ""
+  switch10_double_entity: ""
+
+  switch11_pin: GPIO22
+  switch11_id: switch11
+  switch11_num: "11"
+  switch11_single_service: ""
+  switch11_single_entity: ""
+  switch11_double_service: ""
+  switch11_double_entity: ""
+
+  switch12_pin: GPIO33
+  switch12_id: switch12
+  switch12_num: "12"
+  switch12_single_service: "light.toggle"
+  switch12_single_entity: "light.all_lights"
+  switch12_double_service: ""
+  switch12_double_entity: ""
+  
 packages:
   api: !include /config/common/api.yaml
   esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
@@ -28,351 +123,123 @@ status_led:
       inverted: false
 
 binary_sensor:
-## Switch Panel
-# Switch 1
-  - platform: gpio
-#    name: Switch Panel 1
-    pin:
-      number: GPIO32
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch1
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW1 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: switch.toggle
-                    data:
-                      entity_id: switch.bath_1_switch_1_relay
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW1 Double-Click Detected
-
-# Switch 2
-  - platform: gpio
-#    name: Switch Panel 2
-    pin:
-      number: GPIO16
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch2
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW2 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: switch.toggle
-                    data:
-                      entity_id: switch.bedroom_1_shelly_light
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW2 Double-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.bedroom_1_lamp_switch
-
-# Switch 3
-  - platform: gpio
-#    name: Switch Panel 3
-    pin:
-      number: GPIO05
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch3
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW3 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: switch.toggle
-                    data:
-                      entity_id: switch.bath_2_switch_1_relay
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW3 Double-Click Detected
-
-# Switch 4
-  - platform: gpio
-#    name: Switch Panel 4
-    pin:
-      number: GPIO23
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch4
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW4 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: switch.toggle
-                    data:
-                      entity_id: switch.bedroom_2_shelly_light
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW4 Double-Click Detected
-
-# Switch 5
-  - platform: gpio
-#    name: Switch Panel 5
-    pin:
-      number: GPIO21
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch5
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW5 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: switch.toggle
-                    data:
-                      entity_id: switch.hobby_room_shelly_light
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW5 Double-Click Detected
-
-# Switch 6
-  - platform: gpio
-#    name: Switch Panel 6
-    pin:
-      number: GPIO17
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch6
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW6 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: light.toggle
-                    data:
-                      entity_id: light.kitchen_lights
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW6 Double-Click Detected
-          - homeassistant.service:
-              service: switch.toggle
-              data:
-                entity_id: switch.kitchen_lamp_switch
-
-# Switch 7
-  - platform: gpio
-#    name: Switch Panel 7
-    pin:
-      number: GPIO25
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch7
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW7 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: switch.toggle
-                    data:
-                      entity_id: switch.living_room_shelly_light
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW7 Double-Click Detected
-
-# Switch 8
-  - platform: gpio
-#    name: Switch Panel 8
-    pin:
-      number: GPIO19
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch8
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW8 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: switch.toggle
-                    data:
-                      entity_id: switch.utility_room_switch_1_relay
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW8 Double-Click Detected
-
-# Switch 9
-  - platform: gpio
-#    name: Switch Panel 9
-    pin:
-      number: GPIO26
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch9
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW9 Single-Click Detected
-          - homeassistant.service:
-              service: light.toggle
-              data:
-                entity_id: light.front_porch_lights
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW9 Double-Click Detected
-
-# Switch 10
-  - platform: gpio
-#    name: Switch Panel 10
-    pin:
-      number: GPIO18
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch10
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW10 Single-Click Detected
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW10 Double-Click Detected
-
-# Switch 11
-  - platform: gpio
-#    name: Switch Panel 11
-    pin:
-      number: GPIO22
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch11
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW11 Single-Click Detected
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW11 Double-Click Detected
-
-# Switch 12
-  - platform: gpio
-#    name: Switch Panel 12
-    pin:
-      number: GPIO33
-      mode: INPUT_PULLUP
-      inverted: true
-    id: switch12
-    on_multi_click:
-      - timing:
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW12 Single-Click Detected
-          - if:
-              condition:
-                api.connected:
-              then:
-                - homeassistant.service:
-                    service: light.toggle
-                    data:
-                      entity_id: light.all_lights
-      - timing:
-          - ON for at most 400ms
-          - OFF for at most 250ms
-          - ON for at most 400ms
-          - OFF for at least 250ms
-        then:
-          - logger.log: SW12 Double-Click Detected
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch1_pin}
+        switch_id: ${switch1_id}
+        switch_num: ${switch1_num}
+        single_service: ${switch1_single_service}
+        single_entity: ${switch1_single_entity}
+        double_service: ${switch1_double_service}
+        double_entity: ${switch1_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch2_pin}
+        switch_id: ${switch2_id}
+        switch_num: ${switch2_num}
+        single_service: ${switch2_single_service}
+        single_entity: ${switch2_single_entity}
+        double_service: ${switch2_double_service}
+        double_entity: ${switch2_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch3_pin}
+        switch_id: ${switch3_id}
+        switch_num: ${switch3_num}
+        single_service: ${switch3_single_service}
+        single_entity: ${switch3_single_entity}
+        double_service: ${switch3_double_service}
+        double_entity: ${switch3_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch4_pin}
+        switch_id: ${switch4_id}
+        switch_num: ${switch4_num}
+        single_service: ${switch4_single_service}
+        single_entity: ${switch4_single_entity}
+        double_service: ${switch4_double_service}
+        double_entity: ${switch4_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch5_pin}
+        switch_id: ${switch5_id}
+        switch_num: ${switch5_num}
+        single_service: ${switch5_single_service}
+        single_entity: ${switch5_single_entity}
+        double_service: ${switch5_double_service}
+        double_entity: ${switch5_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch6_pin}
+        switch_id: ${switch6_id}
+        switch_num: ${switch6_num}
+        single_service: ${switch6_single_service}
+        single_entity: ${switch6_single_entity}
+        double_service: ${switch6_double_service}
+        double_entity: ${switch6_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch7_pin}
+        switch_id: ${switch7_id}
+        switch_num: ${switch7_num}
+        single_service: ${switch7_single_service}
+        single_entity: ${switch7_single_entity}
+        double_service: ${switch7_double_service}
+        double_entity: ${switch7_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch8_pin}
+        switch_id: ${switch8_id}
+        switch_num: ${switch8_num}
+        single_service: ${switch8_single_service}
+        single_entity: ${switch8_single_entity}
+        double_service: ${switch8_double_service}
+        double_entity: ${switch8_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch9_pin}
+        switch_id: ${switch9_id}
+        switch_num: ${switch9_num}
+        single_service: ${switch9_single_service}
+        single_entity: ${switch9_single_entity}
+        double_service: ${switch9_double_service}
+        double_entity: ${switch9_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch10_pin}
+        switch_id: ${switch10_id}
+        switch_num: ${switch10_num}
+        single_service: ${switch10_single_service}
+        single_entity: ${switch10_single_entity}
+        double_service: ${switch10_double_service}
+        double_entity: ${switch10_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch11_pin}
+        switch_id: ${switch11_id}
+        switch_num: ${switch11_num}
+        single_service: ${switch11_single_service}
+        single_entity: ${switch11_single_entity}
+        double_service: ${switch11_double_service}
+        double_entity: ${switch11_double_entity}
+  - !include
+      file: /config/configs/switch_panel/switch_template.yaml
+      vars:
+        pin_number: ${switch12_pin}
+        switch_id: ${switch12_id}
+        switch_num: ${switch12_num}
+        single_service: ${switch12_single_service}
+        single_entity: ${switch12_single_entity}
+        double_service: ${switch12_double_service}
+        double_entity: ${switch12_double_entity}
