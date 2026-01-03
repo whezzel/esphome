@@ -1,0 +1,11 @@
+substitutions:
+  api_key: !secret desk-light_api_key
+  devicename: desk-light
+  icon: mdi:lightbulb
+  room: Desk
+  device: Light
+  restore: RESTORE_DEFAULT_ON
+  light_group: desk_lights
+  log_level: DEBUG
+
+<<: !include /config/configs/kauf_blf10.yaml
