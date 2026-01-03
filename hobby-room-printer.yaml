@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret hobby-room-printer_api_key
+  board: esp01_1m
   devicename: hobby-room-printer
   icon: mdi:printer-3d
   room: Hobby Room

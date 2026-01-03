@@ -1,11 +1,8 @@
-esp8266:
-  board: esp01_1m
-  restore_from_flash: true
-
 packages:
   api: !include /config/common/api.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   esphome: !include /config/common/esphome.yaml
+  esp8266: !include /config/common/esp8266.yaml
   logger: !include /config/common/logger.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml

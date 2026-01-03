@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret utility-room-washer_api_key
+  board: esp01_1m
   devicename: utility-room-washer
   icon: mdi:washing-machine
   room: Utility Room

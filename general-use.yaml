@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret general-use_api_key
+  board: esp01_1m
   devicename: general-use
   icon: mdi:power-socket-us
   room: General

@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret kitchen-coffee_api_key
+  board: esp01_1m
   devicename: kitchen-coffee
   icon: mdi:coffee
   room: Kitchen

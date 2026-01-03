@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret kitchen-switch-1_api_key
+  board: esp01_1m
   devicename: kitchen-switch-1
   icon: mdi:lightbulb
   room: Kitchen

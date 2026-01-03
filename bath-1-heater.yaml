@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret bath-1-heater_api_key
+  board: esp01_1m
   devicename: bath-1-heater
   icon: mdi:radiator
   room: Bath 1

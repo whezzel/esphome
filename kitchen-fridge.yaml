@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret kitchen-fridge_api_key
+  board: esp01_1m
   devicename: kitchen-fridge
   icon: mdi:fridge-variant
   room: Kitchen

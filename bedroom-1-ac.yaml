@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret bedroom-1-ac_api_key
+  board: esp01_1m
   devicename: bedroom-1-ac
   icon: mdi:snowflake
   room: Bedroom 1

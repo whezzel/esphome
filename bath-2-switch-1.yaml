@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret bath-2-switch-1_api_key
+  board: esp01_1m
   devicename: bath-2-switch-1
   icon: mdi:lightbulb
   room: Bath 2

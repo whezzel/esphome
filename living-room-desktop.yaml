@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret living-room-desktop_api_key
+  board: esp01_1m
   devicename: living-room-desktop
   icon: mdi:desktop-classic
   room: Living Room

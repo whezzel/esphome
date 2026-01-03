@@ -1,5 +1,6 @@
 substitutions:
   api_key: !secret hobby-room-server-2_api_key
+  board: esp01_1m
   devicename: hobby-room-server-2
   icon: mdi:server
   room: Hobby Room
