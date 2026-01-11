@@ -26,3 +26,5 @@ status_led:
     pin:
       number: 2
       inverted: true
+      ignore_strapping_warning: true
+      ignore_strapping_warning: true

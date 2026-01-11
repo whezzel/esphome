@@ -1,5 +1,6 @@
 packages:
   api: !include /config/common/api.yaml
+  binary_sensor: !include /config/common/binary_sensor.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   esp8266: !include /config/common/esp8266.yaml
   esphome: !include /config/common/esphome.yaml
@@ -21,24 +22,29 @@ globals:
 switch:
   - platform: gpio
     name: ${relay1}
-    pin: GPIO4
+    pin:
+      number: 4
     id: relay1
     icon: ${icon1}
     restore_mode: ${relay1_restore}
   - platform: gpio
     name: ${relay2}
-    pin: GPIO15
+    pin:
+      number: 15
     id: relay2
     icon: ${icon2}
     restore_mode: ${relay2_restore}
 
 i2c:
-  sda: GPIO12
-  scl: GPIO14
+  sda:
+    number: 12
+  scl:
+    number: 14
 
 sensor:
   - platform: ade7953_i2c
-    irq_pin: GPIO16
+    irq_pin:
+      number: 16
     update_interval: ${update_interval}
     voltage:
       name: Voltage
@@ -103,12 +109,13 @@ sensor:
     resistor: 32kOhm
   - platform: adc
     id: temp_analog_reading
-    pin: A0
+    pin:
+      number: A0
     update_interval: ${update_interval}
 
 status_led:
   pin:
-    number: GPIO0
+    number: 0
     inverted: yes
 
 text_sensor:
@@ -119,7 +126,7 @@ text_sensor:
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO13
+      number: 13
     id: ${relay1}_input
     filters:
       - delayed_on_off: 50ms
@@ -156,7 +163,7 @@ binary_sensor:
 
   - platform: gpio
     pin:
-      number: GPIO5
+      number: 5
     id: ${relay2}_input
     filters:
       - delayed_off: 3s

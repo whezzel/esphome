@@ -31,16 +31,19 @@ packages:
 
 status_led:
   pin:
-    number: GPIO5
+    number: 5
     inverted: true
+    ignore_strapping_warning: true
 
 output:
   - platform: gpio
-    pin: GPIO19
+    pin:
+      number: 19
     inverted: true
     id: relay1_led_gpio
   - platform: gpio
-    pin: GPIO16
+    pin:
+      number: 16
     inverted: true
     id: relay2_led_gpio
 
@@ -58,8 +61,9 @@ switch:
   - platform: gpio
     name: Relay 1
     pin:
-      number: GPIO15
+      number: 15
       inverted: false
+      ignore_strapping_warning: true
     id: relay1
     on_turn_on:
       - light.turn_on: relay1_led
@@ -69,7 +73,7 @@ switch:
   - platform: gpio
     name: Relay 2
     pin:
-      number: GPIO32
+      number: 32
       inverted: false
     id: relay2
     on_turn_on:
@@ -80,16 +84,19 @@ switch:
 
 sensor:
 #  - platform: adc
-#    pin: GPIO34
+#    pin:
+#      number: 34
 #    name: Illuminance
 #    update_interval: ${update_interval}
 #    attenuation: 11db
   - platform: hlw8012
     sel_pin:
-      number: GPIO25
+      number: 25
       inverted: true
-    cf_pin: GPIO27
-    cf1_pin: GPIO26
+    cf_pin:
+      number: 27
+    cf1_pin:
+      number: 26
     current_resistor: ${current_res}
     voltage_divider: ${voltage_div}
     change_mode_every: 5
@@ -122,7 +129,7 @@ binary_sensor:
   - platform: gpio
     internal: true
     pin:
-      number: GPIO18
+      number: 18
       mode: INPUT_PULLDOWN
       inverted: true
     name: Button 1
@@ -131,7 +138,7 @@ binary_sensor:
   - platform: gpio
     internal: true
     pin:
-      number: GPIO17
+      number: 17
       mode: INPUT_PULLDOWN
       inverted: true
     name: Button 2

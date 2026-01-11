@@ -14,14 +14,14 @@ packages:
 
 status_led:
   pin:
-    number: GPIO16
+    number: 16
     inverted: true
 
 output:
   - platform: esp8266_pwm
     id: state_led
     pin:
-      number: GPIO2
+      number: 2
       inverted: true
 
 light:
@@ -31,7 +31,8 @@ light:
 
 switch:
   - platform: gpio
-    pin: GPIO14
+    pin:
+     number: 14
     id: relay1
     name: Relay
     icon: ${icon}
@@ -44,7 +45,7 @@ switch:
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO00
+      number: 0
       inverted: true
     id: button1
     filters:

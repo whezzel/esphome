@@ -54,7 +54,7 @@ binary_sensor:
 
   - platform: gpio
     pin:
-      number: GPIO0
+      number: 0
       inverted: true
       mode: INPUT_PULLUP
       ignore_strapping_warning: true
@@ -67,7 +67,7 @@ binary_sensor:
 
   - platform: gpio
     pin:
-      number: GPIO35
+      number: 35
       inverted: true
     name: Button S2
     id: button1
@@ -77,16 +77,22 @@ binary_sensor:
         - light.toggle: backlight
 
 spi:
-  clk_pin: GPIO18
-  mosi_pin: GPIO19
+  clk_pin:
+    number: 18
+  mosi_pin:
+    number: 19
 
 display:
   - platform: st7789v
     model: TTGO TDisplay 135x240
     backlight_pin: no
-    cs_pin: GPIO5
-    dc_pin: GPIO16
-    reset_pin: GPIO23
+    cs_pin:
+      number: 5
+      ignore_strapping_warning: true
+    dc_pin:
+      number: 16
+    reset_pin:
+      number: 23
     update_interval: 1s
     rotation: 270
     lambda: |-
@@ -126,10 +132,11 @@ display:
       r += 21;
       it.printf(4,   r, id(sz_20), id(my_yellow), TextAlign::TOP_LEFT,  "%0.1f hPa", id(pressure).state);
       it.printf(236, r, id(sz_20), id(my_yellow), TextAlign::TOP_RIGHT, "%0.1f kΩ",  id(gas_resistance).state/1000.0);
-      
+
 output:
   - platform: ledc
-    pin: GPIO4
+    pin:
+      number: 4
     id: backlight_pwm
     frequency: 1000Hz
 
@@ -142,12 +149,15 @@ light:
     default_transition_length: 1s
 
 uart:
-  rx_pin: GPIO27
+  rx_pin:
+    number: 27
   baud_rate: 9600
 
 i2c:
-  sda: 21
-  scl: 22
+  sda:
+    number: 21
+  scl:
+    number: 22
   scan: True
   id: bus_a
 

@@ -45,6 +45,7 @@ status_led:
     pin:
       number: 2
       inverted: true
+      ignore_strapping_warning: true
 
 wifi:
   use_address: ${wg_client_ip_address}

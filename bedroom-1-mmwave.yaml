@@ -5,9 +5,9 @@ substitutions:
   room: Bedroom 1
   device: mmWave
   log_level: DEBUG
-  uart_tx_pin: GPIO01
-  uart_rx_pin: GPIO03
-  gpio_pin: GPIO17
+  uart_tx_pin: 1
+  uart_rx_pin: 3
+  gpio_pin: 17
   header_file: custom_components/leapmmw_sensor.h
 
 packages:
@@ -43,8 +43,10 @@ logger:
 
 uart:
   id: uart_bus
-  tx_pin: ${uart_tx_pin}
-  rx_pin: ${uart_rx_pin}
+  tx_pin:
+    number: ${uart_tx_pin}
+  rx_pin:
+    number: ${uart_rx_pin}
   baud_rate: 115200
 #  debug:
 #    direction: BOTH

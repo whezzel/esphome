@@ -29,7 +29,8 @@ status_led:
 
 sensor:
   - platform: adc
-    pin: GPIO34
+    pin:
+      number: 34
     name: ADC
     update_interval: ${update_interval}
     accuracy_decimals: 5

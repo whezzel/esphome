@@ -16,16 +16,19 @@ logger:
   baud_rate: 0
 
 status_led:
-  pin: GPIO13
+  pin:
+    number: 13
 
 uart:
-  rx_pin: RX
+  rx_pin:
+    number: RX
   baud_rate: 4800
   parity: EVEN
 
 switch:
   - platform: gpio
-    pin: GPIO12
+    pin:
+      number: 12
     id: relay1
     name: Relay
     icon: ${icon}
@@ -53,7 +56,7 @@ sensor:
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO00
+      number: 0
       mode: INPUT_PULLUP
       inverted: true
     id: button1

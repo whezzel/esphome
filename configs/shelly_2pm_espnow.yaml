@@ -156,7 +156,7 @@ sensor:
 
 status_led:
   pin:
-    number: GPIO0
+    number: 0
     ignore_strapping_warning: true
     inverted: yes
 
@@ -168,7 +168,7 @@ text_sensor:
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO5
+      number: 5
       ignore_strapping_warning: true
     id: ${relay1}_input
     filters:
@@ -206,7 +206,7 @@ binary_sensor:
 
   - platform: gpio
     pin:
-      number: GPIO18
+      number: 18
     id: ${relay2}_input
     filters:
       - delayed_off: 3s

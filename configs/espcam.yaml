@@ -1,5 +1,6 @@
 packages:
   api: !include /config/common/api.yaml
+  binary_sensor: !include /config/common/binary_sensor.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   esp32: !include /config/common/esp32.yaml
   esphome: !include /config/common/esphome.yaml
@@ -11,7 +12,7 @@ packages:
   time: !include /config/common/time.yaml
   web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
-  
+
 esphome:
   friendly_name: ${device}
   platformio_options:
@@ -24,24 +25,37 @@ esp32_camera:
   id: espcam
   name: Camera
   external_clock:
-    pin: GPIO10
+    pin: 10
     frequency: 20MHz
   i2c_id: bus_a
-  data_pins: [GPIO15, GPIO17, GPIO18, GPIO16, GPIO14, GPIO12, GPIO11, GPIO48]
-  vsync_pin: GPIO38
-  href_pin: GPIO47
-  pixel_clock_pin: GPIO13
+  data_pins:
+    - 15
+    - 17
+    - 18
+    - 16
+    - 14
+    - 12
+    - 11
+    - 48
+  vsync_pin:
+    number: 38
+  href_pin:
+    number: 47
+  pixel_clock_pin:
+    number: 13
   #resolution: 800x600
 
 i2c:
-  sda: GPIO40
-  scl: GPIO39
+  sda:
+    number: 40
+  scl:
+    number: 39
   id: bus_a
-  
+
 psram:
   mode: octal
   speed: 80MHz
-  
+
 esp32_camera_web_server:
   - port: 8080
     mode: stream

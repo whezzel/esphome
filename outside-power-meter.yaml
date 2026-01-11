@@ -35,13 +35,18 @@ packages:
   wifi: !include /config/common/wifi.yaml
 
 spi:
-  clk_pin: 18
-  miso_pin: 19
-  mosi_pin: 23
+  clk_pin:
+    number: 18
+  miso_pin:
+    number: 19
+  mosi_pin:
+    number: 23
 
 sensor:
   - platform: atm90e32
-    cs_pin: 5
+    cs_pin:
+      number: 5
+      ignore_strapping_warning: true
     phase_a:
       voltage:
         name: Voltage
