@@ -47,6 +47,15 @@ sensor:
       name: Power
       accuracy_decimals: 1
       id: power
+    apparent_power:
+      name: Apparent Power
+      unit_of_measurement: "VA"
+      accuracy_decimals: 2
+    power_factor:
+      name: Power Factor
+      accuracy_decimals: 2
+      filters:
+        - throttle_average: 5s
   - platform: total_daily_energy
     name: Energy
     power_id: power
