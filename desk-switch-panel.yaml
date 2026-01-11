@@ -4,9 +4,9 @@ substitutions:
   devicename: desk-switch-panel
   room: Desk
   device: Switch Panel
-  log_level: INFO
+  log_level: DEBUG
 
-  switch1_pin: GPIO32
+  switch1_pin: 32
   switch1_id: switch1
   switch1_num: "1"
   switch1_single_service: "switch.toggle"
@@ -14,7 +14,7 @@ substitutions:
   switch1_double_service: ""
   switch1_double_entity: ""
 
-  switch2_pin: GPIO16
+  switch2_pin: 16
   switch2_id: switch2
   switch2_num: "2"
   switch2_single_service: "switch.toggle"
@@ -22,7 +22,7 @@ substitutions:
   switch2_double_service: "switch.toggle"
   switch2_double_entity: "switch.bedroom_1_lamp_relay"
 
-  switch3_pin: GPIO05
+  switch3_pin: 5
   switch3_id: switch3
   switch3_num: "3"
   switch3_single_service: "switch.toggle"
@@ -30,7 +30,7 @@ substitutions:
   switch3_double_service: ""
   switch3_double_entity: ""
 
-  switch4_pin: GPIO23
+  switch4_pin: 23
   switch4_id: switch4
   switch4_num: "4"
   switch4_single_service: "switch.toggle"
@@ -38,7 +38,7 @@ substitutions:
   switch4_double_service: ""
   switch4_double_entity: ""
 
-  switch5_pin: GPIO21
+  switch5_pin: 21
   switch5_id: switch5
   switch5_num: "5"
   switch5_single_service: "switch.toggle"
@@ -46,7 +46,7 @@ substitutions:
   switch5_double_service: ""
   switch5_double_entity: ""
 
-  switch6_pin: GPIO17
+  switch6_pin: 17
   switch6_id: switch6
   switch6_num: "6"
   switch6_single_service: "light.toggle"
@@ -54,7 +54,7 @@ substitutions:
   switch6_double_service: "switch.toggle"
   switch6_double_entity: "switch.kitchen_lamp_relay"
 
-  switch7_pin: GPIO25
+  switch7_pin: 25
   switch7_id: switch7
   switch7_num: "7"
   switch7_single_service: "switch.toggle"
@@ -62,7 +62,7 @@ substitutions:
   switch7_double_service: ""
   switch7_double_entity: ""
 
-  switch8_pin: GPIO19
+  switch8_pin: 19
   switch8_id: switch8
   switch8_num: "8"
   switch8_single_service: "switch.toggle"
@@ -70,7 +70,7 @@ substitutions:
   switch8_double_service: ""
   switch8_double_entity: ""
 
-  switch9_pin: GPIO26
+  switch9_pin: 26
   switch9_id: switch9
   switch9_num: "9"
   switch9_single_service: "switch.toggle"
@@ -78,7 +78,7 @@ substitutions:
   switch9_double_service: ""
   switch9_double_entity: ""
 
-  switch10_pin: GPIO18
+  switch10_pin: 18
   switch10_id: switch10
   switch10_num: "10"
   switch10_single_service: ""
@@ -86,15 +86,15 @@ substitutions:
   switch10_double_service: ""
   switch10_double_entity: ""
 
-  switch11_pin: GPIO22
+  switch11_pin: 22
   switch11_id: switch11
   switch11_num: "11"
-  switch11_single_service: ""
-  switch11_single_entity: ""
+  switch11_single_service: "light.toggle"
+  switch11_single_entity: "light.desk_light"
   switch11_double_service: ""
   switch11_double_entity: ""
 
-  switch12_pin: GPIO33
+  switch12_pin: 33
   switch12_id: switch12
   switch12_num: "12"
   switch12_single_service: "light.toggle"
@@ -125,123 +125,543 @@ status_led:
       ignore_strapping_warning: true
 
 binary_sensor:
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch1_pin}
-        switch_id: ${switch1_id}
-        switch_num: ${switch1_num}
-        single_service: ${switch1_single_service}
-        single_entity: ${switch1_single_entity}
-        double_service: ${switch1_double_service}
-        double_entity: ${switch1_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch2_pin}
-        switch_id: ${switch2_id}
-        switch_num: ${switch2_num}
-        single_service: ${switch2_single_service}
-        single_entity: ${switch2_single_entity}
-        double_service: ${switch2_double_service}
-        double_entity: ${switch2_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch3_pin}
-        switch_id: ${switch3_id}
-        switch_num: ${switch3_num}
-        single_service: ${switch3_single_service}
-        single_entity: ${switch3_single_entity}
-        double_service: ${switch3_double_service}
-        double_entity: ${switch3_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch4_pin}
-        switch_id: ${switch4_id}
-        switch_num: ${switch4_num}
-        single_service: ${switch4_single_service}
-        single_entity: ${switch4_single_entity}
-        double_service: ${switch4_double_service}
-        double_entity: ${switch4_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch5_pin}
-        switch_id: ${switch5_id}
-        switch_num: ${switch5_num}
-        single_service: ${switch5_single_service}
-        single_entity: ${switch5_single_entity}
-        double_service: ${switch5_double_service}
-        double_entity: ${switch5_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch6_pin}
-        switch_id: ${switch6_id}
-        switch_num: ${switch6_num}
-        single_service: ${switch6_single_service}
-        single_entity: ${switch6_single_entity}
-        double_service: ${switch6_double_service}
-        double_entity: ${switch6_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch7_pin}
-        switch_id: ${switch7_id}
-        switch_num: ${switch7_num}
-        single_service: ${switch7_single_service}
-        single_entity: ${switch7_single_entity}
-        double_service: ${switch7_double_service}
-        double_entity: ${switch7_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch8_pin}
-        switch_id: ${switch8_id}
-        switch_num: ${switch8_num}
-        single_service: ${switch8_single_service}
-        single_entity: ${switch8_single_entity}
-        double_service: ${switch8_double_service}
-        double_entity: ${switch8_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch9_pin}
-        switch_id: ${switch9_id}
-        switch_num: ${switch9_num}
-        single_service: ${switch9_single_service}
-        single_entity: ${switch9_single_entity}
-        double_service: ${switch9_double_service}
-        double_entity: ${switch9_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch10_pin}
-        switch_id: ${switch10_id}
-        switch_num: ${switch10_num}
-        single_service: ${switch10_single_service}
-        single_entity: ${switch10_single_entity}
-        double_service: ${switch10_double_service}
-        double_entity: ${switch10_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch11_pin}
-        switch_id: ${switch11_id}
-        switch_num: ${switch11_num}
-        single_service: ${switch11_single_service}
-        single_entity: ${switch11_single_entity}
-        double_service: ${switch11_double_service}
-        double_entity: ${switch11_double_entity}
-  - !include
-      file: /config/configs/switch_panel/switch_template.yaml
-      vars:
-        pin_number: ${switch12_pin}
-        switch_id: ${switch12_id}
-        switch_num: ${switch12_num}
-        single_service: ${switch12_single_service}
-        single_entity: ${switch12_single_entity}
-        double_service: ${switch12_double_service}
-        double_entity: ${switch12_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch1_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch1_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch1_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch1_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch1_single_service}
+                          data:
+                            entity_id: ${switch1_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch1_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch1_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch1_double_service}
+                          data:
+                            entity_id: ${switch1_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch2_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch2_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch2_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch2_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch2_single_service}
+                          data:
+                            entity_id: ${switch2_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch2_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch2_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch2_double_service}
+                          data:
+                            entity_id: ${switch2_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch3_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch3_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch3_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch3_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch3_single_service}
+                          data:
+                            entity_id: ${switch3_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch3_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch3_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch3_double_service}
+                          data:
+                            entity_id: ${switch3_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch4_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch4_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch4_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch4_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch4_single_service}
+                          data:
+                            entity_id: ${switch4_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch4_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch4_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch4_double_service}
+                          data:
+                            entity_id: ${switch4_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch5_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch5_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch5_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch5_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch5_single_service}
+                          data:
+                            entity_id: ${switch5_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch5_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch5_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch5_double_service}
+                          data:
+                            entity_id: ${switch5_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch6_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch6_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch6_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch6_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch6_single_service}
+                          data:
+                            entity_id: ${switch6_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch6_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch6_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch6_double_service}
+                          data:
+                            entity_id: ${switch6_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch7_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch7_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch7_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch7_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch7_single_service}
+                          data:
+                            entity_id: ${switch7_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch7_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch7_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch7_double_service}
+                          data:
+                            entity_id: ${switch7_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch8_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch8_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch8_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch8_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch8_single_service}
+                          data:
+                            entity_id: ${switch8_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch8_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch8_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch8_double_service}
+                          data:
+                            entity_id: ${switch8_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch9_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch9_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch9_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch9_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch9_single_service}
+                          data:
+                            entity_id: ${switch9_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch9_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch9_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch9_double_service}
+                          data:
+                            entity_id: ${switch9_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch10_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch10_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch10_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch10_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch10_single_service}
+                          data:
+                            entity_id: ${switch10_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch10_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch10_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch10_double_service}
+                          data:
+                            entity_id: ${switch10_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch11_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch11_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch11_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch11_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch11_single_service}
+                          data:
+                            entity_id: ${switch11_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch11_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch11_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch11_double_service}
+                          data:
+                            entity_id: ${switch11_double_entity}
+  - platform: gpio
+    pin:
+      number: ${switch12_pin}
+      mode: INPUT_PULLUP
+      inverted: true
+    id: ${switch12_id}
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch12_num} Single-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch12_single_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch12_single_service}
+                          data:
+                            entity_id: ${switch12_single_entity}
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "SW${switch12_num} Double-Click Detected"
+          - if:
+              condition:
+                api.connected:
+              then:
+                - if:
+                    condition:
+                      lambda: 'return "${switch12_double_service}" != "";'
+                    then:
+                      - homeassistant.service:
+                          service: ${switch12_double_service}
+                          data:
+                            entity_id: ${switch12_double_entity}
