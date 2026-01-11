@@ -50,12 +50,12 @@ sensor:
     phase_a:
       voltage:
         name: Voltage
-        accuracy_decimals: 1
+        accuracy_decimals: 2
         unit_of_measurement: V
         device_class: voltage
       current:
         name: CT1 Current
-        accuracy_decimals: 1
+        accuracy_decimals: 2
         id: "ct1Amps"
         unit_of_measurement: A
         device_class: current
@@ -65,7 +65,7 @@ sensor:
       #          - multiply: 2
       power:
         name: CT1 Power
-        accuracy_decimals: 1
+        accuracy_decimals: 2
         id: "ct1Watts"
         unit_of_measurement: W
         device_class: power
@@ -73,9 +73,9 @@ sensor:
       #          - multiply: 2
       reactive_power:
         name: CT1 Reactive Power
-        accuracy_decimals: 1
+        accuracy_decimals: 2
         id: "ct1Reactive"
-        unit_of_measurement: VAR
+        unit_of_measurement: var
       #  device_class: reactive_power
       #        filters:
       #          - multiply: 2
@@ -87,7 +87,7 @@ sensor:
     phase_c:
       current:
         name: CT2 Current
-        accuracy_decimals: 1
+        accuracy_decimals: 2
         id: "ct2Amps"
         unit_of_measurement: A
         device_class: current
@@ -97,7 +97,7 @@ sensor:
       #          - multiply: 2
       power:
         name: CT2 Power
-        accuracy_decimals: 1
+        accuracy_decimals: 2
         id: "ct2Watts"
         unit_of_measurement: W
         device_class: power
@@ -105,9 +105,9 @@ sensor:
       #          - multiply: 2
       reactive_power:
         name: CT2 Reactive Power
-        accuracy_decimals: 1
+        accuracy_decimals: 2
         id: "ct2Reactive"
-        unit_of_measurement: VAR
+        unit_of_measurement: var
       #  device_class: reactive_power
       #        filters:
       #          - multiply: 2
@@ -131,7 +131,7 @@ sensor:
     name: Total Current
     id: "totalAmps"
     lambda: return id(ct1Amps).state + id(ct2Amps).state;
-    accuracy_decimals: 1
+    accuracy_decimals: 2
     unit_of_measurement: A
     device_class: current
     update_interval: ${update_interval}
@@ -140,7 +140,7 @@ sensor:
     name: Total Power
     id: "totalWatts"
     lambda: return id(ct1Watts).state + id(ct2Watts).state;
-    accuracy_decimals: 1
+    accuracy_decimals: 2
     unit_of_measurement: W
     device_class: power
     icon: "mdi:power"
@@ -149,15 +149,15 @@ sensor:
     name: Total Reactive Power
     id: "totalReactivePower"
     lambda: return id(ct1Reactive).state + id(ct2Reactive).state;
-    accuracy_decimals: 1
-    unit_of_measurement: VAR
+    accuracy_decimals: 2
+    unit_of_measurement: var
     icon: "mdi:lightning-bolt-circle"
     update_interval: ${update_interval}
 
   - platform: total_daily_energy
     name: Total Energy
     power_id: totalWatts
-    accuracy_decimals: 3
+    accuracy_decimals: 2
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh

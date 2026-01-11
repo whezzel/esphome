@@ -39,13 +39,13 @@ sensor:
   - platform: cse7766
     current:
       name: Current
-      accuracy_decimals: 1
+      accuracy_decimals: 2
     voltage:
       name: Voltage
-      accuracy_decimals: 1
+      accuracy_decimals: 2
     power:
       name: Power
-      accuracy_decimals: 1
+      accuracy_decimals: 2
       id: power
     apparent_power:
       name: Apparent Power
