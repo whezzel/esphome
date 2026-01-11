@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret bedroom-1-closet-light_api_key
   board: esp01_1m
+  color_interlock: false
+  device: Light
   devicename: bedroom-1-closet-light
   icon: mdi:lightbulb
-  room: Bedroom 1 Closet
-  device: Light
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
-  color_interlock: false
+  restore: RESTORE_DEFAULT_OFF
+  room: Bedroom 1 Closet
 
 <<: !include /config/configs/bulb_kauf_blf10.yaml

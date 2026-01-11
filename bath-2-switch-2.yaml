@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret bath-2-switch-2_api_key
+  automation_name: bath_2_fan_automation
   board: esp01_1m
+  device: Switch 2
   devicename: bath-2-switch-2
   icon: mdi:light-switch
-  room: Bath 2
-  device: Switch 2
-  automation_name: bath_2_fan_automation
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Bath 2
 
 <<: !include configs/switch_gosund.yaml

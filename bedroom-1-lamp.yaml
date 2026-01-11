@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret bedroom-1-lamp_api_key
+  automation_name: bedroom_1_lamp_automation
   board: esp01_1m
+  device: Lamp
   devicename: bedroom-1-lamp
   icon: mdi:lamp
-  room: Bedroom 1
-  device: Lamp
-  automation_name: bedroom_1_lamp_automation
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Bedroom 1
 
 <<: !include /config/configs/sonoff_s31.yaml

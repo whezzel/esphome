@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret front-porch-switch_api_key
+  automation_name: front_porch_light_automation
   board: esp01_1m
+  device: Switch
   devicename: front-porch-switch
   icon: mdi:light-switch
-  room: Front Porch
-  device: Switch
-  automation_name: front_porch_light_automation
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Front Porch
 
 <<: !include configs/switch_gosund.yaml

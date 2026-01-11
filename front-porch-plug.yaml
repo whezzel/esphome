@@ -1,18 +1,18 @@
 substitutions:
   api_key: !secret front-porch-plug_api_key
   board: esp-wrover-kit
-  devicename: front-porch-plug
-  icon: mdi:outlet
-  room: Front Porch
-  device: Plug
-  update_interval: 1s
   # Higher value gives lower watt readout
   current_res: "0.0009"
-  # Lower value gives lower voltage readout
-  voltage_div: "779"
+  device: Plug
+  devicename: front-porch-plug
+  icon: mdi:outlet
+  log_level: DEBUG
   relay1_restore: RESTORE_DEFAULT_ON
   relay2_restore: ALWAYS_OFF
-  log_level: DEBUG
+  room: Front Porch
+  update_interval: 1s
+  # Lower value gives lower voltage readout
+  voltage_div: "779"
 
 packages:
   api: !include /config/common/api.yaml

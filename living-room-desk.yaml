@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret living-room-desk_api_key
+  automation_name: living_room_desk_automation
   board: esp01_1m
+  device: Desk
   devicename: living-room-desk
   icon: mdi:desktop-classic
-  room: Living Room
-  device: Desk
-  automation_name: living_room_desk_automation
-  restore: ALWAYS_ON
   log_level: DEBUG
+  restore: ALWAYS_ON
+  room: Living Room
 
 <<: !include /config/configs/sonoff_s31.yaml

@@ -1,20 +1,20 @@
 substitutions:
   api_key: !secret work-ble-tracker_api_key
   board: wemos_d1_mini32
-  devicename: work-ble-tracker
-  room: Work
   device: BLE Tracker
-  update_interval: 15s
+  devicename: work-ble-tracker
   log_level: DEBUG
+  room: Work
+  update_interval: 15s
   wg_client_ip_address: !secret work-ble-tracker_wg_ip_address
   wg_client_netmask: !secret wg_peer_netmask
   wg_client_priv_key: !secret work-ble-tracker_wg_priv_key
   wg_peer_endpoint: !secret wg_peer_endpoint
   wg_peer_port: !secret wg_peer_port
   wg_peer_pub_key: !secret wg_peer_pub_key
+  wifi_password: !secret work-ble-tracker_wifi_password
   wifi_ssid: !secret work-ble-tracker_wifi_ssid
   wifi_username: !secret work-ble-tracker_wifi_username
-  wifi_password: !secret work-ble-tracker_wifi_password
 
 packages:
   api: !include /config/common/api.yaml

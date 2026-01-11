@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret kitchen-lamp_api_key
+  automation_name: kitchen_lamp_automation
   board: esp01_1m
+  device: Lamp
   devicename: kitchen-lamp
   icon: mdi:lamp
-  room: Kitchen
-  device: Lamp
-  automation_name: kitchen_lamp_automation
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Kitchen
 
 <<: !include /config/configs/sonoff_s31.yaml

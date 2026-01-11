@@ -1,13 +1,13 @@
 substitutions:
   api_key: !secret hobby-room-switch-1_api_key
-  board: esp32-c3-devkitm-1
-  devicename: hobby-room-switch-1
-  icon: mdi:light-switch
-  room: Hobby Room
-  device: Switch 1
   automation_name: hobby_room_light_automation
-  restore: RESTORE_DEFAULT_OFF
+  board: esp32-c3-devkitm-1
+  device: Switch 1
+  devicename: hobby-room-switch-1
   espnow_peer_mac: B8:D6:1A:85:A5:58
+  icon: mdi:light-switch
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Hobby Room
 
 <<: !include configs/switch_athom_esp32_espnow.yaml

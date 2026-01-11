@@ -1,21 +1,21 @@
 substitutions:
   api_key: !secret hobby-room-shelly_api_key
+  automation_name: hobby_room_light_automation
   board: esp32doit-devkit-v1
+  device: Shelly
   devicename: hobby-room-shelly
-  max_power: "3600.0"
-  max_temp: "90.0"
-  thres_temp: "75.0"
+  espnow_peer_mac: E4:B0:63:00:D2:60
   icon1: mdi:lightbulb
   icon2: mdi:fan
-  room: Hobby Room
-  device: Shelly
-  automation_name: hobby_room_light_automation
-  relay1: Light
-  relay2: Fan
-  relay1_restore: RESTORE_DEFAULT_OFF
-  relay2_restore: ALWAYS_ON
-  espnow_peer_mac: E4:B0:63:00:D2:60
-  update_interval: 1s
   log_level: DEBUG
+  max_power: "3600.0"
+  max_temp: "90.0"
+  relay1_restore: RESTORE_DEFAULT_OFF
+  relay1: Light
+  relay2_restore: ALWAYS_ON
+  relay2: Fan
+  room: Hobby Room
+  thres_temp: "75.0"
+  update_interval: 1s
 
 <<: !include /config/configs/shelly_2pm_espnow.yaml

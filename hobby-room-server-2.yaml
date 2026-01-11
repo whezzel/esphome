@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret hobby-room-server-2_api_key
+  automation_name: hobby_room_server_automation
   board: esp01_1m
+  device: Server 2
   devicename: hobby-room-server-2
   icon: mdi:server
-  room: Hobby Room
-  device: Server 2
-  automation_name: hobby_room_server_automation
-  restore: ALWAYS_ON
   log_level: DEBUG
+  restore: ALWAYS_ON
+  room: Hobby Room
 
 <<: !include /config/configs/sonoff_s31.yaml

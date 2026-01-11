@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret bath-1-heater_api_key
+  automation_name: bath_1_heater_automation
   board: esp01_1m
+  device: Heater
   devicename: bath-1-heater
   icon: mdi:radiator
-  room: Bath 1
-  device: Heater
-  automation_name: bath_1_heater_automation
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Bath 1
 
 <<: !include /config/configs/sonoff_s31.yaml

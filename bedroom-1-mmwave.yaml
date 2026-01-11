@@ -1,14 +1,14 @@
 substitutions:
   api_key: !secret bedroom-1-mmwave_api_key
   board: wemos_d1_mini32
-  devicename: bedroom-1-mmwave
-  room: Bedroom 1
   device: mmWave
-  log_level: DEBUG
-  uart_tx_pin: 1
-  uart_rx_pin: 3
+  devicename: bedroom-1-mmwave
   gpio_pin: 17
   header_file: custom_components/leapmmw_sensor.h
+  log_level: DEBUG
+  room: Bedroom 1
+  uart_rx_pin: 3
+  uart_tx_pin: 1
 
 packages:
   api: !include /config/common/api.yaml

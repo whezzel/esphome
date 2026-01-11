@@ -1,9 +1,9 @@
 substitutions:
   api_key: !secret speaker-1_api_key
   board: esp-wrover-kit
-  devicename: speaker-1
-  room: Speaker
   device: '1'
+  devicename: speaker-1
   log_level: DEBUG
+  room: Speaker
 
 <<: !include /config/configs/speaker.yaml

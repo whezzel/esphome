@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret utility-room-switch-2_api_key
+  automation_name: back_porch_light_automation
   board: esp32-c3-devkitm-1
+  device: Switch 1
   devicename: utility-room-switch-2
   icon: mdi:light-switch
-  room: Hobby Room
-  device: Switch 1
-  automation_name: back_porch_light_automation
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Hobby Room
 
 <<: !include configs/switch_athom_esp32.yaml

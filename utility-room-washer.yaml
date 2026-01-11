@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret utility-room-washer_api_key
+  automation_name: utility_room_washer_automation
   board: esp01_1m
+  device: Washer
   devicename: utility-room-washer
   icon: mdi:washing-machine
-  room: Utility Room
-  device: Washer
-  automation_name: utility_room_washer_automation
-  restore: ALWAYS_ON
   log_level: DEBUG
+  restore: ALWAYS_ON
+  room: Utility Room
 
 <<: !include /config/configs/sonoff_s31.yaml

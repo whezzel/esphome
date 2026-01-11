@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret hobby-room-printer_api_key
+  automation_name: hobby_room_printer_automation
   board: esp01_1m
+  device: Printer
   devicename: hobby-room-printer
   icon: mdi:printer-3d
-  room: Hobby Room
-  device: Printer
-  automation_name: hobby_room_printer_automation
-  restore: ALWAYS_ON
   log_level: DEBUG
+  restore: ALWAYS_ON
+  room: Hobby Room
 
 <<: !include /config/configs/sonoff_s31.yaml

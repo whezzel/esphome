@@ -1,10 +1,10 @@
 substitutions:
   api_key: !secret espcam01_api_key
   board: esp32-s3-devkitc-1
+  device: ESPCam01
   devicename: espcam01
   icon: mdi:camera
-  room: ""
-  device: ESPCam01
   log_level: DEBUG
+  room: ""
 
 <<: !include /config/configs/espcam.yaml

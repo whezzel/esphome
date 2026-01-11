@@ -1,10 +1,10 @@
 substitutions:
   api_key: !secret desk-switch-panel_api_key
   board: wemos_d1_mini32
-  devicename: desk-switch-panel
-  room: Desk
   device: Switch Panel
+  devicename: desk-switch-panel
   log_level: DEBUG
+  room: Desk
 
   switch1_pin: 32
   switch1_id: switch1

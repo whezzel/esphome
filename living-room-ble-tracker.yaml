@@ -1,11 +1,11 @@
 substitutions:
   api_key: !secret living-room-ble-tracker_api_key
   board: wemos_d1_mini32
-  devicename: living-room-ble-tracker
-  room: Living Room
   device: BLE Tracker
-  update_interval: 15s
+  devicename: living-room-ble-tracker
   log_level: DEBUG
+  room: Living Room
+  update_interval: 15s
 
 packages:
   api: !include /config/common/api.yaml

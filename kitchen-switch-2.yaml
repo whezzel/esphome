@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret kitchen-switch-2_api_key
+  automation_name: kitchen_light_automation
   board: esp01_1m
+  device: Switch 2
   devicename: kitchen-switch-2
   icon: mdi:light-switch
-  room: Kitchen
-  device: Switch 2
-  automation_name: kitchen_light_automation
-  restore: RESTORE_DEFAULT_OFF
   log_level: DEBUG
+  restore: RESTORE_DEFAULT_OFF
+  room: Kitchen
 
 <<: !include configs/switch_gosund.yaml

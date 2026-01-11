@@ -1,11 +1,11 @@
 substitutions:
   api_key: !secret bedroom-1-bed_api_key
   board: wemos_d1_mini32
-  devicename: bedroom-1-bed
-  room: Bedroom 1
   device: Bed
-  update_interval: .1s
+  devicename: bedroom-1-bed
   log_level: DEBUG
+  room: Bedroom 1
+  update_interval: .1s
 
 packages:
   api: !include /config/common/api.yaml

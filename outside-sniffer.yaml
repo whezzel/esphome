@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret outside-sniffer_api_key
   board: featheresp32
-  devicename: outside-sniffer
-  room: Outside
   device: Sniffer
-  send_every: '10'
-  update_interval: 1s
-  temp_offset: '6.0'
+  devicename: outside-sniffer
   log_level: DEBUG
+  room: Outside
+  send_every: '10'
+  temp_offset: '6.0'
+  update_interval: 1s
 
 <<: !include configs/sniffer.yaml

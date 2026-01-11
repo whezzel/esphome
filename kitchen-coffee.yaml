@@ -1,12 +1,12 @@
 substitutions:
   api_key: !secret kitchen-coffee_api_key
+  automation_name: coffee_automation
   board: esp01_1m
+  device: Coffee
   devicename: kitchen-coffee
   icon: mdi:coffee
-  room: Kitchen
-  device: Coffee
-  automation_name: coffee_automation
-  restore: ALWAYS_OFF
   log_level: DEBUG
+  restore: ALWAYS_OFF
+  room: Kitchen
 
 <<: !include /config/configs/sonoff_s31.yaml

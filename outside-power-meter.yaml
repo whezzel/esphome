@@ -1,23 +1,21 @@
 substitutions:
   api_key: !secret outside-power-meter_api_key
   board: nodemcu-32s
-  devicename: outside-power-meter
-  icon: mdi:gauge
-  room: Outside
-  device: Power Meter
-  #automation:
-  # Interval of how often the power is updated
-  update_interval: 1s
   # Current transformer calibrations:
   # 80A/26.6mA SCT-010: 39571
   # 100A/50mA SCT-013: 26315
   # 120A/40ma SCT-016: 39473 - default kit CT
   # 200A/100mA SCT-024: 26315
   current_cal: "39473"
+  device: Power Meter
+  devicename: outside-power-meter
+  icon: mdi:gauge
+  log_level: DEBUG
+  room: Outside
+  update_interval: 1s
   # AC Transformer voltage calibration 9VAC Jameco 157041: 37106
   # For Meters >= v1.4 rev3: 3920
   voltage_cal: "3920"
-  log_level: DEBUG
 
 packages:
   api: !include /config/common/api.yaml
