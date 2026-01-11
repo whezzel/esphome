@@ -27,7 +27,34 @@ status_led:
     pin:
       number: 2
       inverted: true
+      ignore_strapping_warning: true
 
+globals:
+  - id: bed_occupied_state
+    type: bool
+    restore_value: yes
+    initial_value: 'false'
+binary_sensor:
+  - platform: template
+    name: Occupancy
+    id: bed_occupancy
+    icon: mdi:bed
+    device_class: occupancy
+    lambda: |-
+      if (id(change).has_state() && id(std_dev).has_state()) {
+        float change_val = id(change).state;
+        float stddev_val = id(std_dev).state;
+        if (stddev_val >= 0.08) {
+          if (change_val <= -0.24) {
+            id(bed_occupied_state) = true;
+            return true;
+          } else if (change_val >= 0.24) {
+            id(bed_occupied_state) = false;
+            return false;
+          }
+        }
+      }
+      return id(bed_occupied_state);
 sensor:
   - platform: adc
     pin:
@@ -36,17 +63,95 @@ sensor:
     update_interval: ${update_interval}
     accuracy_decimals: 5
     id: bed_adc
+    internal: true
     attenuation: auto
     filters:
       - exponential_moving_average:
           send_every: 1
-#          alpha: 0.08
           alpha: 0.1
-#      - sliding_window_moving_average:
-#          window_size: 10
-#          send_every: 1
-#      - lambda: |-
-#          float MIN = 2.4;
-#          float MAX = 3.1;
-#          if ( MIN <= x && x <= MAX) return x;
-#          else return {};
+          send_first_at: 1
+  - platform: copy
+    source_id: bed_adc
+    name: Standard Deviation
+    id: std_dev
+    internal: true
+    unit_of_measurement: V
+    accuracy_decimals: 5
+    device_class: voltage
+    state_class: measurement
+    filters:
+      - lambda: |-
+          const uint16_t window_size_ = 200;
+          const uint8_t send_every_ = 2;
+
+          static std::deque<float> queue_;
+          static uint8_t send_at_ = 0;
+
+          while (queue_.size() >= window_size_) {
+            queue_.pop_front();
+          }
+
+          queue_.push_back(x);
+
+          if (++send_at_ >= send_every_) {
+            send_at_ = 0;
+
+            float Ex = 0.0;
+            float Ex2 = 0.0;
+            size_t count = 0;
+
+            if (queue_.empty()) return NAN;
+
+            float K = queue_.front();
+
+            for (auto v: queue_) {
+              if (!std::isnan(v)) {
+                count += 1;
+                Ex += v - K;
+                Ex2 += pow(v - K, 2);
+              }
+            }
+
+            float standard_deviation = NAN;
+            if (count > 1) {
+              float variance = (Ex2 - pow(Ex, 2) / count) / (count - 1);
+              standard_deviation = sqrt(variance);
+            }
+
+            return standard_deviation;
+          }
+          return {};
+  - platform: copy
+    source_id: bed_adc
+    name: Change
+    id: change
+    internal: true
+    unit_of_measurement: V
+    accuracy_decimals: 5
+    device_class: voltage
+    state_class: measurement
+    filters:
+      - lambda: |-
+          const uint16_t window_size_ = 200;
+          const uint8_t send_every_ = 2;
+
+          static std::deque<float> queue_;
+          static uint8_t send_at_ = 0;
+
+          while (queue_.size() >= window_size_) {
+            queue_.pop_front();
+          }
+
+          queue_.push_back(x);
+
+          if (++send_at_ >= send_every_) {
+            send_at_ = 0;
+
+            if (queue_.size() < 2) return NAN;
+
+            float first = queue_.front();
+            float last = queue_.back();
+
+            return last - first;
+          }
+          return {};
