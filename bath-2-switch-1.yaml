@@ -2,7 +2,7 @@ substitutions:
   api_key: !secret bath-2-switch-1_api_key
   board: esp01_1m
   devicename: bath-2-switch-1
-  icon: mdi:lightbulb
+  icon: mdi:light-switch
   room: Bath 2
   device: Switch 1
   automation_name: bath_2_light_automation

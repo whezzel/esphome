@@ -2,7 +2,7 @@ substitutions:
   api_key: !secret utility-room-switch-1_api_key
   board: esp01_1m
   devicename: utility-room-switch-1
-  icon: mdi:lightbulb
+  icon: mdi:light-switch
   room: Utility Room
   device: Switch 1
   automation_name: utility_room_light_automation

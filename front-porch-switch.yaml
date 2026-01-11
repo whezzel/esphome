@@ -2,7 +2,7 @@ substitutions:
   api_key: !secret front-porch-switch_api_key
   board: esp01_1m
   devicename: front-porch-switch
-  icon: mdi:lightbulb
+  icon: mdi:light-switch
   room: Front Porch
   device: Switch
   automation_name: front_porch_light_automation
