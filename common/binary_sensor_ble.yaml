@@ -11,7 +11,6 @@ binary_sensor:
     ibeacon_major: '3737'
     ibeacon_minor: '4848'
 
-
   - platform: ble_presence
     name: BLE Pixel 7 Pro
     ibeacon_uuid: '0caa8ab8-20cb-44d8-ad6e-083a9a352a88'
