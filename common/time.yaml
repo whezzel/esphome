@@ -4,3 +4,12 @@ time:
     servers:
       - !secret sntp_ip1
       - !secret sntp_ip2
+    on_time_sync:
+      then:
+        - if:
+            condition:
+              lambda: 'return id(device_last_reboot).state == "";'
+            then:
+              - text_sensor.template.publish:
+                  id: device_last_reboot
+                  state: !lambda 'return id(sntp_time).now().strftime("%b %d %Y, %H:%M:%S");'
