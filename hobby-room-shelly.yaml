@@ -14,7 +14,8 @@ substitutions:
   relay2: Fan
   relay1_restore: RESTORE_DEFAULT_OFF
   relay2_restore: ALWAYS_ON
+  espnow_peer_mac: E4:B0:63:00:D2:60
   update_interval: 1s
   log_level: DEBUG
 
-<<: !include /config/configs/shelly_2pm.yaml
+<<: !include /config/configs/shelly_2pm_espnow.yaml

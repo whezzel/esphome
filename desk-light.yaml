@@ -1,12 +1,13 @@
 substitutions:
   api_key: !secret desk-light_api_key
-  board: esp01_1m
+  board: esp32-c3-devkitm-1
   devicename: desk-light
   icon: mdi:lightbulb
   room: Desk
   device: Light
   restore: RESTORE_DEFAULT_ON
-  light_group: desk_lights
+  espnow_peer_mac: 94:B5:55:26:BD:2C
   log_level: DEBUG
+  color_interlock: false
 
-<<: !include /config/configs/kauf_blf10.yaml
+<<: !include /config/configs/bulb_athom_espnow.yaml
