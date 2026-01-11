@@ -1,0 +1,67 @@
+packages:
+  api: !include /config/common/api.yaml
+  binary_sensor: !include /config/common/binary_sensor.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  esp8266: !include /config/common/esp8266.yaml
+  esphome: !include /config/common/esphome.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+output:
+  - platform: esp8266_pwm
+    id: red_output
+    pin:
+      number: 4
+    min_power: 0
+    max_power: .85
+  - platform: esp8266_pwm
+    id: green_output
+    pin:
+      number: 12
+    min_power: 0
+    max_power: .85
+  - platform: esp8266_pwm
+    id: blue_output
+    pin:
+      number: 14
+    min_power: 0
+    max_power: .85
+  - platform: esp8266_pwm
+    id: white_output
+    pin:
+      number: 5
+    min_power: 0
+    max_power: .85
+  - platform: esp8266_pwm
+    id: warm_white_output
+    pin:
+      number: 13
+    min_power: 0
+    max_power: .85
+
+light:
+  - platform: rgbww
+    id: rgbww_light
+    name: ""
+    restore_mode: ALWAYS_OFF
+    initial_state:
+      state: ON
+      brightness: 100%
+      color_mode: COLD_WARM_WHITE
+      cold_white: 0%
+      warm_white: 100%
+    red: red_output
+    green: green_output
+    blue: blue_output
+    cold_white: white_output
+    warm_white: warm_white_output
+    cold_white_color_temperature: 6500 K
+    warm_white_color_temperature: 3000 K
+    color_interlock: ${color_interlock}
+    constant_brightness: True
