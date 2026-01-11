@@ -1,0 +1,222 @@
+packages:
+  api: !include /config/common/api.yaml
+  binary_sensor: !include /config/common/binary_sensor.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
+  esp32: !include /config/common/esp32.yaml
+  esphome: !include /config/common/esphome.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+esphome:
+  on_boot:
+    priority: 600
+    then:
+      - delay: 5s
+      - if:
+          condition:
+            switch.is_on: relay1
+          then:
+            - espnow.send:
+                address: "${espnow_peer_mac}"
+                data: !lambda 'return {0x02};'
+          else:
+            - espnow.send:
+                address: "${espnow_peer_mac}"
+                data: !lambda 'return {0x03};'
+espnow:
+  channel: 6
+  peers:
+    - "${espnow_peer_mac}"
+    - "94:B5:55:26:BD:2C" # Desk Switch Panel
+  on_receive:
+    then:
+      - lambda: |-
+          if (size >= 1 && data[0] == 0x01) {
+            ESP_LOGD("espnow", "Received toggle command");
+            id(relay1).toggle();
+          }
+
+globals:
+  - id: relay1_last_state
+    type: int
+    restore_value: no
+    initial_value: '2'
+
+switch:
+  - platform: gpio
+    name: ${relay1}
+    pin:
+      number: 13
+    id: relay1
+    icon: ${icon1}
+    restore_mode: ${relay1_restore}
+    on_turn_on:
+      - logger.log: "Relay1 turned ON - sending status to Bedroom 1 Switch 1"
+      - espnow.send:
+          address: "${espnow_peer_mac}"
+          data: !lambda 'return {0x02};'
+    on_turn_off:
+      - logger.log: "Relay1 turned OFF - sending status to Bedroom 1 Switch 1"
+      - espnow.send:
+          address: "${espnow_peer_mac}"
+          data: !lambda 'return {0x03};'
+  - platform: gpio
+    name: ${relay2}
+    pin:
+      number: 12
+      ignore_strapping_warning: true
+    id: relay2
+    icon: ${icon2}
+    restore_mode: ${relay2_restore}
+
+i2c:
+  sda:
+    number: 26
+  scl:
+    number: 25
+
+sensor:
+  - platform: ade7953_i2c
+    irq_pin:
+      number: 27
+    update_interval: ${update_interval}
+    voltage:
+      name: Voltage
+    current_a:
+      name: ${relay1} Current
+    current_b:
+      name: ${relay2} Current
+    active_power_a:
+      name: ${relay1} Power
+      id: power_relay1
+      filters:
+        - multiply: -1
+        - lambda: |-
+            if (x >= 0) return x;
+            else x=0; return x;
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: relay1
+    active_power_b:
+      name: ${relay2} Power
+      id: power_relay2
+      filters:
+        - multiply: -1
+        - lambda: |-
+            if (x >= 0) return x;
+            else x=0; return x;
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: relay2
+  - platform: total_daily_energy
+    name: ${relay1} Energy
+    power_id: power_relay1
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: total_daily_energy
+    name: ${relay2} Energy
+    power_id: power_relay2
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: Temp
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_temp}
+        then:
+          - switch.turn_off: relay2
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 10kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin:
+      number: 35
+    update_interval: ${update_interval}
+
+status_led:
+  pin:
+    number: GPIO0
+    ignore_strapping_warning: true
+    inverted: yes
+
+text_sensor:
+  - platform: homeassistant
+    id: ha_input_text_relay1
+    entity_id: input_boolean.${automation_name}
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO5
+      ignore_strapping_warning: true
+    id: ${relay1}_input
+    filters:
+      - delayed_on_off: 50ms
+    on_state:
+      then:
+        - if:
+            condition:
+              lambda: 'return id(relay1_last_state) == 2;'
+            then:
+              - lambda: 'id(relay1_last_state) = id(${relay1}_input).state ? 1 : 0;'
+              - delay: 400ms
+              - if:
+                  condition:
+                    lambda: 'return (id(${relay1}_input).state ? 1 : 0) == id(relay1_last_state);'
+                  then:
+                    - logger.log: ${relay1} Single-Click Detected
+                    - switch.toggle: relay1
+                  else:
+                    - if:
+                        condition:
+                          lambda: 'return id(ha_input_text_relay1).state == "on";'
+                        then:
+                          - logger.log: ${relay1} Double-Click Detected
+                          - homeassistant.service:
+                              service: input_boolean.turn_off
+                              data:
+                                entity_id: input_boolean.${automation_name}
+                        else:
+                          - homeassistant.service:
+                              service: input_boolean.turn_on
+                              data:
+                                entity_id: input_boolean.${automation_name}
+              - lambda: 'id(relay1_last_state) = 2;'
+
+  - platform: gpio
+    pin:
+      number: GPIO18
+    id: ${relay2}_input
+    filters:
+      - delayed_off: 3s
+    on_state:
+      then:
+        - logger.log: ${relay2} Switch State Changed.
+        - if:
+            condition:
+              binary_sensor.is_on: ${relay2}_input
+            then:
+              - switch.turn_on: relay2
+            else:
+              - switch.turn_off: relay2

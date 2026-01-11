@@ -1,0 +1,13 @@
+substitutions:
+  api_key: !secret bedroom-1-switch-1_api_key
+  board: esp32-c3-devkitm-1
+  devicename: bedroom-1-switch-1
+  icon: mdi:light-switch
+  room: Bedroom 1
+  device: Switch 1
+  automation_name: bedroom_1_light_automation
+  restore: ALWAYS_ON
+  espnow_peer_mac: 54:43:B2:3F:44:50
+  log_level: DEBUG
+
+<<: !include configs/switch_athom_esp32_espnow.yaml

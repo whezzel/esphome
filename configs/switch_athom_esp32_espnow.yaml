@@ -1,0 +1,123 @@
+packages:
+  api: !include /config/common/api.yaml
+  binary_sensor: !include /config/common/binary_sensor.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  esp32: !include /config/common/esp32.yaml
+  esphome: !include /config/common/esphome.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+esp32:
+  flash_size: 4MB
+  variant: ESP32C3
+  framework:
+    sdkconfig_options:
+      CONFIG_BT_BLE_42_FEATURES_SUPPORTED: y
+      CONFIG_BT_BLE_50_FEATURES_SUPPORTED: y
+      CONFIG_ESP_TASK_WDT_TIMEOUT_S: "10"
+
+espnow:
+  channel: 6
+  peers:
+    - "${espnow_peer_mac}"
+  on_receive:
+    then:
+      - lambda: |-
+          ESP_LOGD("espnow", "Received %d bytes from peer", size);
+          if (size >= 1) {
+            uint8_t cmd = data[0];
+            if (cmd == 0x02) {
+              ESP_LOGD("espnow", "Bedroom 1 Shelly relay1 ON - turning LED on");
+              auto call = id(led).turn_on();
+              call.perform();
+            } else if (cmd == 0x03) {
+              ESP_LOGD("espnow", "Bedroom 1 Shelly relay1 OFF - turning LED off");
+              auto call = id(led).turn_off();
+              call.perform();
+            } else {
+              ESP_LOGD("espnow", "Unknown command: 0x%02X", cmd);
+            }
+          } else {
+            ESP_LOGD("espnow", "Empty packet received");
+          }
+
+preferences:
+  flash_write_interval: 1min
+
+#api:
+#  on_client_connected:
+#     - esp32_ble_tracker.start_scan:
+#        continuous: true
+#  on_client_disconnected:
+#    if:
+#      condition:
+#        not:
+#          api.connected:
+#      then:
+#        - esp32_ble_tracker.stop_scan:
+
+status_led:
+  pin:
+    number: 9
+    ignore_strapping_warning: true
+    inverted: true
+
+output:
+  - platform: ledc
+    id: state_led
+    pin:
+      number: 3
+      inverted: true
+
+light:
+  - platform: monochromatic
+    output: state_led
+    id: led
+
+switch:
+  - platform: gpio
+    pin:
+      number: 5
+    id: relay1
+    name: Relay
+    icon: ${icon}
+    restore_mode: ${restore}
+    #on_turn_on:
+    #  - light.turn_on: led
+    #on_turn_off:
+    #  - light.turn_off: led
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: 20
+      inverted: true
+    id: button1
+    filters:
+      - delayed_on_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: "Single-Click → Sending ESP-NOW toggle to Bedroom 1 Shelly"
+          - espnow.send:
+              address: "${espnow_peer_mac}"
+              data: !lambda 'return {0x01};'
+      - timing:
+          - ON for at most 400ms
+          - OFF for at most 200ms
+          - ON for at most 400ms
+          - OFF for at least 200ms
+        then:
+          - logger.log: Double-Click Detected
+          - homeassistant.service:
+              service: input_boolean.toggle
+              data:
+                entity_id: input_boolean.${automation_name}

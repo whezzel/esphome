@@ -1,0 +1,109 @@
+packages:
+  api: !include /config/common/api.yaml
+  binary_sensor: !include /config/common/binary_sensor.yaml
+  captive_portal: !include /config/common/captive_portal.yaml
+  esp32: !include /config/common/esp32.yaml
+  esphome: !include /config/common/esphome.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+  wifi: !include /config/common/wifi.yaml
+
+esp32:
+  flash_size: 4MB
+  variant: ESP32C3
+  framework:
+    sdkconfig_options:
+      CONFIG_BT_BLE_42_FEATURES_SUPPORTED: y
+      CONFIG_BT_BLE_50_FEATURES_SUPPORTED: y
+      CONFIG_ESP_TASK_WDT_TIMEOUT_S: "10"
+
+espnow:
+  channel: 6
+  peers:
+    - "${espnow_peer_mac}"
+    - "94:B5:55:26:BD:2C" # Desk Switch Panel
+  on_receive:
+    then:
+      - lambda: |-
+          if (size >= 1 && data[0] == 0x01) {
+            ESP_LOGD("espnow", "Received toggle command");
+            id(rgbww_light).toggle();
+          }
+
+preferences:
+  flash_write_interval: 1min
+
+#api:
+#  on_client_connected:
+#     - esp32_ble_tracker.start_scan:
+#        continuous: true
+#  on_client_disconnected:
+#    if:
+#      condition:
+#        not:
+#          api.connected:
+#      then:
+#        - esp32_ble_tracker.stop_scan:
+
+output:
+  - platform: ledc
+    id: red_output
+    frequency: 9765
+    pin:
+      number: 6
+    min_power: 0
+    max_power: 1
+  - platform: ledc
+    id: green_output
+    frequency: 9765
+    pin:
+      number: 7
+    min_power: 0
+    max_power: 1
+  - platform: ledc
+    id: blue_output
+    frequency: 9765
+    pin:
+      number: 5
+    min_power: 0
+    max_power: 1
+  - platform: ledc
+    id: white_output
+    frequency: 9765
+    pin:
+      number: 3
+    min_power: 0
+    max_power: 0.9
+  - platform: ledc
+    id: warm_white_output
+    frequency: 9765
+    pin:
+      number: 4
+    min_power: 0
+    max_power: 0.9
+
+light:
+  - platform: rgbww
+    id: rgbww_light
+    name: ""
+    restore_mode: ALWAYS_OFF
+    initial_state:
+      state: ON
+      brightness: 100%
+      color_mode: COLD_WARM_WHITE
+      cold_white: 0%
+      warm_white: 100%
+    red: red_output
+    green: green_output
+    blue: blue_output
+    cold_white: white_output
+    warm_white: warm_white_output
+    cold_white_color_temperature: 6500 K
+    warm_white_color_temperature: 3000 K
+    color_interlock: ${color_interlock}
+    constant_brightness: True
