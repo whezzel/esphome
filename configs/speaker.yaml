@@ -1,5 +1,6 @@
 packages:
   api: !include /config/common/api.yaml
+  binary_sensor: !include /config/common/binary_sensor.yaml
   captive_portal: !include /config/common/captive_portal.yaml
   esp32: !include /config/common/esp32.yaml
   esphome: !include /config/common/esphome.yaml
