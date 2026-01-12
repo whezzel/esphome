@@ -6,7 +6,7 @@ substitutions:
   devicename: bedroom-1-closet-light
   icon: mdi:lightbulb
   log_level: DEBUG
-  restore: RESTORE_DEFAULT_OFF
+  restore: ALWAYS_OFF
   room: Bedroom 1 Closet
 
 <<: !include /config/configs/bulb_kauf_blf10.yaml

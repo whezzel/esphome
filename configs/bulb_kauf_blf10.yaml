@@ -64,13 +64,7 @@ light:
   - platform: rgbww
     id: rgbww_light
     name: ""
-    restore_mode: ALWAYS_OFF
-    initial_state:
-      state: ON
-      brightness: 100%
-      color_mode: COLD_WARM_WHITE
-      cold_white: 0%
-      warm_white: 100%
+    restore_mode: ${restore}
     red: red_output
     green: green_output
     blue: blue_output

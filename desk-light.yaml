@@ -7,7 +7,7 @@ substitutions:
   espnow_peer_mac: 94:B5:55:26:BD:2C
   icon: mdi:lightbulb
   log_level: DEBUG
-  restore: RESTORE_DEFAULT_ON
+  restore: ALWAYS_OFF
   room: Desk
 
 <<: !include /config/configs/bulb_athom_espnow.yaml
