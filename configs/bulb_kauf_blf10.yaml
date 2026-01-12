@@ -13,6 +13,21 @@ packages:
   web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
 
+esphome:
+  on_boot:
+    priority: -100.0
+    then:
+      - light.control:
+          id: rgbww_light
+          brightness: 100%
+          color_brightness: 0%
+          color_mode: COLD_WARM_WHITE
+          cold_white: 0%
+          warm_white: 100%
+          red: 0%
+          green: 0%
+          blue: 0%
+
 output:
   - platform: esp8266_pwm
     id: red_output
