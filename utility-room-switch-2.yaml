@@ -7,6 +7,6 @@ substitutions:
   icon: mdi:light-switch
   log_level: DEBUG
   restore: RESTORE_DEFAULT_OFF
-  room: Hobby Room
+  room: Utility Room
 
 <<: !include configs/switch_athom_esp32.yaml
