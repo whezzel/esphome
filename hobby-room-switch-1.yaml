@@ -7,7 +7,7 @@ substitutions:
   espnow_peer_mac: B8:D6:1A:85:A5:58
   icon: mdi:light-switch
   log_level: DEBUG
-  restore: RESTORE_DEFAULT_OFF
+  restore: ALWAYS_ON
   room: Hobby Room
 
 <<: !include configs/switch_athom_esp32_espnow.yaml
