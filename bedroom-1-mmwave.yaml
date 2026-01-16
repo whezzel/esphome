@@ -39,7 +39,7 @@ external_components:
 logger:
   hardware_uart: UART2
   logs:
-    sensor: INFO # reduced logging to minimize web_server target overload..
+    sensor: INFO
     script: ERROR
 
 uart:
@@ -78,40 +78,40 @@ binary_sensor:
 
 sensor:
   - platform: template
-    id: target_1_distance_m # do not change
+    id: target_1_distance_m
     internal: true
 
   - platform: template
-    id: target_2_distance_m # do not change
+    id: target_2_distance_m
     internal: true
 
   - platform: template
-    id: target_3_distance_m # do not change
+    id: target_3_distance_m
     internal: true
 
   - platform: template
-    id: target_4_distance_m # do not change
+    id: target_4_distance_m
     internal: true
 
   - platform: template
-    id: target_1_SNR # do not change
+    id: target_1_SNR
     internal: true
 
   - platform: template
-    id: target_2_SNR # do not change
+    id: target_2_SNR
     internal: true
 
   - platform: template
-    id: target_3_SNR # do not change
+    id: target_3_SNR
     internal: true
 
   - platform: template
-    id: target_4_SNR # do not change
+    id: target_4_SNR
     internal: true
 
   - platform: template
     name: Targets
-    id: num_targets # do not change
+    id: num_targets
     accuracy_decimals: 0
     disabled_by_default: true
 
@@ -132,7 +132,7 @@ switch:
 
   - platform: template
     name: Sensor
-    id: mmwave_sensor # do not change
+    id: mmwave_sensor
     entity_category: config
     optimistic: true
     disabled_by_default: true
@@ -145,7 +145,7 @@ switch:
 
   - platform: template
     name: LED
-    id: led  # do not change
+    id: led 
     entity_category: config
     optimistic: true
     disabled_by_default: true
@@ -195,7 +195,7 @@ switch:
 number:
   - platform: template
     name: distance
-    id: distance # do not change
+    id: distance
     entity_category: config
     min_value: 0.15
     max_value: 9.45
@@ -233,7 +233,7 @@ number:
 
   - platform: template
     name: latency
-    id: latency # do not change
+    id: latency
     entity_category: config
     min_value: 1
     max_value: 600
@@ -271,7 +271,7 @@ number:
 
   - platform: template
     name: sensitivity
-    id: sensitivity # do not change
+    id: sensitivity
     entity_category: config
     min_value: 0
     max_value: 9
