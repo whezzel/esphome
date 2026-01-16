@@ -118,6 +118,18 @@ packages:
   web_server: !include /config/common/web_server.yaml
   wifi: !include /config/common/wifi.yaml
 
+api:
+  on_client_connected:
+     - esp32_ble_tracker.start_scan:
+        continuous: true
+  on_client_disconnected:
+    if:
+      condition:
+        not:
+          api.connected:
+      then:
+        - esp32_ble_tracker.stop_scan:
+
 status_led:
     pin:
       number: 2

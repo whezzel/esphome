@@ -2,6 +2,7 @@ packages:
   api: !include /config/common/api.yaml
   binary_sensor: !include /config/common/binary_sensor.yaml
   captive_portal: !include /config/common/captive_portal.yaml
+  esp32_ble_tracker: !include /config/common/esp32_ble_tracker.yaml
   esp32: !include /config/common/esp32.yaml
   esphome: !include /config/common/esphome.yaml
   logger: !include /config/common/logger.yaml
@@ -21,6 +22,18 @@ esp32:
       CONFIG_BT_BLE_42_FEATURES_SUPPORTED: y
       CONFIG_BT_BLE_50_FEATURES_SUPPORTED: y
       CONFIG_ESP_TASK_WDT_TIMEOUT_S: "10"
+
+api:
+  on_client_connected:
+     - esp32_ble_tracker.start_scan:
+        continuous: true
+  on_client_disconnected:
+    if:
+      condition:
+        not:
+          api.connected:
+      then:
+        - esp32_ble_tracker.stop_scan:
 
 status_led:
   pin:
