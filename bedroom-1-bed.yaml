@@ -44,11 +44,11 @@ binary_sensor:
       if (id(change).has_state() && id(std_dev).has_state()) {
         float change_val = id(change).state;
         float stddev_val = id(std_dev).state;
-        if (stddev_val >= 0.08) {
-          if (change_val <= -0.24) {
+        if (stddev_val >= 0.12) {
+          if (change_val <= -0.30) {
             id(bed_occupied_state) = true;
             return true;
-          } else if (change_val >= 0.24) {
+          } else if (change_val >= 0.30) {
             id(bed_occupied_state) = false;
             return false;
           }
@@ -82,7 +82,7 @@ sensor:
     filters:
       - lambda: |-
           const uint16_t window_size_ = 200;
-          const uint8_t send_every_ = 2;
+          const uint8_t send_every_ = 1;
 
           static std::deque<float> queue_;
           static uint8_t send_at_ = 0;
@@ -133,7 +133,7 @@ sensor:
     filters:
       - lambda: |-
           const uint16_t window_size_ = 200;
-          const uint8_t send_every_ = 2;
+          const uint8_t send_every_ = 1;
 
           static std::deque<float> queue_;
           static uint8_t send_at_ = 0;
