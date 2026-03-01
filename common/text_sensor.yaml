@@ -15,16 +15,3 @@ text_sensor:
     name: Version
     id: esphome_version
     hide_timestamp: false
-
-  - platform: wifi_info
-    ip_address:
-      name: IP Address
-      id: ip_address
-    ssid:
-      name: SSID
-      id: ssid
-    mac_address:
-      name: MAC Address
-      id: mac_address
-    bssid:
-      name: BSSID

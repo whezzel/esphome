@@ -15,3 +15,33 @@ wifi:
       static_ip: 192.168.69.69
       gateway: 192.168.69.1
       subnet: 255.255.255.0
+
+captive_portal:
+
+sensor:
+  - platform: wifi_signal
+    name: WiFi RSSI
+    id: wifi_signal_rssi
+    update_interval: 10s
+  - platform: copy
+    source_id: wifi_signal_rssi
+    name: WiFi Signal
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "Signal %"
+    entity_category: "diagnostic"
+    device_class: ""
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: IP Address
+      id: ip_address
+    ssid:
+      name: SSID
+      id: ssid
+    mac_address:
+      name: MAC Address
+      id: mac_address
+    bssid:
+      name: BSSID

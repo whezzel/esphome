@@ -22,16 +22,3 @@ sensor:
                 (minutes ? to_string(minutes) + "m " : "") +
                 (to_string(seconds) + "s")
               ).c_str();
-
-  - platform: wifi_signal
-    name: WiFi RSSI
-    id: wifi_signal_rssi
-    update_interval: 10s
-  - platform: copy
-    source_id: wifi_signal_rssi
-    name: WiFi Signal
-    filters:
-      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
-    unit_of_measurement: "Signal %"
-    entity_category: "diagnostic"
-    device_class: ""
