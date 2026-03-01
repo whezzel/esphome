@@ -48,7 +48,9 @@ sensor:
       id: power
     apparent_power:
       name: Apparent Power
-      unit_of_measurement: "VA"
+      accuracy_decimals: 2
+    reactive_power:
+      name: Reactive Power
       accuracy_decimals: 2
     power_factor:
       name: Power Factor
