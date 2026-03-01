@@ -5,6 +5,7 @@ substitutions:
   device: Switch 1
   devicename: bedroom-1-switch-1
   espnow_peer_mac: 54:43:B2:3F:44:50
+  framework: esp-idf
   icon: mdi:light-switch
   log_level: DEBUG
   restore: ALWAYS_ON

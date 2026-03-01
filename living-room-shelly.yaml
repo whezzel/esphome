@@ -4,6 +4,7 @@ substitutions:
   board: esp32doit-devkit-v1
   device: Shelly
   devicename: living-room-shelly
+  framework: esp-idf
   icon1: mdi:lightbulb
   icon2: mdi:fan
   log_level: DEBUG

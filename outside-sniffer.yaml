@@ -3,6 +3,7 @@ substitutions:
   board: featheresp32
   device: Sniffer
   devicename: outside-sniffer
+  framework: esp-idf
   log_level: DEBUG
   room: Outside
   send_every: '10'

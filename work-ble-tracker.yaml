@@ -3,6 +3,7 @@ substitutions:
   board: wemos_d1_mini32
   device: BLE Tracker
   devicename: work-ble-tracker
+  framework: esp-idf
   log_level: DEBUG
   room: Work
   update_interval: 15s

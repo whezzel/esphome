@@ -5,6 +5,7 @@ substitutions:
   current_res: "0.0009"
   device: Plug
   devicename: front-porch-plug
+  framework: esp-idf
   icon: mdi:outlet
   log_level: DEBUG
   relay1_restore: RESTORE_DEFAULT_ON

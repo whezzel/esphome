@@ -9,6 +9,7 @@ substitutions:
   current_cal: "39473"
   device: Power Meter
   devicename: outside-power-meter
+  framework: esp-idf
   icon: mdi:gauge
   log_level: DEBUG
   room: Outside

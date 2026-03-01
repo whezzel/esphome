@@ -4,6 +4,7 @@ substitutions:
   board: esp32-c3-devkitm-1
   device: Switch 1
   devicename: utility-room-switch-2
+  framework: esp-idf
   icon: mdi:light-switch
   log_level: DEBUG
   restore: RESTORE_DEFAULT_OFF

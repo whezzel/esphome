@@ -3,6 +3,7 @@ substitutions:
   board: wemos_d1_mini32
   device: mmWave
   devicename: bedroom-1-mmwave
+  framework: esp-idf
   gpio_pin: 17
   header_file: custom_components/leapmmw_sensor.h
   log_level: DEBUG

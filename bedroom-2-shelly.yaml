@@ -5,6 +5,7 @@ substitutions:
   device: Shelly
   devicename: bedroom-2-shelly
   espnow_peer_mac: E4:B0:63:00:F3:1C
+  framework: esp-idf
   icon1: mdi:lightbulb
   icon2: mdi:fan
   log_level: DEBUG

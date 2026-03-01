@@ -3,6 +3,7 @@ substitutions:
   board: wemos_d1_mini32
   device: Switch Panel
   devicename: desk-switch-panel
+  framework: esp-idf
   log_level: DEBUG
   room: Desk
 

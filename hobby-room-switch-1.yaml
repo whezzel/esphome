@@ -5,6 +5,7 @@ substitutions:
   device: Switch 1
   devicename: hobby-room-switch-1
   espnow_peer_mac: B8:D6:1A:85:A5:58
+  framework: esp-idf
   icon: mdi:light-switch
   log_level: DEBUG
   restore: ALWAYS_ON
