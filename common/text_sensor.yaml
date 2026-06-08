@@ -14,4 +14,5 @@ text_sensor:
   - platform: version
     name: Version
     id: esphome_version
-    hide_timestamp: false
+    hide_timestamp: true
+    hide_hash: true
