@@ -24,16 +24,17 @@ packages:
   wifi: !include /config/common/wifi.yaml
 
 status_led:
-    pin:
-      number: 2
-      inverted: true
-      ignore_strapping_warning: true
+  pin:
+    number: 2
+    inverted: true
+    ignore_strapping_warning: true
 
 globals:
   - id: bed_occupied_state
     type: bool
     restore_value: yes
     initial_value: 'false'
+
 binary_sensor:
   - platform: template
     name: Occupancy
@@ -55,6 +56,7 @@ binary_sensor:
         }
       }
       return id(bed_occupied_state);
+
 sensor:
   - platform: adc
     pin:
@@ -70,88 +72,68 @@ sensor:
           send_every: 1
           alpha: 0.1
           send_first_at: 1
+
   - platform: copy
     source_id: bed_adc
     name: Standard Deviation
     id: std_dev
-    internal: true
+    #internal: true
     unit_of_measurement: V
     accuracy_decimals: 5
     device_class: voltage
     state_class: measurement
     filters:
       - lambda: |-
-          const uint16_t window_size_ = 200;
-          const uint8_t send_every_ = 1;
+          const uint16_t WINDOW_SIZE = 200;
+          static float buffer[WINDOW_SIZE] = {0.0f};
+          static uint16_t pos = 0;
+          static uint16_t filled = 0;
 
-          static std::deque<float> queue_;
-          static uint8_t send_at_ = 0;
+          buffer[pos] = x;
+          pos = (pos + 1) % WINDOW_SIZE;
+          if (filled < WINDOW_SIZE) filled++;
 
-          while (queue_.size() >= window_size_) {
-            queue_.pop_front();
+          if (filled < 2) return NAN;
+
+          uint16_t n = filled;
+          float sum = 0.0f;
+          float sum_sq = 0.0f;
+          for (uint16_t i = 0; i < n; ++i) {
+            float v = buffer[i];
+            sum += v;
+            sum_sq += v * v;
           }
+          float mean = sum / n;
+          float variance = (sum_sq - sum * mean) / (n - 1.0f);
+          return sqrtf(variance);
 
-          queue_.push_back(x);
-
-          if (++send_at_ >= send_every_) {
-            send_at_ = 0;
-
-            float Ex = 0.0;
-            float Ex2 = 0.0;
-            size_t count = 0;
-
-            if (queue_.empty()) return NAN;
-
-            float K = queue_.front();
-
-            for (auto v: queue_) {
-              if (!std::isnan(v)) {
-                count += 1;
-                Ex += v - K;
-                Ex2 += pow(v - K, 2);
-              }
-            }
-
-            float standard_deviation = NAN;
-            if (count > 1) {
-              float variance = (Ex2 - pow(Ex, 2) / count) / (count - 1);
-              standard_deviation = sqrt(variance);
-            }
-
-            return standard_deviation;
-          }
-          return {};
   - platform: copy
     source_id: bed_adc
     name: Change
     id: change
-    internal: true
+    #internal: true
     unit_of_measurement: V
     accuracy_decimals: 5
     device_class: voltage
     state_class: measurement
     filters:
       - lambda: |-
-          const uint16_t window_size_ = 200;
-          const uint8_t send_every_ = 1;
+          const uint16_t WINDOW_SIZE = 200;
+          static float buffer[WINDOW_SIZE] = {0.0f};
+          static uint16_t pos = 0;
+          static uint16_t filled = 0;
 
-          static std::deque<float> queue_;
-          static uint8_t send_at_ = 0;
+          buffer[pos] = x;
+          uint16_t old_pos = pos;
+          pos = (pos + 1) % WINDOW_SIZE;
+          if (filled < WINDOW_SIZE) filled++;
 
-          while (queue_.size() >= window_size_) {
-            queue_.pop_front();
+          if (filled < 2) return NAN;
+
+          float oldest;
+          if (filled < WINDOW_SIZE) {
+            oldest = buffer[0];
+          } else {
+            oldest = buffer[pos];
           }
-
-          queue_.push_back(x);
-
-          if (++send_at_ >= send_every_) {
-            send_at_ = 0;
-
-            if (queue_.size() < 2) return NAN;
-
-            float first = queue_.front();
-            float last = queue_.back();
-
-            return last - first;
-          }
-          return {};
+          return x - oldest;
