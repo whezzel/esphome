@@ -109,7 +109,7 @@ class leapmmw : public Component, public UARTDevice {
         }
         if (line.substr(0, 6) == "$JYRPO") {
           std::string vline = line.substr(6);
-          std::vector<std::string> v;    
+          std::vector<std::string> v;
           for(int i = 0; i < vline.length(); i++) {
               if(vline[i] == ',') {
                   v.push_back("");
