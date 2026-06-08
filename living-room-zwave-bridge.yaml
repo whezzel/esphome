@@ -1,0 +1,81 @@
+### https://github.com/tube0013/TubesZB-ESPHome-Builder/blob/2025.12.25_Update/manifests/tubeszb-zw.yaml
+
+substitutions:
+  api_key: !secret living-room-zwave-bridge_api_key
+  board: esp32-poe
+  device: ZWave Bridge
+  devicename: living-room-zwave-bridge
+  framework: esp-idf
+  log_level: DEBUG
+  room: Living Room
+
+packages:
+  api: !include /config/common/api.yaml
+  esphome: !include /config/common/esphome.yaml
+  esp32: !include /config/common/esp32.yaml
+  ethernet: !include /config/common/ethernet.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+
+esp32:
+  framework:
+    sdkconfig_options:
+      CONFIG_LWIP_MAX_SOCKETS: "16"
+      CONFIG_PM_ENABLE: "n"
+      CONFIG_PM_POWER_DOWN_PERIPHERAL_IN_LIGHT_SLEEP: "n"
+      CONFIG_UART_ISR_IN_IRAM: "y"
+
+external_components:
+  - source: github://tube0013/esphome-components
+    components: [stream_server]
+
+ethernet:
+  type: LAN8720
+  mdc_pin:
+    number: 23
+  mdio_pin:
+    number: 18
+  clk:
+    pin:
+      number: 17
+    mode: CLK_OUT
+  phy_addr: 0
+  power_pin:
+    number: 12
+    ignore_strapping_warning: true
+
+uart:
+  id: uart_bus
+  rx_pin:
+    number: 15
+    ignore_strapping_warning: true
+  tx_pin:
+    number: 14
+  baud_rate: 115200
+  rx_buffer_size: 1024
+
+stream_server:
+  uart_id: uart_bus
+  id: serial_stream_server
+  port: 6638
+  #buffer_size: 1024
+
+binary_sensor:
+  - platform: stream_server
+    connected:
+      name: Steam Server Connected
+
+#mdns:
+#  services:
+#    - service: _zwave
+#      protocol: _tcp
+#      port: 6638
+#      txt:
+#        version: 1
+#        name: TubesZB
+#        serial_number: !lambda 'return esphome::get_mac_address();'

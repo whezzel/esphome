@@ -1,0 +1,318 @@
+### https://github.com/tube0013/TubesZB-ESPHome-Builder/blob/2025.12.25_Update/esphome-config/tubeszb-efr32-mgm24-2023.yaml
+
+substitutions:
+  api_key: !secret living-room-zigbee-bridge_api_key
+  board: esp32-poe
+  device: Zigbee Bridge
+  devicename: living-room-zigbee-bridge
+  framework: esp-idf
+  log_level: DEBUG
+  room: Living Room
+
+packages:
+  api: !include /config/common/api.yaml
+  esphome: !include /config/common/esphome.yaml
+  esp32: !include /config/common/esp32.yaml
+  ethernet: !include /config/common/ethernet.yaml
+  logger: !include /config/common/logger.yaml
+  ota: !include /config/common/ota.yaml
+  sensor: !include /config/common/sensor.yaml
+  switch: !include /config/common/switch.yaml
+  text_sensor: !include /config/common/text_sensor.yaml
+  time: !include /config/common/time.yaml
+  web_server: !include /config/common/web_server.yaml
+
+esphome:
+  on_boot:
+    - priority: 900
+      then:
+        - lambda: |-
+            // Force GPIO2 low (RTS asserted) early; UART will take the pin later.
+            gpio_reset_pin(GPIO_NUM_2);
+            gpio_set_direction(GPIO_NUM_2, GPIO_MODE_OUTPUT);
+            gpio_set_level(GPIO_NUM_2, 0);
+            // The #include directive is now INSIDE the lambda.
+            #include "driver/uart.h"
+
+            ESP_LOGD("custom", "Applying HW Flow Control to uart_bus_zb...");
+            // This re-configures the pins and enables CTS/RTS flow control.
+            uart_set_pin(UART_NUM_1, 4, 36, 2, 13);
+            // This NEW LINE actually enables the CTS/RTS flow control mode
+            uart_set_hw_flow_ctrl(UART_NUM_1, UART_HW_FLOWCTRL_CTS_RTS, 122);
+
+    - priority: 200
+      then:
+        - stream_server.pause: { id: serial_stream_server }
+        - delay: 700ms
+        - switch.turn_on: zigbee_rst_gpio
+        - delay: 50ms
+        - switch.turn_off: zigbee_rst_gpio
+        - delay: 1s
+        - stream_server.resume: { id: serial_stream_server }
+        - script.execute: boot_probe_sequence
+
+esp32:
+  framework:
+    sdkconfig_options:
+      CONFIG_LWIP_MAX_SOCKETS: "16"
+      CONFIG_PM_ENABLE: "n"
+      CONFIG_PM_POWER_DOWN_PERIPHERAL_IN_LIGHT_SLEEP: "n"
+      CONFIG_UART_ISR_IN_IRAM: "y"
+    advanced:
+      include_builtin_idf_components:
+        - esp_http_client
+
+external_components:
+  - source:
+      type: git
+      url: https://github.com/tube0013/esphome-components
+    components: [ stream_server, efr32_flasher, efr32_info ]
+
+globals:
+  - id: boot_probe_done
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+ethernet:
+  type: LAN8720
+  mdc_pin:
+    number: 23
+  mdio_pin:
+    number: 18
+  clk:
+    pin:
+      number: 17
+    mode: CLK_OUT
+  phy_addr: 0
+  power_pin:
+    number: 12
+    ignore_strapping_warning: true
+
+uart:
+  id: uart_bus
+  rx_pin:
+    number: 36
+  tx_pin:
+    number: 4
+  baud_rate: 115200
+  rx_buffer_size: 8192
+
+stream_server:
+  uart_id: uart_bus
+  id: serial_stream_server
+  port: 6638
+  buffer_size: 8192
+  trace: false
+
+binary_sensor:
+  - platform: stream_server
+    stream_server: serial_stream_server
+    connected:
+      name: Stream Server Connected
+
+  - platform: template
+    id: ncp_busy
+    name: NCP Busy
+    device_class: running
+    on_press:
+      - stream_server.pause: { id: serial_stream_server }
+      - text_sensor.template.publish:
+          id: serial_server_status
+          state: Paused
+    on_release:
+      - stream_server.resume: { id: serial_stream_server }
+      - text_sensor.template.publish:
+          id: serial_server_status
+          state: Running
+
+switch:
+  - platform: gpio
+    pin:
+      number: 5
+      ignore_strapping_warning: true
+    id: zigbee_rst_gpio
+    inverted: true
+    restore_mode: ALWAYS_OFF
+    internal: true
+    entity_category: config
+
+  - platform: gpio
+    pin:
+      number: 16
+    id: zigbee_bsl_gpio
+    inverted: true
+    restore_mode: ALWAYS_OFF
+    internal: true
+    entity_category: config
+    disabled_by_default: true
+
+  - platform: template
+    name: Zigbee Flash Mode
+    icon: mdi:cellphone-arrow-down
+    turn_on_action:
+      - script.execute: firmware_update_mode
+
+button:
+  - platform: template
+    id: serial_server_pause
+    internal: true
+    on_press:
+      - stream_server.pause: { id: serial_stream_server }
+      - text_sensor.template.publish:
+          id: serial_server_status
+          state: Paused
+
+  - platform: template
+    id: serial_server_resume
+    internal: true
+    on_press:
+      - stream_server.resume: { id: serial_stream_server }
+      - text_sensor.template.publish:
+          id: serial_server_status
+          state: Running
+
+  - platform: template
+    name: Zigbee Restart
+    icon: mdi:restart
+    on_press:
+      - switch.turn_on: zigbee_rst_gpio
+      - delay: 15ms
+      - switch.turn_off: zigbee_rst_gpio
+
+  - platform: template
+    name: Zigbee Bootloader
+    disabled_by_default: true
+  #  internal: true
+    on_press:
+      - script.execute: firmware_update_mode
+
+  - platform: template
+    name: Zigbee Flash Radio
+    id: flash_efr32
+  #  internal: true
+    on_press:
+      - efr32_flasher.update_firmware: { id: zigbee_efr32_flasher }
+
+  - platform: template
+    name: Zigbee Check Update
+    id: check_efr32_update
+    on_press:
+      - efr32_flasher.check_update: { id: zigbee_efr32_flasher }
+
+  - platform: template
+    name: Zigbee Probe Info
+    id: zigbee_replay_identity
+    disabled_by_default: true
+  #  internal: true
+    on_press:
+      - efr32_info.probe: { id: zigbee_info }
+      - logger.log: "BTN: EZSP info probe triggered"
+
+#mdns:
+#  services:
+#    - service: _zigbee-coordinator
+#      protocol: _tcp
+#      port: 6638
+#      txt:
+#        version: 1
+#        name: TubesZB
+#        radio_type: ezsp
+#        serial_number: !lambda 'return esphome::get_mac_address();'
+
+text_sensor:
+  - platform: template
+    id: serial_server_status
+    name: Serial Server Status
+
+  - platform: template
+    id: zigbee_latest_firmware
+    name: Zigbee - Latest Firmware
+    
+  - platform: template
+    id: manufacturer_string
+    name: Zigbee - MFG String
+    internal: true
+
+  - platform: template
+    id: board_name
+    name: Zigbee - Board Name
+    internal: true
+
+  - platform: template
+    id: zigbee_info_status
+    name: Zigbee - Info Status
+
+  - platform: template
+    id: zigbee_ieee
+    name: Zigbee - IEEE Address
+    internal: true
+
+  - platform: template
+    id: zigbee_firmware
+    name: Zigbee - Current FW Version
+
+efr32_flasher:
+  id: zigbee_efr32_flasher
+  uart_id: uart_bus
+  url: "https://github.com/tube0013/tube_gateways/raw/refs/heads/main/misc/efr32manifest.json"
+  boot_switch: zigbee_bsl_gpio
+  rst_switch: zigbee_rst_gpio
+  busy_binary_sensor: ncp_busy
+  show_progress: true
+  progress_step: 5
+  variant: auto
+  board_name_text: board_name
+  mfg_string_text: manufacturer_string
+  latest_fw_version_text: zigbee_latest_firmware
+  bootloader_baud_rate: 115200
+
+efr32_info:
+  id: zigbee_info
+  uart_id: uart_bus
+  stream_server_id: serial_stream_server
+  busy_binary_sensor: ncp_busy
+  status_text: zigbee_info_status
+  manufacturer_text: manufacturer_string
+  board_name_text: board_name
+  firmware_text: zigbee_firmware
+  ieee_text: zigbee_ieee
+  raw_capture: true
+
+script:
+  - id: firmware_update_mode
+    then:
+      - switch.turn_on: zigbee_bsl_gpio
+      - delay: 1s
+      - switch.turn_on: zigbee_rst_gpio
+      - delay: 1s
+      - switch.turn_off: zigbee_rst_gpio
+      - delay: 1s
+      - switch.turn_off: zigbee_bsl_gpio
+  - id: boot_probe_sequence
+    mode: queued
+    then:
+      - if:
+          condition:
+            lambda: 'return id(boot_probe_done);'
+          then:
+            - logger.log:
+                format: Boot probe skipped (already executed)
+                level: DEBUG
+          else:
+            - delay: 2s
+            - efr32_info.probe: { id: zigbee_info }
+            - wait_until:
+                condition:
+                  lambda: 'if (id(ncp_busy).state) App.feed_wdt(); return !id(ncp_busy).state;'
+                timeout: 45s
+            - delay: 500ms
+            - if:
+                condition:
+                  lambda: 'return id(board_name).state.empty();'
+                then:
+                  - logger.log:
+                      format: Boot probe completed but board name sensor still empty
+                      level: WARN
+            - efr32_flasher.check_update: { id: zigbee_efr32_flasher }
+            - lambda: 'id(boot_probe_done) = true;'
