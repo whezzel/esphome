@@ -5,7 +5,7 @@ substitutions:
   devicename: bedroom-1-mmwave
   framework: esp-idf
   gpio_pin: 17
-  header_file: custom_components/leapmmw_sensor.h
+  header_file: components/leapmmw_sensor.h
   log_level: DEBUG
   room: Bedroom 1
   uart_rx_pin: 3
@@ -34,7 +34,7 @@ external_components:
   - source:
       type: git
       url: https://github.com/robertklep/esphome-custom-component
-    components: [ custom, custom_component ]
+    components: [ custom ]
 
 logger:
   hardware_uart: UART2
@@ -118,7 +118,7 @@ sensor:
   - platform: custom
     lambda: |-
       auto s = new leapmmw(id(uart_bus));
-      App.register_component(s);
+      App.register_component_(s);
       return {};
     sensors:
 
@@ -145,7 +145,7 @@ switch:
 
   - platform: template
     name: LED
-    id: led 
+    id: led
     entity_category: config
     optimistic: true
     disabled_by_default: true
