@@ -10,97 +10,97 @@ substitutions:
   switch1_pin: 32
   switch1_id: switch1
   switch1_num: "1"
-  switch1_single_service: "switch.toggle"
+  switch1_single_action: "switch.toggle"
   switch1_single_entity: "switch.bath_1_switch_1_relay"
-  switch1_double_service: ""
+  switch1_double_action: ""
   switch1_double_entity: ""
 
   switch2_pin: 16
   switch2_id: switch2
   switch2_num: "2"
-  switch2_single_service: "switch.toggle"
+  switch2_single_action: "switch.toggle"
   switch2_single_entity: "switch.bedroom_1_shelly_light"
-  switch2_double_service: "switch.toggle"
+  switch2_double_action: "switch.toggle"
   switch2_double_entity: "switch.bedroom_1_lamp_relay"
 
   switch3_pin: 5
   switch3_id: switch3
   switch3_num: "3"
-  switch3_single_service: "switch.toggle"
+  switch3_single_action: "switch.toggle"
   switch3_single_entity: "switch.bath_2_switch_1_relay"
-  switch3_double_service: ""
+  switch3_double_action: ""
   switch3_double_entity: ""
 
   switch4_pin: 23
   switch4_id: switch4
   switch4_num: "4"
-  switch4_single_service: "switch.toggle"
+  switch4_single_action: "switch.toggle"
   switch4_single_entity: "switch.bedroom_2_shelly_light"
-  switch4_double_service: ""
+  switch4_double_action: ""
   switch4_double_entity: ""
 
   switch5_pin: 21
   switch5_id: switch5
   switch5_num: "5"
-  switch5_single_service: "switch.toggle"
+  switch5_single_action: "switch.toggle"
   switch5_single_entity: "switch.hobby_room_shelly_light"
-  switch5_double_service: ""
+  switch5_double_action: ""
   switch5_double_entity: ""
 
   switch6_pin: 17
   switch6_id: switch6
   switch6_num: "6"
-  switch6_single_service: "light.toggle"
+  switch6_single_action: "light.toggle"
   switch6_single_entity: "light.kitchen_lights"
-  switch6_double_service: "switch.toggle"
+  switch6_double_action: "switch.toggle"
   switch6_double_entity: "switch.kitchen_lamp_relay"
 
   switch7_pin: 25
   switch7_id: switch7
   switch7_num: "7"
-  switch7_single_service: "switch.toggle"
+  switch7_single_action: "switch.toggle"
   switch7_single_entity: "switch.living_room_shelly_light"
-  switch7_double_service: ""
+  switch7_double_action: ""
   switch7_double_entity: ""
 
   switch8_pin: 19
   switch8_id: switch8
   switch8_num: "8"
-  switch8_single_service: "switch.toggle"
+  switch8_single_action: "switch.toggle"
   switch8_single_entity: "switch.utility_room_switch_1_relay"
-  switch8_double_service: ""
+  switch8_double_action: ""
   switch8_double_entity: ""
 
   switch9_pin: 26
   switch9_id: switch9
   switch9_num: "9"
-  switch9_single_service: "switch.toggle"
+  switch9_single_action: "switch.toggle"
   switch9_single_entity: "switch.front_porch_switch_relay"
-  switch9_double_service: ""
+  switch9_double_action: ""
   switch9_double_entity: ""
 
   switch10_pin: 18
   switch10_id: switch10
   switch10_num: "10"
-  switch10_single_service: ""
+  switch10_single_action: ""
   switch10_single_entity: ""
-  switch10_double_service: ""
+  switch10_double_action: ""
   switch10_double_entity: ""
 
   switch11_pin: 22
   switch11_id: switch11
   switch11_num: "11"
-  switch11_single_service: "light.toggle"
+  switch11_single_action: "light.toggle"
   switch11_single_entity: "light.desk_light"
-  switch11_double_service: ""
+  switch11_double_action: ""
   switch11_double_entity: ""
 
   switch12_pin: 33
   switch12_id: switch12
   switch12_num: "12"
-  switch12_single_service: "light.toggle"
+  switch12_single_action: "light.toggle"
   switch12_single_entity: "light.all_lights"
-  switch12_double_service: ""
+  switch12_double_action: ""
   switch12_double_entity: ""
   
 packages:
@@ -158,10 +158,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch1_single_service}" != "";'
+                      lambda: 'return "${switch1_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch1_single_service}
+                          service: ${switch1_single_action}
                           data:
                             entity_id: ${switch1_single_entity}
       - timing:
@@ -177,10 +177,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch1_double_service}" != "";'
+                      lambda: 'return "${switch1_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch1_double_service}
+                          service: ${switch1_double_action}
                           data:
                             entity_id: ${switch1_double_entity}
   - platform: gpio
@@ -203,10 +203,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch2_single_service}" != "";'
+                      lambda: 'return "${switch2_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch2_single_service}
+                          service: ${switch2_single_action}
                           data:
                             entity_id: ${switch2_single_entity}
       - timing:
@@ -222,10 +222,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch2_double_service}" != "";'
+                      lambda: 'return "${switch2_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch2_double_service}
+                          service: ${switch2_double_action}
                           data:
                             entity_id: ${switch2_double_entity}
   - platform: gpio
@@ -248,10 +248,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch3_single_service}" != "";'
+                      lambda: 'return "${switch3_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch3_single_service}
+                          service: ${switch3_single_action}
                           data:
                             entity_id: ${switch3_single_entity}
       - timing:
@@ -267,10 +267,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch3_double_service}" != "";'
+                      lambda: 'return "${switch3_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch3_double_service}
+                          service: ${switch3_double_action}
                           data:
                             entity_id: ${switch3_double_entity}
   - platform: gpio
@@ -293,10 +293,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch4_single_service}" != "";'
+                      lambda: 'return "${switch4_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch4_single_service}
+                          service: ${switch4_single_action}
                           data:
                             entity_id: ${switch4_single_entity}
       - timing:
@@ -312,10 +312,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch4_double_service}" != "";'
+                      lambda: 'return "${switch4_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch4_double_service}
+                          service: ${switch4_double_action}
                           data:
                             entity_id: ${switch4_double_entity}
   - platform: gpio
@@ -338,10 +338,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch5_single_service}" != "";'
+                      lambda: 'return "${switch5_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch5_single_service}
+                          service: ${switch5_single_action}
                           data:
                             entity_id: ${switch5_single_entity}
       - timing:
@@ -357,10 +357,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch5_double_service}" != "";'
+                      lambda: 'return "${switch5_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch5_double_service}
+                          service: ${switch5_double_action}
                           data:
                             entity_id: ${switch5_double_entity}
   - platform: gpio
@@ -383,10 +383,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch6_single_service}" != "";'
+                      lambda: 'return "${switch6_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch6_single_service}
+                          service: ${switch6_single_action}
                           data:
                             entity_id: ${switch6_single_entity}
       - timing:
@@ -402,10 +402,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch6_double_service}" != "";'
+                      lambda: 'return "${switch6_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch6_double_service}
+                          service: ${switch6_double_action}
                           data:
                             entity_id: ${switch6_double_entity}
   - platform: gpio
@@ -428,10 +428,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch7_single_service}" != "";'
+                      lambda: 'return "${switch7_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch7_single_service}
+                          service: ${switch7_single_action}
                           data:
                             entity_id: ${switch7_single_entity}
       - timing:
@@ -447,10 +447,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch7_double_service}" != "";'
+                      lambda: 'return "${switch7_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch7_double_service}
+                          service: ${switch7_double_action}
                           data:
                             entity_id: ${switch7_double_entity}
   - platform: gpio
@@ -473,10 +473,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch8_single_service}" != "";'
+                      lambda: 'return "${switch8_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch8_single_service}
+                          service: ${switch8_single_action}
                           data:
                             entity_id: ${switch8_single_entity}
       - timing:
@@ -492,10 +492,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch8_double_service}" != "";'
+                      lambda: 'return "${switch8_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch8_double_service}
+                          service: ${switch8_double_action}
                           data:
                             entity_id: ${switch8_double_entity}
   - platform: gpio
@@ -518,10 +518,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch9_single_service}" != "";'
+                      lambda: 'return "${switch9_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch9_single_service}
+                          service: ${switch9_single_action}
                           data:
                             entity_id: ${switch9_single_entity}
       - timing:
@@ -537,10 +537,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch9_double_service}" != "";'
+                      lambda: 'return "${switch9_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch9_double_service}
+                          service: ${switch9_double_action}
                           data:
                             entity_id: ${switch9_double_entity}
   - platform: gpio
@@ -563,10 +563,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch10_single_service}" != "";'
+                      lambda: 'return "${switch10_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch10_single_service}
+                          service: ${switch10_single_action}
                           data:
                             entity_id: ${switch10_single_entity}
       - timing:
@@ -582,10 +582,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch10_double_service}" != "";'
+                      lambda: 'return "${switch10_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch10_double_service}
+                          service: ${switch10_double_action}
                           data:
                             entity_id: ${switch10_double_entity}
   - platform: gpio
@@ -608,10 +608,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch11_single_service}" != "";'
+                      lambda: 'return "${switch11_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch11_single_service}
+                          service: ${switch11_single_action}
                           data:
                             entity_id: ${switch11_single_entity}
       - timing:
@@ -627,10 +627,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch11_double_service}" != "";'
+                      lambda: 'return "${switch11_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch11_double_service}
+                          service: ${switch11_double_action}
                           data:
                             entity_id: ${switch11_double_entity}
   - platform: gpio
@@ -653,10 +653,10 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch12_single_service}" != "";'
+                      lambda: 'return "${switch12_single_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch12_single_service}
+                          service: ${switch12_single_action}
                           data:
                             entity_id: ${switch12_single_entity}
       - timing:
@@ -672,9 +672,9 @@ binary_sensor:
               then:
                 - if:
                     condition:
-                      lambda: 'return "${switch12_double_service}" != "";'
+                      lambda: 'return "${switch12_double_action}" != "";'
                     then:
                       - homeassistant.service:
-                          service: ${switch12_double_service}
+                          service: ${switch12_double_action}
                           data:
                             entity_id: ${switch12_double_entity}
