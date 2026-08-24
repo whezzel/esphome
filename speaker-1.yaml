@@ -3,6 +3,7 @@ substitutions:
   board: esp-wrover-kit
   device: '1'
   devicename: speaker-1
+  framework: esp-idf
   log_level: DEBUG
   room: Speaker
 
