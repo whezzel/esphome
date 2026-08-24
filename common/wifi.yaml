@@ -25,8 +25,13 @@ sensor:
 text_sensor:
   - platform: wifi_info
     ip_address:
-      name: IP Address
       id: ip_address
+      address_0:
+        name: IP Address 0
+      address_1:
+        name: IP Address 1
+      address_2:
+        name: IP Address 2
     ssid:
       name: SSID
       id: ssid

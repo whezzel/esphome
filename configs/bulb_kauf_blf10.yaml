@@ -4,6 +4,7 @@ packages:
   esp8266: !include /config/common/esp8266.yaml
   esphome: !include /config/common/esphome.yaml
   logger: !include /config/common/logger.yaml
+  network: !include /config/common/network.yaml
   ota: !include /config/common/ota.yaml
   sensor: !include /config/common/sensor.yaml
   switch: !include /config/common/switch.yaml
