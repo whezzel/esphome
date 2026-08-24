@@ -27,7 +27,7 @@ esphome:
 
 esp32:
   flash_size: 4MB
-  partitions: custom_components/luxe_partitions.csv
+  partitions: components/luxe_partitions.csv
   framework:
     sdkconfig_options:
       CONFIG_ESP_CONSOLE_USB_CDC: "n"
