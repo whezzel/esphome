@@ -7,7 +7,7 @@ substitutions:
   espnow_peer_mac: 54:43:B2:3F:44:74
   framework: esp-idf
   icon: mdi:light-switch
-  log_level: DEBUG
+  log_level: INFO
   restore: RESTORE_DEFAULT_OFF
   room: Bedroom 2
 

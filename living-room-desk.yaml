@@ -5,7 +5,7 @@ substitutions:
   device: Desk
   devicename: living-room-desk
   icon: mdi:desktop-classic
-  log_level: DEBUG
+  log_level: INFO
   restore: ALWAYS_ON
   room: Living Room
 

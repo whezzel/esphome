@@ -5,7 +5,7 @@ substitutions:
   device: Switch 2
   devicename: kitchen-switch-2
   icon: mdi:light-switch
-  log_level: DEBUG
+  log_level: INFO
   restore: RESTORE_DEFAULT_OFF
   room: Kitchen
 

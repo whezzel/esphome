@@ -5,7 +5,7 @@ substitutions:
   device: Coffee
   devicename: kitchen-coffee
   icon: mdi:coffee
-  log_level: DEBUG
+  log_level: INFO
   restore: ALWAYS_OFF
   room: Kitchen
 

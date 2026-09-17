@@ -4,7 +4,7 @@ substitutions:
   device: BLE Tracker
   devicename: living-room-ble-tracker
   framework: esp-idf
-  log_level: DEBUG
+  log_level: INFO
   room: Living Room
   update_interval: 15s
 

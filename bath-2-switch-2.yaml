@@ -6,7 +6,7 @@ substitutions:
   devicename: bath-2-switch-2
   framework: esp-idf
   icon: mdi:light-switch
-  log_level: DEBUG
+  log_level: INFO
   restore: RESTORE_DEFAULT_OFF
   room: Bath 2
 

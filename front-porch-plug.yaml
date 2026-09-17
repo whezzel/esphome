@@ -7,7 +7,7 @@ substitutions:
   devicename: front-porch-plug
   framework: esp-idf
   icon: mdi:outlet
-  log_level: DEBUG
+  log_level: INFO
   relay1_restore: RESTORE_DEFAULT_ON
   relay2_restore: ALWAYS_OFF
   room: Front Porch

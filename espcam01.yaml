@@ -5,7 +5,7 @@ substitutions:
   devicename: espcam01
   framework: esp-idf
   icon: mdi:camera
-  log_level: DEBUG
+  log_level: INFO
   room: ""
 
 <<: !include /config/configs/espcam.yaml

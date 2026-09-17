@@ -6,7 +6,7 @@ substitutions:
   device: Zigbee Bridge
   devicename: living-room-zigbee-bridge
   framework: esp-idf
-  log_level: DEBUG
+  log_level: INFO
   room: Living Room
 
 packages:

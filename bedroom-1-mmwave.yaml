@@ -6,7 +6,7 @@ substitutions:
   framework: esp-idf
   gpio_pin: 17
   header_file: components/leapmmw_sensor.h
-  log_level: DEBUG
+  log_level: INFO
   room: Bedroom 1
   uart_rx_pin: 3
   uart_tx_pin: 1

@@ -4,7 +4,7 @@ substitutions:
   device: BLE Tracker
   devicename: work-ble-tracker
   framework: esp-idf
-  log_level: DEBUG
+  log_level: INFO
   room: Work
   update_interval: 15s
   wg_client_ip_address: !secret work-ble-tracker_wg_ip_address

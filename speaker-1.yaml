@@ -4,7 +4,7 @@ substitutions:
   device: '1'
   devicename: speaker-1
   framework: esp-idf
-  log_level: DEBUG
+  log_level: INFO
   room: Speaker
 
 <<: !include /config/configs/speaker.yaml

@@ -4,7 +4,7 @@ substitutions:
   device: Switch Panel
   devicename: desk-switch-panel
   framework: esp-idf
-  log_level: DEBUG
+  log_level: INFO
   room: Desk
 
   switch1_pin: 32

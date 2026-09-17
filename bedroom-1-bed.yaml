@@ -4,7 +4,7 @@ substitutions:
   device: Bed
   devicename: bedroom-1-bed
   framework: esp-idf
-  log_level: DEBUG
+  log_level: INFO
   room: Bedroom 1
   update_interval: .1s
 

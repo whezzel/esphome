@@ -6,7 +6,7 @@ substitutions:
   device: ZWave Bridge
   devicename: living-room-zwave-bridge
   framework: esp-idf
-  log_level: DEBUG
+  log_level: INFO
   room: Living Room
 
 packages:

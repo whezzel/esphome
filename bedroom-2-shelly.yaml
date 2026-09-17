@@ -8,7 +8,7 @@ substitutions:
   framework: esp-idf
   icon1: mdi:lightbulb
   icon2: mdi:fan
-  log_level: DEBUG
+  log_level: INFO
   max_power: "3600.0"
   max_temp: "90.0"
   relay1_restore: RESTORE_DEFAULT_OFF

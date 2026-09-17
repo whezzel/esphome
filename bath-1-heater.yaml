@@ -5,7 +5,7 @@ substitutions:
   device: Heater
   devicename: bath-1-heater
   icon: mdi:radiator
-  log_level: DEBUG
+  log_level: INFO
   restore: RESTORE_DEFAULT_OFF
   room: Bath 1
 

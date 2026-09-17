@@ -5,7 +5,7 @@ substitutions:
   device: Light
   devicename: bedroom-1-closet-light
   icon: mdi:lightbulb
-  log_level: DEBUG
+  log_level: INFO
   restore: ALWAYS_OFF
   room: Bedroom 1 Closet
 

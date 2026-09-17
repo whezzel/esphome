@@ -7,7 +7,7 @@ substitutions:
   espnow_peer_mac: B8:D6:1A:85:A5:58
   framework: esp-idf
   icon: mdi:light-switch
-  log_level: DEBUG
+  log_level: INFO
   restore: ALWAYS_ON
   room: Hobby Room
 

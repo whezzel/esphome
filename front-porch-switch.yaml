@@ -5,7 +5,7 @@ substitutions:
   device: Switch
   devicename: front-porch-switch
   icon: mdi:light-switch
-  log_level: DEBUG
+  log_level: INFO
   restore: RESTORE_DEFAULT_OFF
   room: Front Porch
 

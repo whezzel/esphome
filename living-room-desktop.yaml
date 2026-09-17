@@ -5,7 +5,7 @@ substitutions:
   device: Desktop
   devicename: living-room-desktop
   icon: mdi:power-socket-us
-  log_level: DEBUG
+  log_level: INFO
   restore: ALWAYS_ON
   room: Living Room
 
