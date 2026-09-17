@@ -4,6 +4,7 @@ time:
     servers:
       - !secret sntp_ip1
       - !secret sntp_ip2
+    timezone: America/Chicago
     on_time_sync:
       then:
         - if:
