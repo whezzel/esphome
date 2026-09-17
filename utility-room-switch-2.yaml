@@ -2,7 +2,7 @@ substitutions:
   api_key: !secret utility-room-switch-2_api_key
   automation_name: back_porch_light_automation
   board: esp32-c3-devkitm-1
-  device: Switch 1
+  device: Switch 2
   devicename: utility-room-switch-2
   framework: esp-idf
   icon: mdi:light-switch
