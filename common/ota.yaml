@@ -1,4 +1,3 @@
 ota:
   - platform: esphome
-    password: !secret esphome_password
-  - platform: web_server
+    encryption:
