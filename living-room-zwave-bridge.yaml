@@ -68,7 +68,7 @@ stream_server:
 binary_sensor:
   - platform: stream_server
     connected:
-      name: Steam Server Connected
+      name: Stream Server Connected
 
 #mdns:
 #  services:
