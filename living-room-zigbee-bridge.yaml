@@ -61,6 +61,9 @@ esp32:
     advanced:
       include_builtin_idf_components:
         - esp_http_client
+        - esp-tls
+
+http_request:
 
 external_components:
   - source:
