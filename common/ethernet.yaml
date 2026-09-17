@@ -1,5 +1,5 @@
-#ethernet:
-#  domain: !secret domain
+ethernet:
+  domain: !secret domain
 
 text_sensor:
   - platform: ethernet_info
